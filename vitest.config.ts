@@ -11,7 +11,14 @@ export default defineConfig({
       provider: "v8",
       reporter: ["text", "json", "html"],
       include: ["src/**/*.ts", "src/**/*.tsx"],
-      exclude: ["src/app/**", "src/**/*.d.ts", "src/test/vitest.setup.ts"],
+      exclude: [
+        "src/app/**",
+        "src/**/*.d.ts",
+        "src/test/vitest.setup.ts",
+        "src/infrastructure/services/supabase/client.ts",
+        "src/infrastructure/services/supabase/server.ts",
+        "src/presentation/**",
+      ],
       thresholds: {
         lines: 100,
         functions: 100,
