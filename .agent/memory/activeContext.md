@@ -7,7 +7,8 @@
 
 ## Work in Progress (Required Next Steps)
 
-- **Supabase Auth**: Implement initial database and authentication integration according to tasks registered in the Kanban.
+- **Supabase Architecture**: Architecture boundaries established. The Adapter Pattern will be used to integrate Supabase, ensuring it resides entirely within the Infrastructure layer.
+- **Supabase Auth**: Ready for implementation. Will build the initial database and authentication integration mapping Supabase SDK concepts to internal Domain interfaces.
 - **Zod & React Hook Form**: Integration into the codebase (Frontend UI form validations).
 
 ## Main Focus
