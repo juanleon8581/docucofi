@@ -1,0 +1,174 @@
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { SupabaseAuthAdapter } from "../SupabaseAuthAdapter";
+import { SupabaseClient } from "@supabase/supabase-js";
+import { AuthenticationError } from "../../../../domain/errors/DomainError";
+import { LoginDTO, RegisterDTO } from "../../../../domain/dtos/AuthDTOs";
+
+describe("SupabaseAuthAdapter", () => {
+  let mockSupabaseClient: {
+    auth: {
+      signInWithPassword: import("vitest").Mock;
+      signUp: import("vitest").Mock;
+      signOut: import("vitest").Mock;
+      getUser: import("vitest").Mock;
+    };
+  };
+  let adapter: SupabaseAuthAdapter;
+
+  const mockSupabaseUser = {
+    id: "mock-uuid",
+    email: "test@example.com",
+    created_at: "2023-01-01T00:00:00.000Z",
+  };
+
+  beforeEach(() => {
+    // Definimos el mock del cliente de Supabase
+    mockSupabaseClient = {
+      auth: {
+        signInWithPassword: vi.fn(),
+        signUp: vi.fn(),
+        signOut: vi.fn(),
+        getUser: vi.fn(),
+      },
+    };
+
+    // Inyectamos el mock al adapter
+    adapter = new SupabaseAuthAdapter(
+      mockSupabaseClient as unknown as SupabaseClient,
+    );
+  });
+
+  describe("signIn", () => {
+    it("should throw AuthenticationError if password is missing", async () => {
+      const invalidDto: LoginDTO = { email: "test@domain.com" };
+
+      await expect(adapter.signIn(invalidDto)).rejects.toThrow(
+        AuthenticationError,
+      );
+      expect(mockSupabaseClient.auth.signInWithPassword).not.toHaveBeenCalled();
+    });
+
+    it("should throw AuthenticationError if Supabase returns an error", async () => {
+      const validDto: LoginDTO = {
+        email: "test@domain.com",
+        password: "mocked-password-for-test",
+      };
+      mockSupabaseClient.auth.signInWithPassword.mockResolvedValue({
+        data: { user: null },
+        error: { message: "Invalid credentials" },
+      });
+
+      await expect(adapter.signIn(validDto)).rejects.toThrow(
+        AuthenticationError,
+      );
+      expect(mockSupabaseClient.auth.signInWithPassword).toHaveBeenCalledWith(
+        validDto,
+      );
+    });
+
+    it("should return AuthResponseDTO on successful login", async () => {
+      const validDto: LoginDTO = {
+        email: "test@domain.com",
+        password: "mocked-password-for-test",
+      };
+      mockSupabaseClient.auth.signInWithPassword.mockResolvedValue({
+        data: { user: mockSupabaseUser },
+        error: null,
+      });
+
+      const result = await adapter.signIn(validDto);
+
+      expect(mockSupabaseClient.auth.signInWithPassword).toHaveBeenCalledWith(
+        validDto,
+      );
+      expect(result.user.id).toBe("mock-uuid");
+      expect(result.user.email).toBe("test@example.com");
+    });
+  });
+
+  describe("signUp", () => {
+    it("should throw AuthenticationError if password is missing on registration", async () => {
+      const invalidDto: RegisterDTO = { email: "test@domain.com" };
+
+      await expect(adapter.signUp(invalidDto)).rejects.toThrow(
+        AuthenticationError,
+      );
+      expect(mockSupabaseClient.auth.signUp).not.toHaveBeenCalled();
+    });
+
+    it("should throw AuthenticationError if Supabase sign up returns an error", async () => {
+      const validDto: RegisterDTO = {
+        email: "test@domain.com",
+        password: "mocked-password-for-test",
+      };
+      mockSupabaseClient.auth.signUp.mockResolvedValue({
+        data: { user: null },
+        error: { message: "Email already in use" },
+      });
+
+      await expect(adapter.signUp(validDto)).rejects.toThrow(
+        AuthenticationError,
+      );
+    });
+
+    it("should return AuthResponseDTO on valid sign up", async () => {
+      const validDto: RegisterDTO = {
+        email: "test@domain.com",
+        password: "mocked-password-for-test",
+      };
+      mockSupabaseClient.auth.signUp.mockResolvedValue({
+        data: { user: mockSupabaseUser },
+        error: null,
+      });
+
+      const result = await adapter.signUp(validDto);
+
+      expect(mockSupabaseClient.auth.signUp).toHaveBeenCalledWith(validDto);
+      expect(result.user.id).toBe("mock-uuid");
+    });
+  });
+
+  describe("signOut", () => {
+    it("should call Supabase signOut and throw if error occurs", async () => {
+      mockSupabaseClient.auth.signOut.mockResolvedValue({
+        error: { message: "Unexpected server error" },
+      });
+
+      await expect(adapter.signOut()).rejects.toThrow(AuthenticationError);
+    });
+
+    it("should call Supabase signOut and succeed", async () => {
+      mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
+
+      await adapter.signOut();
+
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledOnce();
+    });
+  });
+
+  describe("getCurrentUser", () => {
+    it("should return null if user fetch fails", async () => {
+      mockSupabaseClient.auth.getUser.mockResolvedValue({
+        data: { user: null },
+        error: { message: "No session" },
+      });
+
+      const result = await adapter.getCurrentUser();
+
+      expect(mockSupabaseClient.auth.getUser).toHaveBeenCalledOnce();
+      expect(result).toBeNull();
+    });
+
+    it("should return mapped AuthResponseDTO if user is authenticated", async () => {
+      mockSupabaseClient.auth.getUser.mockResolvedValue({
+        data: { user: mockSupabaseUser },
+        error: null,
+      });
+
+      const result = await adapter.getCurrentUser();
+
+      expect(mockSupabaseClient.auth.getUser).toHaveBeenCalledOnce();
+      expect(result?.user.id).toBe("mock-uuid");
+    });
+  });
+});
