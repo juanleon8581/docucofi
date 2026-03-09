@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { LoginForm } from "./components/LoginForm";
+import { loginAction } from "./actions";
 
 export const metadata: Metadata = {
   title: "Iniciar Sesión | CofiAuth",
@@ -53,7 +54,7 @@ export default function LoginPage() {
       */}
       <div className="flex w-full flex-col items-center justify-center p-8 lg:p-12 lg:w-1/2">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:max-w-md">
-          <LoginForm />
+          <LoginForm onSubmit={loginAction} />
         </div>
       </div>
     </div>

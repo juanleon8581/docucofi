@@ -21,7 +21,7 @@ import {
 export const LoginForm = ({
   onSubmit,
 }: {
-  onSubmit?: (data: LoginFormValues) => void;
+  onSubmit?: (data: LoginFormValues) => void | Promise<void>;
 }) => {
   const form = useForm<LoginFormValues>({
     resolver: ValidationAdapter.getResolver<LoginFormValues>(loginSchema),
@@ -31,9 +31,9 @@ export const LoginForm = ({
     },
   });
 
-  const handleSubmit = (data: LoginFormValues) => {
+  const handleSubmit = async (data: LoginFormValues) => {
     if (onSubmit) {
-      onSubmit(data);
+      await onSubmit(data);
     }
   };
 
