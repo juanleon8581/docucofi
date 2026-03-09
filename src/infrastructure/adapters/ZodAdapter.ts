@@ -31,6 +31,10 @@ export class ValidationAdapter {
   static object<T extends z.ZodRawShape>(shape: T) {
     return z.object(shape);
   }
+
+  static boolean() {
+    return z.boolean();
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

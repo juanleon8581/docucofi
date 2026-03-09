@@ -15,3 +15,18 @@ export const loginSchema = ValidationAdapter.object({
 });
 
 export type LoginFormValues = InferValidationType<typeof loginSchema>;
+
+export const registerSchema = ValidationAdapter.object({
+  fullName: ValidationAdapter.string("El nombre completo es requerido"),
+  email: emailSchema,
+  password: passwordSchema,
+  confirmPassword: passwordSchema,
+  acceptTerms: ValidationAdapter.boolean().refine((val) => val === true, {
+    message: "Debes aceptar los términos y condiciones",
+  }),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Las contraseñas no coinciden",
+  path: ["confirmPassword"],
+});
+
+export type RegisterFormValues = InferValidationType<typeof registerSchema>;

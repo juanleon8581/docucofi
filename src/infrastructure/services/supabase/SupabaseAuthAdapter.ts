@@ -44,6 +44,11 @@ export class SupabaseAuthAdapter implements IAuthRepository {
     const { data, error } = await this.client.auth.signUp({
       email: dto.email,
       password: dto.password,
+      options: {
+        data: {
+          full_name: dto.fullName,
+        },
+      },
     });
 
     if (error) {
