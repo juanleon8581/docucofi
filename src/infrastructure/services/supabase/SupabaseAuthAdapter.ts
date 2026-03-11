@@ -1,21 +1,19 @@
 import { SupabaseClient } from "@supabase/supabase-js";
-import { IAuthRepository } from "../../../domain/repositories/IAuthRepository";
-import {
-  LoginDTO,
-  RegisterDTO,
-  AuthResponseDTO,
-} from "../../../domain/dtos/AuthDTOs";
 import { AuthenticationError } from "../../../domain/errors/DomainError";
 import { SupabaseMapper } from "../../mappers/SupabaseMapper";
+import { AuthRepository } from "@/domain/repositories/IAuthRepository";
+import { LoginDTO } from "@/domain/dtos/auth/login/Login.dto";
+import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
+import { RegisterDTO } from "@/domain/dtos/auth/register/Register.dto";
 
-export class SupabaseAuthAdapter implements IAuthRepository {
+export class SupabaseAuthAdapter implements AuthRepository {
   private readonly client: SupabaseClient;
 
   constructor(client: SupabaseClient) {
     this.client = client;
   }
 
-  async signIn(dto: LoginDTO): Promise<AuthResponseDTO> {
+  async signIn(dto: LoginDTO): Promise<IAuthResponse> {
     if (!dto.password) {
       throw new AuthenticationError(
         "Password is required for Supabase email sign in.",
@@ -34,7 +32,7 @@ export class SupabaseAuthAdapter implements IAuthRepository {
     return SupabaseMapper.toDomainResponse(data.user);
   }
 
-  async signUp(dto: RegisterDTO): Promise<AuthResponseDTO> {
+  async signUp(dto: RegisterDTO): Promise<IAuthResponse> {
     if (!dto.password) {
       throw new AuthenticationError(
         "Password is required for Supabase sign up.",
@@ -72,7 +70,7 @@ export class SupabaseAuthAdapter implements IAuthRepository {
     }
   }
 
-  async getCurrentUser(): Promise<AuthResponseDTO | null> {
+  async getCurrentUser(): Promise<IAuthResponse | null> {
     const {
       data: { user },
       error,
