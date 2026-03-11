@@ -1,6 +1,15 @@
-export interface User {
+export interface IUser {
   id: string;
   email: string;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export class User implements IUser {
+  constructor(
+    public id: string,
+    public email: string,
+    public createdAt?: Date,
+    public updatedAt?: Date,
+  ) {}
 }
