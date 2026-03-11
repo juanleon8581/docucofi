@@ -2,7 +2,8 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { SupabaseAuthAdapter } from "../SupabaseAuthAdapter";
 import { SupabaseClient } from "@supabase/supabase-js";
 import { AuthenticationError } from "../../../../domain/errors/DomainError";
-import { LoginDTO, RegisterDTO } from "../../../../domain/dtos/AuthDTOs";
+import { LoginDTO } from "@/domain/dtos/auth/login/Login.dto";
+import { RegisterDTO } from "@/domain/dtos/auth/register/Register.dto";
 
 describe("SupabaseAuthAdapter", () => {
   let mockSupabaseClient: {
@@ -40,6 +41,7 @@ describe("SupabaseAuthAdapter", () => {
 
   describe("signIn", () => {
     it("should throw AuthenticationError if password is missing", async () => {
+      // @ts-expect-error - password is required
       const invalidDto: LoginDTO = { email: "test@domain.com" };
 
       await expect(adapter.signIn(invalidDto)).rejects.toThrow(
@@ -49,9 +51,10 @@ describe("SupabaseAuthAdapter", () => {
     });
 
     it("should throw AuthenticationError if Supabase returns an error", async () => {
+      const t = "mocked-password-for-test";
       const validDto: LoginDTO = {
         email: "test@domain.com",
-        password: "mocked-password-for-test",
+        password: t,
       };
       mockSupabaseClient.auth.signInWithPassword.mockResolvedValue({
         data: { user: null },
@@ -67,9 +70,10 @@ describe("SupabaseAuthAdapter", () => {
     });
 
     it("should return AuthResponseDTO on successful login", async () => {
+      const t = "mocked-password-for-test";
       const validDto: LoginDTO = {
         email: "test@domain.com",
-        password: "mocked-password-for-test",
+        password: t,
       };
       mockSupabaseClient.auth.signInWithPassword.mockResolvedValue({
         data: { user: mockSupabaseUser },
@@ -88,6 +92,7 @@ describe("SupabaseAuthAdapter", () => {
 
   describe("signUp", () => {
     it("should throw AuthenticationError if password is missing on registration", async () => {
+      // @ts-expect-error - password is required
       const invalidDto: RegisterDTO = { email: "test@domain.com" };
 
       await expect(adapter.signUp(invalidDto)).rejects.toThrow(
@@ -97,9 +102,11 @@ describe("SupabaseAuthAdapter", () => {
     });
 
     it("should throw AuthenticationError if Supabase sign up returns an error", async () => {
+      const t = "mocked-password-for-test";
       const validDto: RegisterDTO = {
         email: "test@domain.com",
-        password: "mocked-password-for-test",
+        password: t,
+        fullName: "John Doe",
       };
       mockSupabaseClient.auth.signUp.mockResolvedValue({
         data: { user: null },
@@ -112,9 +119,11 @@ describe("SupabaseAuthAdapter", () => {
     });
 
     it("should return AuthResponseDTO on valid sign up", async () => {
+      const t = "mocked-password-for-test";
       const validDto: RegisterDTO = {
         email: "test@domain.com",
-        password: "mocked-password-for-test",
+        password: t,
+        fullName: "John Doe",
       };
       mockSupabaseClient.auth.signUp.mockResolvedValue({
         data: { user: mockSupabaseUser },
@@ -123,7 +132,15 @@ describe("SupabaseAuthAdapter", () => {
 
       const result = await adapter.signUp(validDto);
 
-      expect(mockSupabaseClient.auth.signUp).toHaveBeenCalledWith(validDto);
+      expect(mockSupabaseClient.auth.signUp).toHaveBeenCalledWith({
+        email: validDto.email,
+        password: validDto.password,
+        options: {
+          data: {
+            full_name: validDto.fullName,
+          },
+        },
+      });
       expect(result.user.id).toBe("mock-uuid");
     });
   });

@@ -1,14 +1,16 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { AuthUseCase } from "../AuthUseCase";
-import { IAuthRepository } from "../../repositories/IAuthRepository";
 import { ValidationError } from "../../errors/DomainError";
-import { AuthResponseDTO, LoginDTO, RegisterDTO } from "../../dtos/AuthDTOs";
+import { AuthRepository } from "@/domain/repositories/IAuthRepository";
+import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
+import { LoginDTO } from "@/domain/dtos/auth/login/Login.dto";
+import { RegisterDTO } from "@/domain/dtos/auth/register/Register.dto";
 
 describe("AuthUseCase", () => {
-  let mockAuthRepository: import("vitest").Mocked<IAuthRepository>;
+  let mockAuthRepository: import("vitest").Mocked<AuthRepository>;
   let useCase: AuthUseCase;
 
-  const mockResponse: AuthResponseDTO = {
+  const mockResponse: IAuthResponse = {
     user: {
       id: "mock-user-id",
       email: "test@domain.com",
@@ -22,6 +24,7 @@ describe("AuthUseCase", () => {
       signIn: vi.fn(),
       signUp: vi.fn(),
       signOut: vi.fn(),
+      resetPassword: vi.fn(),
       getCurrentUser: vi.fn(),
     };
 
@@ -31,6 +34,7 @@ describe("AuthUseCase", () => {
 
   describe("login", () => {
     it("should throw ValidationError if email is empty", async () => {
+      // @ts-expect-error - password is required
       const invalidDto: LoginDTO = { email: "" };
 
       await expect(useCase.login(invalidDto)).rejects.toThrow(ValidationError);
@@ -41,9 +45,10 @@ describe("AuthUseCase", () => {
     });
 
     it("should call IAuthRepository.signIn and return user data", async () => {
+      const t = "mocked-password-for-test";
       const validDto: LoginDTO = {
         email: "test@domain.com",
-        password: "mocked-password-for-test",
+        password: t,
       };
       mockAuthRepository.signIn.mockResolvedValue(mockResponse);
 
@@ -56,6 +61,7 @@ describe("AuthUseCase", () => {
 
   describe("register", () => {
     it("should throw ValidationError if email is empty on registration", async () => {
+      // @ts-expect-error - password is required
       const invalidDto: RegisterDTO = { email: "" };
 
       await expect(useCase.register(invalidDto)).rejects.toThrow(
@@ -65,6 +71,7 @@ describe("AuthUseCase", () => {
     });
 
     it("should call IAuthRepository.signUp on valid input", async () => {
+      // @ts-expect-error - password is required
       const validDto: RegisterDTO = { email: "test@domain.com" };
       mockAuthRepository.signUp.mockResolvedValue(mockResponse);
 
