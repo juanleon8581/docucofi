@@ -2,12 +2,13 @@ import { User as SupabaseUser } from "@supabase/supabase-js";
 
 import { AuthenticationError } from "../../domain/errors/DomainError";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
+import { AuthMessages } from "@/domain/messages/auth.messages";
 
 export class SupabaseMapper {
   static toDomainResponse(supabaseUser: SupabaseUser | null): IAuthResponse {
     if (!supabaseUser) {
       throw new AuthenticationError(
-        "User data is missing in the database response",
+        AuthMessages.SUPABASE_USER_DATA_MISSING,
       );
     }
 

@@ -5,6 +5,7 @@ import { AuthRepository } from "@/domain/repositories/IAuthRepository";
 import { LoginDTO } from "@/domain/dtos/auth/login/Login.dto";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 import { RegisterDTO } from "@/domain/dtos/auth/register/Register.dto";
+import { AuthMessages } from "@/domain/messages/auth.messages";
 
 export class SupabaseAuthAdapter implements AuthRepository {
   private readonly client: SupabaseClient;
@@ -21,7 +22,7 @@ export class SupabaseAuthAdapter implements AuthRepository {
   async signIn(dto: LoginDTO): Promise<IAuthResponse> {
     if (!dto.password) {
       throw new AuthenticationError(
-        "Password is required for Supabase email sign in.",
+        AuthMessages.SUPABASE_PASSWORD_REQUIRED_SIGN_IN,
       );
     }
 
@@ -42,7 +43,7 @@ export class SupabaseAuthAdapter implements AuthRepository {
   async signUp(dto: RegisterDTO): Promise<IAuthResponse> {
     if (!dto.password) {
       throw new AuthenticationError(
-        "Password is required for Supabase sign up.",
+        AuthMessages.SUPABASE_PASSWORD_REQUIRED_SIGN_UP,
       );
     }
 
