@@ -5,8 +5,12 @@ import { SupabaseAuthAdapter } from "@/infrastructure/services/supabase/Supabase
 import { RegisterFormValues } from "@/infrastructure/validations/authSchemas";
 import { AuthMessages } from "@/domain/messages/auth.messages";
 import { redirect } from "next/navigation";
+import { type Locale } from "@/infrastructure/i18n/config";
 
-export async function registerAction(data: RegisterFormValues): Promise<{ error?: string } | void> {
+export async function registerAction(
+  data: RegisterFormValues,
+  locale: Locale,
+): Promise<{ error?: string } | void> {
   const supabase = await createClient();
   const authAdapter = new SupabaseAuthAdapter(supabase);
 
@@ -25,5 +29,5 @@ export async function registerAction(data: RegisterFormValues): Promise<{ error?
 
   // If the registration is successful, we redirect to login or dashboard
   // Depending on whether Supabase requires email confirmation
-  redirect("/login?registered=true");
+  redirect(`/${locale}/login?registered=true`);
 }

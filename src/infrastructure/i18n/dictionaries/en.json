@@ -1,0 +1,68 @@
+{
+  "common": {
+    "email": "Email",
+    "password": "Password",
+    "submit": "Submit",
+    "placeholders": {
+      "email": "name@example.com",
+      "password": "********"
+    }
+  },
+  "login": {
+    "title": "Welcome back",
+    "subtitle": "Enter your credentials to access",
+    "submitButton": "Sign in",
+    "forgotPassword": "Forgot your password?",
+    "noAccount": "Don't have an account?",
+    "register": "Sign up",
+    "successTitle": "Login successful",
+    "successMessage": "Redirecting...",
+    "errorTitle": "Error logging in"
+  },
+  "register": {
+    "title": "Create an account",
+    "subtitle": "Enter your details to sign up for CofiAuth",
+    "fullNameLabel": "Full name",
+    "fullNamePlaceholder": "Enter your name",
+    "emailLabel": "Email",
+    "passwordLabel": "Password",
+    "confirmPasswordLabel": "Confirm Password",
+    "acceptTerms": "I accept the terms and conditions",
+    "submitButton": "Sign up",
+    "hasAccount": "Already have an account?",
+    "login": "Sign in",
+    "successTitle": "Registration successful",
+    "successMessage": "Redirecting to login...",
+    "errorTitle": "Registration failed"
+  },
+  "forgotPassword": {
+    "title": "Reset password",
+    "subtitle": "Enter your email and we'll send you instructions to reset your password",
+    "submitButton": "Send instructions",
+    "login": "Sign in",
+    "successTitle": "Instructions sent",
+    "successMessage": "Check your email to reset your password.",
+    "errorTitle": "Error"
+  },
+  "validation": {
+    "emailInvalid": "Invalid email",
+    "emailRequired": "Email is required",
+    "passwordRequired": "Password is required",
+    "fullNameRequired": "Full name is required",
+    "acceptTermsRequired": "You must accept the terms and conditions",
+    "passwordsMismatch": "Passwords do not match"
+  },
+  "metadata": {
+    "loginTitle": "Login | CofiAuth",
+    "loginDescription": "Login to your CofiAuth account",
+    "registerTitle": "Register | CofiAuth",
+    "registerDescription": "Create your CofiAuth account to access the panel.",
+    "forgotPasswordTitle": "Reset Password | CofiAuth",
+    "forgotPasswordDescription": "Reset your CofiAuth account password."
+  },
+  "home": {
+    "title": "🔐 CofiCode Auth",
+    "description": "A production-ready authentication template built with Clean Architecture, i18n support, and a complete UI kit — ready to clone and ship.",
+    "githubButton": "View on GitHub"
+  }
+}

@@ -1,40 +1,73 @@
 import { ValidationAdapter, InferValidationType } from "../adapters/ZodAdapter";
+import type { Dictionary } from "@/infrastructure/i18n/dictionaries";
 
-export const emailSchema = ValidationAdapter.email(
-  "Email inválido",
-  "El email es requerido",
-);
+export type ValidationTranslations = Dictionary["validation"];
 
-export const passwordSchema = ValidationAdapter.string(
-  "La contraseña es requerida",
-);
+// ── Factory functions ──────────────────────────────────────────────────────
 
-export const loginSchema = ValidationAdapter.object({
-  email: emailSchema,
-  password: passwordSchema,
-});
+export function createEmailSchema(t: ValidationTranslations) {
+  return ValidationAdapter.email(t.emailInvalid, t.emailRequired);
+}
 
-export type LoginFormValues = InferValidationType<typeof loginSchema>;
+export function createPasswordSchema(t: ValidationTranslations) {
+  return ValidationAdapter.string(t.passwordRequired);
+}
 
-export const registerSchema = ValidationAdapter.object({
-  fullName: ValidationAdapter.string("El nombre completo es requerido"),
-  email: emailSchema,
-  password: passwordSchema,
-  confirmPassword: passwordSchema,
-  acceptTerms: ValidationAdapter.boolean().refine((val) => val === true, {
-    message: "Debes aceptar los términos y condiciones",
-  }),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Las contraseñas no coinciden",
-  path: ["confirmPassword"],
-});
+export function createLoginSchema(t: ValidationTranslations) {
+  return ValidationAdapter.object({
+    email: createEmailSchema(t),
+    password: createPasswordSchema(t),
+  });
+}
 
-export type RegisterFormValues = InferValidationType<typeof registerSchema>;
+export function createRegisterSchema(t: ValidationTranslations) {
+  return ValidationAdapter.object({
+    fullName: ValidationAdapter.string(t.fullNameRequired),
+    email: createEmailSchema(t),
+    password: createPasswordSchema(t),
+    confirmPassword: createPasswordSchema(t),
+    acceptTerms: ValidationAdapter.boolean().refine((val) => val === true, {
+      message: t.acceptTermsRequired,
+    }),
+  }).refine((data) => data.password === data.confirmPassword, {
+    message: t.passwordsMismatch,
+    path: ["confirmPassword"],
+  });
+}
 
-export const forgotPasswordSchema = ValidationAdapter.object({
-  email: emailSchema,
-});
+export function createForgotPasswordSchema(t: ValidationTranslations) {
+  return ValidationAdapter.object({
+    email: createEmailSchema(t),
+  });
+}
 
-export type ForgotPasswordFormValues = InferValidationType<
-  typeof forgotPasswordSchema
+// ── Static type inference helpers ─────────────────────────────────────────
+// Using empty strings as placeholders solely for type inference — not used at runtime.
+
+const _typeRef: ValidationTranslations = {
+  emailInvalid: "",
+  emailRequired: "",
+  passwordRequired: "",
+  fullNameRequired: "",
+  acceptTermsRequired: "",
+  passwordsMismatch: "",
+};
+
+export type LoginFormValues = InferValidationType<
+  ReturnType<typeof createLoginSchema>
 >;
+export type RegisterFormValues = InferValidationType<
+  ReturnType<typeof createRegisterSchema>
+>;
+export type ForgotPasswordFormValues = InferValidationType<
+  ReturnType<typeof createForgotPasswordSchema>
+>;
+
+// ── Compatibility aliases for tests ───────────────────────────────────────
+// These are only valid for type-checking purposes; tests that assert error
+// messages must be updated to use the factory functions with explicit translations.
+export const emailSchema = createEmailSchema(_typeRef);
+export const passwordSchema = createPasswordSchema(_typeRef);
+export const loginSchema = createLoginSchema(_typeRef);
+export const registerSchema = createRegisterSchema(_typeRef);
+export const forgotPasswordSchema = createForgotPasswordSchema(_typeRef);

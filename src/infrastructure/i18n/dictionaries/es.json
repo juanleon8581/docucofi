@@ -1,0 +1,68 @@
+{
+  "common": {
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "submit": "Enviar",
+    "placeholders": {
+      "email": "nombre@ejemplo.com",
+      "password": "********"
+    }
+  },
+  "login": {
+    "title": "Bienvenido de nuevo",
+    "subtitle": "Ingresa tus credenciales para acceder",
+    "submitButton": "Entrar",
+    "forgotPassword": "¿Olvidaste tu contraseña?",
+    "noAccount": "¿No tienes una cuenta?",
+    "register": "Regístrate",
+    "successTitle": "Inicio de sesión exitoso",
+    "successMessage": "Redirigiendo...",
+    "errorTitle": "Error al iniciar sesión"
+  },
+  "register": {
+    "title": "Crear una cuenta",
+    "subtitle": "Ingresa tus datos para registrarte en CofiAuth",
+    "fullNameLabel": "Nombre completo",
+    "fullNamePlaceholder": "Ingresa tu nombre",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "confirmPasswordLabel": "Confirmar Contraseña",
+    "acceptTerms": "Acepto los términos y condiciones",
+    "submitButton": "Registrarse",
+    "hasAccount": "¿Ya tienes cuenta?",
+    "login": "Inicia sesión",
+    "successTitle": "Registro exitoso",
+    "successMessage": "Redirigiendo a login...",
+    "errorTitle": "Error al registrarse"
+  },
+  "forgotPassword": {
+    "title": "Recuperar contraseña",
+    "subtitle": "Introduce tu email y te enviaremos las instrucciones para restablecer tu contraseña",
+    "submitButton": "Enviar instrucciones",
+    "login": "Inicia sesión",
+    "successTitle": "Instrucciones enviadas",
+    "successMessage": "Revisa tu email para restablecer tu contraseña.",
+    "errorTitle": "Error"
+  },
+  "validation": {
+    "emailInvalid": "Email inválido",
+    "emailRequired": "El email es requerido",
+    "passwordRequired": "La contraseña es requerida",
+    "fullNameRequired": "El nombre completo es requerido",
+    "acceptTermsRequired": "Debes aceptar los términos y condiciones",
+    "passwordsMismatch": "Las contraseñas no coinciden"
+  },
+  "metadata": {
+    "loginTitle": "Iniciar Sesión | CofiAuth",
+    "loginDescription": "Inicia sesión en tu cuenta de CofiAuth",
+    "registerTitle": "Registrarse | CofiAuth",
+    "registerDescription": "Crea tu cuenta de CofiAuth para acceder al panel.",
+    "forgotPasswordTitle": "Recuperar Contraseña | CofiAuth",
+    "forgotPasswordDescription": "Restablece la contraseña de tu cuenta de CofiAuth."
+  },
+  "home": {
+    "title": "🔐 CofiCode Auth",
+    "description": "Una plantilla de autenticación lista para producción, construida con Clean Architecture, soporte i18n y un UI kit completo — lista para clonar y lanzar.",
+    "githubButton": "Ver en GitHub"
+  }
+}
