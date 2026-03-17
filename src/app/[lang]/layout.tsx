@@ -1,13 +1,11 @@
-// src/app/[lang]/layout.tsx
-
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/presentation/styles/globals.css";
 import { Toaster } from "@/presentation/components/Toaster/Toaster";
 import { i18nConfig, type Locale } from "@/infrastructure/i18n/config";
-import { LanguageSwitcher } from "@/presentation/components/LanguageSwitcher/LanguageSwitcher";
 import React from "react";
+import { HeaderNavBar } from "@/presentation/components/HeaderNavBar/HeaderNavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,12 +42,12 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-        <div className="fixed top-4 right-4 z-50">
-          <LanguageSwitcher currentLocale={lang as Locale} />
-        </div>
-        {children}
+        <HeaderNavBar lang={lang as Locale} />
+        <main className="flex-1 flex items-center justify-center">
+          {children}
+        </main>
         <Toaster />
       </body>
     </html>
