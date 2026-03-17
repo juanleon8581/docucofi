@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2026-03-15
+## [0.1.0] - 2026-03-17
 
 ### ✨ Added
 
@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add LanguageSwitcher component
 - Implement i18n infrastructure (dictionaries, config, middleware)
 - Rewrite README with comprehensive project details and architecture overview
+- ✨ Add `HeaderNavBar` component for consistent navigation
 
 ### 🔄 Changed
 
@@ -21,3 +22,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support internationalized validation messages in auth schemas
 - Update environment example file
 - Update VS Code settings for project consistency
+- ♻️ Refactor main layout to use `HeaderNavBar`
+- ♻️ Simplify authentication pages (login, register, forgot password) by centralizing navigation
+- 💄 Enhance `Logo` component with `dataTestId` for improved testability
+- 🔧 Add Claude configuration initialization
+

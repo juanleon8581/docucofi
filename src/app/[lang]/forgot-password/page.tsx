@@ -1,7 +1,6 @@
 import { Metadata } from "next";
 import { ForgotPasswordForm } from "./components/ForgotPasswordForm";
 import { forgotPasswordAction } from "./actions";
-import { Logo } from "@/presentation/components/Logo/Logo";
 import { getDictionary } from "@/infrastructure/i18n/dictionaries";
 import { i18nConfig, type Locale } from "@/infrastructure/i18n/config";
 import { notFound } from "next/navigation";
@@ -27,24 +26,14 @@ export default async function ForgotPasswordPage({ params }: Readonly<Props>) {
   const dict = await getDictionary(lang as Locale);
 
   return (
-    <div className="flex min-h-screen bg-background">
-      <div className="flex-col bg-foreground p-10 text-background dark:border-r border-accent-foreground hidden lg:flex lg:w-1/2">
-        <Logo />
-      </div>
-
-      <div className="flex w-full flex-col items-center justify-center p-8 lg:p-12 lg:w-1/2">
-        <div className="flex w-full flex-col justify-center items-center gap-16 sm:max-w-md">
-          <div className="lg:hidden">
-            <Logo orientation="vertical" />
-          </div>
-
-          <ForgotPasswordForm
-            onSubmit={forgotPasswordAction}
-            translations={{ ...dict.forgotPassword, ...dict.common }}
-            validationTranslations={dict.validation}
-            lang={lang as Locale}
-          />
-        </div>
+    <div className="flex flex-col items-center justify-center p-8 lg:p-12">
+      <div className="flex w-full flex-col justify-center items-center gap-16 sm:max-w-md">
+        <ForgotPasswordForm
+          onSubmit={forgotPasswordAction}
+          translations={{ ...dict.forgotPassword, ...dict.common }}
+          validationTranslations={dict.validation}
+          lang={lang as Locale}
+        />
       </div>
     </div>
   );

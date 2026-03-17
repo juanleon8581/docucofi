@@ -4,14 +4,18 @@ import Link from "next/link";
 
 interface Props {
   orientation?: "horizontal" | "vertical";
+  dataTestId?: string;
 }
 
-export const Logo: React.FC<Props> = ({ orientation = "horizontal" }) => {
+export const Logo: React.FC<Props> = ({
+  orientation = "horizontal",
+  dataTestId = "logo-container",
+}) => {
   const isDefaultOrientation = orientation === "horizontal";
   return (
     <Link
       href="/"
-      data-testid="logo-container"
+      data-testid={dataTestId}
       className={cn(
         "flex gap-2 font-bold",
         isDefaultOrientation

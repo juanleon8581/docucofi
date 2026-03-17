@@ -92,4 +92,12 @@ describe("Logo", () => {
       expect(text.textContent).toBe("Coficode Auth");
     });
   });
+
+  describe("logo test id", () => {
+    it("should render the container with the correct test id", () => {
+      const testId = "custom-test-id";
+      render(<Logo dataTestId={testId} />);
+      expect(screen.getByTestId(testId)).toBeInTheDocument();
+    });
+  });
 });
