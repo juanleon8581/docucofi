@@ -2,16 +2,16 @@
 
 ## Current State
 
-- **Release 0.1.0**: Pull Request created to merge `release/0.1.0` into `main`. This release includes i18n support, minimalist landing page, and layout refactor.
-- **Notion Documentation**: Initiated. Includes main description, Tech Stack, and Kanban Board in _Backlog_ state.
-- **Local Memory Bank**: Established and temporarily structured for agents.
+- **Layout Refactor & Route Protection**: Implemented a structural differentiation between `(external)` and `(internal)` zones to handle authenticated/unauthenticated routes.
+- **Internal Dashboard**: Developed internal layout with a custom header, sidebar, and user avatar integration using Shadcn UI.
+- **Enhanced Testing**: Added comprehensive unit tests for domain entities, infrastructure mappers, and internationalization.
+- **Supabase Auth Integration**: Completed initial integration of Supabase authentication with route protection in middleware (`src/proxy.ts`).
 
 ## Work in Progress (Required Next Steps)
 
 - **PR Review & Merge**: Monitor and complete the merge of `release/0.1.0` into `main`.
-- **Supabase Architecture**: Architecture boundaries established. The Adapter Pattern will be used to integrate Supabase, ensuring it resides entirely within the Infrastructure layer.
-- **Supabase Auth**: Ready for implementation. Will build the initial database and authentication integration mapping Supabase SDK concepts to internal Domain interfaces.
-- **Zod & React Hook Form**: Integration into the codebase (Frontend UI form validations).
+- **Supabase Features Expansion**: Continue building out dashboard features after authentication integration.
+- **Zod & React Hook Form**: Integration into the internal zone forms.
 
 ## Main Focus
 
