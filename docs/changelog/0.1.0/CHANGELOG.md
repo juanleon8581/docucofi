@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.1.0] - 2026-03-17
+## [0.1.0] - 2026-03-19
 
 ### ✨ Added
 
@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Implement i18n infrastructure (dictionaries, config, middleware)
 - Rewrite README with comprehensive project details and architecture overview
 - ✨ Add `HeaderNavBar` component for consistent navigation
+- ✨ Implement responsive header navigation with `BurgerMenu` and `DesktopNavBar`
+- ✨ Rename project to DocuCofi and improve logo branding
+- 🔧 Add Claude Code developer agent, skills, and MCP configurations
 
 ### 🔄 Changed
 
@@ -25,5 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ♻️ Refactor main layout to use `HeaderNavBar`
 - ♻️ Simplify authentication pages (login, register, forgot password) by centralizing navigation
 - 💄 Enhance `Logo` component with `dataTestId` for improved testability
-- 🔧 Add Claude configuration initialization
+- 🎨 Simplify home page and refine header layout
+- 💄 Refine color palette and add global text styles
+- 🚚 Move navbar sub-components to `HeaderNavBar` components directory
+
 
