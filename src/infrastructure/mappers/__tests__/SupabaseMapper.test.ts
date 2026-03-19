@@ -60,6 +60,52 @@ describe("SupabaseMapper", () => {
     expect(result.user.email).toBe(""); // should fallback to empty string
   });
 
+  it("should map user_metadata full_name to fullName", () => {
+    const mockSupabaseUser: SupabaseUser = {
+      id: "mock-uuid",
+      email: "test@example.com",
+      created_at: "2023-01-01T00:00:00.000Z",
+      app_metadata: {},
+      user_metadata: { full_name: "John Doe" },
+      aud: "authenticated",
+    };
+
+    const result = SupabaseMapper.toDomainResponse(mockSupabaseUser);
+
+    expect(result.user.fullName).toBe("John Doe");
+  });
+
+  it("should map user_metadata avatar_url to avatarUrl", () => {
+    const mockSupabaseUser: SupabaseUser = {
+      id: "mock-uuid",
+      email: "test@example.com",
+      created_at: "2023-01-01T00:00:00.000Z",
+      app_metadata: {},
+      user_metadata: { avatar_url: "https://example.com/avatar.png" },
+      aud: "authenticated",
+    };
+
+    const result = SupabaseMapper.toDomainResponse(mockSupabaseUser);
+
+    expect(result.user.avatarUrl).toBe("https://example.com/avatar.png");
+  });
+
+  it("should leave fullName and avatarUrl undefined when user_metadata is empty", () => {
+    const mockSupabaseUser: SupabaseUser = {
+      id: "mock-uuid",
+      email: "test@example.com",
+      created_at: "2023-01-01T00:00:00.000Z",
+      app_metadata: {},
+      user_metadata: {},
+      aud: "authenticated",
+    };
+
+    const result = SupabaseMapper.toDomainResponse(mockSupabaseUser);
+
+    expect(result.user.fullName).toBeUndefined();
+    expect(result.user.avatarUrl).toBeUndefined();
+  });
+
   it("should throw AuthenticationError when payload is null", () => {
     expect(() => SupabaseMapper.toDomainResponse(null)).toThrow(
       AuthenticationError,
