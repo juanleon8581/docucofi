@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pnpm vitest:*)",
+      "Bash(pnpm dlx:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm lint:*)",
+      "Bash(pnpm build:*)",
+      "Bash(pnpm test:coverage)",
+      "Bash(ls:*)"
+    ]
+  },
+  "enabledMcpjsonServers": [
+    "context7",
+    "memory"
+  ]
+}

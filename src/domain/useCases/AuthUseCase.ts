@@ -1,4 +1,4 @@
-import { AuthRepository } from "../repositories/IAuthRepository";
+import { AuthRepository, SignOutScope } from "../repositories/IAuthRepository";
 import { ValidationError } from "../errors/DomainError";
 import { LoginDTO } from "../dtos/auth/login/Login.dto";
 import { RegisterDTO } from "../dtos/auth/register/Register.dto";
@@ -22,8 +22,8 @@ export class AuthUseCase {
     return this.authRepository.signUp(dto);
   }
 
-  async logout(): Promise<void> {
-    return this.authRepository.signOut();
+  async logout(scope?: SignOutScope): Promise<void> {
+    return this.authRepository.signOut(scope);
   }
 
   async getSessionUser(): Promise<IAuthResponse | null> {

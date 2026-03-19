@@ -16,6 +16,8 @@ export class SupabaseMapper {
       user: {
         id: supabaseUser.id,
         email: supabaseUser.email ?? "",
+        fullName: supabaseUser.user_metadata?.full_name ?? undefined,
+        avatarUrl: supabaseUser.user_metadata?.avatar_url ?? undefined,
         createdAt: supabaseUser.created_at
           ? new Date(supabaseUser.created_at)
           : undefined,

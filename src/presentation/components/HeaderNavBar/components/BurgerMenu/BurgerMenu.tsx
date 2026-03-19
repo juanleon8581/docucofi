@@ -1,6 +1,6 @@
 import { Locale } from "@/infrastructure/i18n/config";
 import { Menu } from "lucide-react";
-import { NavLink } from "../DesktopNavBar/DesktopNavBar";
+import { NavLink } from "../../HeaderNavBar";
 import { LocalizedLink } from "../../../LocalizedLink/LocalizedLink";
 import { Button } from "../../../ui/button";
 import {

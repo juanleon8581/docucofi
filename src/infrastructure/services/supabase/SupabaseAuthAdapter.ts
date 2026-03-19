@@ -1,7 +1,7 @@
 import { AuthError, SupabaseClient } from "@supabase/supabase-js";
 import { AuthenticationError } from "../../../domain/errors/DomainError";
 import { SupabaseMapper } from "../../mappers/SupabaseMapper";
-import { AuthRepository } from "@/domain/repositories/IAuthRepository";
+import { AuthRepository, SignOutScope } from "@/domain/repositories/IAuthRepository";
 import { LoginDTO } from "@/domain/dtos/auth/login/Login.dto";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 import { RegisterDTO } from "@/domain/dtos/auth/register/Register.dto";
@@ -65,8 +65,8 @@ export class SupabaseAuthAdapter implements AuthRepository {
     return SupabaseMapper.toDomainResponse(data.user);
   }
 
-  async signOut(): Promise<void> {
-    const { error } = await this.client.auth.signOut();
+  async signOut(scope: SignOutScope = "local"): Promise<void> {
+    const { error } = await this.client.auth.signOut({ scope });
     if (error) {
       const errorDetails = SupabaseAuthAdapter.mapError(error);
       throw new AuthenticationError(errorDetails.message, errorDetails);

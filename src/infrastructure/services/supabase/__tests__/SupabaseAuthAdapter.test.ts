@@ -12,6 +12,7 @@ describe("SupabaseAuthAdapter", () => {
       signUp: import("vitest").Mock;
       signOut: import("vitest").Mock;
       getUser: import("vitest").Mock;
+      resetPasswordForEmail: import("vitest").Mock;
     };
   };
   let adapter: SupabaseAuthAdapter;
@@ -30,6 +31,7 @@ describe("SupabaseAuthAdapter", () => {
         signUp: vi.fn(),
         signOut: vi.fn(),
         getUser: vi.fn(),
+        resetPasswordForEmail: vi.fn(),
       },
     };
 
@@ -154,12 +156,56 @@ describe("SupabaseAuthAdapter", () => {
       await expect(adapter.signOut()).rejects.toThrow(AuthenticationError);
     });
 
-    it("should call Supabase signOut and succeed", async () => {
+    it("should call Supabase signOut with local scope by default", async () => {
       mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
 
       await adapter.signOut();
 
-      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledOnce();
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "local",
+      });
+    });
+
+    it("should call Supabase signOut with global scope", async () => {
+      mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
+
+      await adapter.signOut("global");
+
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "global",
+      });
+    });
+
+    it("should call Supabase signOut with others scope", async () => {
+      mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
+
+      await adapter.signOut("others");
+
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "others",
+      });
+    });
+  });
+
+  describe("resetPassword", () => {
+    it("should throw AuthenticationError if Supabase resetPassword returns an error", async () => {
+      mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
+        error: { message: "Email not found" },
+      });
+
+      await expect(
+        adapter.resetPassword("test@example.com"),
+      ).rejects.toThrow(AuthenticationError);
+    });
+
+    it("should resolve without error on successful password reset", async () => {
+      mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
+        error: null,
+      });
+
+      await expect(
+        adapter.resetPassword("test@example.com"),
+      ).resolves.toBeUndefined();
     });
   });
 
@@ -173,6 +219,17 @@ describe("SupabaseAuthAdapter", () => {
       expect(() => {
         return adapter.getCurrentUser();
       }).rejects.toThrow(AuthenticationError);
+    });
+
+    it("should return null when user is not authenticated and there is no error", async () => {
+      mockSupabaseClient.auth.getUser.mockResolvedValue({
+        data: { user: null },
+        error: null,
+      });
+
+      const result = await adapter.getCurrentUser();
+
+      expect(result).toBeNull();
     });
 
     it("should return mapped AuthResponseDTO if user is authenticated", async () => {
