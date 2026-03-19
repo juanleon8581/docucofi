@@ -64,14 +64,14 @@ export function AppSidebar({
       className="h-full"
     >
       <SidebarContent>
-        {groups.map((group) => (
-          <SidebarGroup key={group.label}>
+        {groups.map((group, index) => (
+          <SidebarGroup key={`${group.label}-${index}`}>
             {group.label && (
               <SidebarGroupLabel>{group.label}</SidebarGroupLabel>
             )}
             <SidebarMenu>
-              {group.items.map((item) => (
-                <SidebarMenuItem key={item.href}>
+              {group.items.map((item, index) => (
+                <SidebarMenuItem key={`${item.href}-${index}`}>
                   <SidebarMenuButton
                     asChild
                     isActive={item.isActive}
