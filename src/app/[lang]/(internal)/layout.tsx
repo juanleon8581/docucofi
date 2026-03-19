@@ -4,7 +4,8 @@ import { Locale } from "@/infrastructure/i18n/config";
 import { SupabaseAuthAdapter } from "@/infrastructure/services/supabase/SupabaseAuthAdapter";
 import { createClient } from "@/infrastructure/services/supabase/server";
 import { InternalHeader } from "@/presentation/components/internal/InternalHeader/InternalHeader";
-import { Sidebar } from "@/presentation/components/internal/Sidebar/Sidebar";
+import { AppSidebar } from "@/presentation/components/internal/Sidebar/Sidebar";
+import { SidebarProvider } from "@/presentation/components/ui/sidebar";
 
 export default async function InternalLayout({
   children,
@@ -25,10 +26,10 @@ export default async function InternalLayout({
   return (
     <div className="flex flex-1 flex-col">
       <InternalHeader user={authResponse.user} lang={lang} />
-      <div className="flex-1 flex">
-        <Sidebar />
+      <SidebarProvider defaultOpen={false} className="flex-1 min-h-0!">
+        <AppSidebar user={authResponse.user} />
         <main className="flex-1 overflow-auto">{children}</main>
-      </div>
+      </SidebarProvider>
     </div>
   );
 }
