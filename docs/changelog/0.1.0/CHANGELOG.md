@@ -9,27 +9,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### ✨ Added
 
-- Implement minimalist landing page with i18n support
-- Integrate localized validation and language switcher in UI
-- Add LanguageSwitcher component
-- Implement i18n infrastructure (dictionaries, config, middleware)
-- Rewrite README with comprehensive project details and architecture overview
-- ✨ Add `HeaderNavBar` component for consistent navigation
-- ✨ Implement responsive header navigation with `BurgerMenu` and `DesktopNavBar`
-- ✨ Rename project to DocuCofi and improve logo branding
-- 🔧 Add Claude Code developer agent, skills, and MCP configurations
+- Implement route protection and structural differentiation of zones (internal/external).
+- Add internal dashboard layout with a custom header, sidebar and user avatar.
+- Implement collapsible sidebar UI with Shadcn components (sidebar assistant, sheet, separator, skeleton, tooltip).
+- Add `use-mobile` hook for responsive UI.
+- Implement user logout functionality including server action (`logoutAction`), client hook (`useLogout`), domain layers (`AuthUseCase`, `IAuthRepository`) and UI integration in `UserAvatar`.
+- Add comprehensive unit tests for domain entities, messages, internationalization and infrastructure mappers.
 
 ### 🔄 Changed
 
-- Migrate app routes to localized paths (/[lang])
-- Support internationalized validation messages in auth schemas
-- Update environment example file
-- Update VS Code settings for project consistency
-- ♻️ Refactor main layout to use `HeaderNavBar`
-- ♻️ Simplify authentication pages (login, register, forgot password) by centralizing navigation
-- 💄 Enhance `Logo` component with `dataTestId` for improved testability
-- 🎨 Simplify home page and refine header layout
-- 💄 Refine color palette and add global text styles
-- 🚚 Move navbar sub-components to `HeaderNavBar` components directory
+- Refactor architectural structure to divide application into authenticated and unauthenticated zones.
+- Update `InternalHeader` and `Sidebar` to integrate with new dashboard layout.
+- Update `UserAvatar` to inclusion of logout menu item.
+- Update middleware (`src/proxy.ts`) with redirect logic for route protection.
+- Update `vitest.config.ts` to include/exclude new files and paths from coverage.
+- Reposition sidebar to support absolute positioning for desktop hover effect.
 
+### 🩹 Fixed
 
+- Ensure unique React keys for sidebar menu groups and items.
+
+### 🔧 Chores
+
+- Update context agent file.
+- Add local settings file for claude.
