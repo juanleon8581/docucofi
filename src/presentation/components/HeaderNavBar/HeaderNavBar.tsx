@@ -1,6 +1,6 @@
 import { Locale } from "@/infrastructure/i18n/config";
-import { BurgerMenu } from "../BurgerMenu/BurgerMenu";
-import { DesktopNavBar } from "../DesktopNavBar/DesktopNavBar";
+import { BurgerMenu } from "./components/BurgerMenu/BurgerMenu";
+import { DesktopNavBar } from "./components/DesktopNavBar/DesktopNavBar";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
 import { Logo } from "../Logo/Logo";
 

@@ -1,7 +1,7 @@
 import { Locale } from "@/infrastructure/i18n/config";
-import { LocalizedLink } from "../LocalizedLink/LocalizedLink";
-import { Button } from "../ui/button";
-import { NavLink } from "../HeaderNavBar/HeaderNavBar";
+import { LocalizedLink } from "../../../LocalizedLink/LocalizedLink";
+import { Button } from "../../../ui/button";
+import { NavLink } from "../../HeaderNavBar";
 
 interface Props {
   lang: Locale;

@@ -1,14 +1,14 @@
 import { Locale } from "@/infrastructure/i18n/config";
 import { Menu } from "lucide-react";
 import { NavLink } from "../DesktopNavBar/DesktopNavBar";
-import { LocalizedLink } from "../LocalizedLink/LocalizedLink";
-import { Button } from "../ui/button";
+import { LocalizedLink } from "../../../LocalizedLink/LocalizedLink";
+import { Button } from "../../../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+} from "../../../ui/dropdown-menu";
 
 interface Props {
   lang: Locale;
@@ -17,10 +17,7 @@ interface Props {
 
 export const BurgerMenu = ({ lang, links }: Props) => {
   return (
-    <div
-      data-testid="burger-menu-container"
-      className="flex md:hidden"
-    >
+    <div data-testid="burger-menu-container" className="flex md:hidden">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
