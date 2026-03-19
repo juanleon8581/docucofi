@@ -17,19 +17,20 @@ export const HeaderNavBar = ({ lang }: Props) => {
       <Logo dataTestId="header-navbar-logo" />
       <div
         data-testid="header-navbar-nav-buttons-container"
-        className="flex items-center gap-4"
+        className="flex items-center gap-1 md:gap-4"
       >
-        <Button variant={"link"}>
-          <LocalizedLink href="/login" locale={lang}>
-            Login
-          </LocalizedLink>
-        </Button>
-        <Button variant={"link"}>
+        <LanguageSwitcher currentLocale={lang as Locale} />
+
+        <Button variant={"link"} className="p-1">
           <LocalizedLink href="/register" locale={lang}>
             Register
           </LocalizedLink>
         </Button>
-        <LanguageSwitcher currentLocale={lang as Locale} />
+        <Button variant={"link"} className="p-1">
+          <LocalizedLink href="/login" locale={lang}>
+            Login
+          </LocalizedLink>
+        </Button>
       </div>
     </div>
   );

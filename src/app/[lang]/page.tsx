@@ -1,5 +1,3 @@
-import { Github } from "lucide-react";
-import { Badge } from "@/presentation/components/ui/badge";
 import { Button } from "@/presentation/components/ui/button";
 import { Locale } from "@/infrastructure/i18n/config";
 import { getDictionary } from "@/infrastructure/i18n/dictionaries";
@@ -9,47 +7,17 @@ interface Props {
   params: Promise<{ lang: Locale }>;
 }
 
-const TECH_STACK = [
-  { label: "Next.js 16", className: "bg-black text-white" },
-  { label: "React 19", className: "bg-[#61DAFB] text-black" },
-  { label: "TypeScript", className: "bg-[#3178C6] text-white" },
-  { label: "Supabase Auth", className: "bg-[#3ECF8E] text-black" },
-  { label: "Tailwind v4", className: "bg-[#38BDF8] text-black" },
-  { label: "shadcn/ui", className: "bg-zinc-800 text-white" },
-  { label: "Clean Architecture", className: "bg-violet-600 text-white" },
-  { label: "i18n EN/ES", className: "bg-amber-400 text-black" },
-  { label: "Vitest", className: "bg-[#6E9F18] text-white" },
-  { label: "PNPM", className: "bg-[#F69220] text-black" },
-] as const;
-
-const GITHUB_URL = "https://github.com/juanleon8581/coficode-auth";
-
 export default async function Home({ params }: Readonly<Props>) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
 
   return (
-    <section className="mx-auto flex max-w-4xl flex-col items-center gap-8 px-6 py-24 text-center">
-      <div className="flex flex-col gap-4">
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          {dict.home.title}
-        </h1>
-        <p className="max-w-xl text-lg text-muted-foreground">
-          {dict.home.description}
-        </p>
-      </div>
-
-      <p className="max-w-xl rounded-md border border-yellow-300 bg-yellow-50 px-4 py-2 text-sm text-yellow-800">
-        {dict.home.templateNote}
+    <section className="flex flex-col gap-6 items-center mx-auto w-4/5">
+      <h1 className="md:text-5xl!">{dict.home.title}</h1>
+      <h3>{dict.home.subtitle}</h3>
+      <p className="max-w-xl text-lg text-muted-foreground text-center">
+        {dict.home.description}
       </p>
-
-      <div className="flex flex-wrap justify-center gap-2">
-        {TECH_STACK.map((tech) => (
-          <Badge key={tech.label} className={tech.className}>
-            {tech.label}
-          </Badge>
-        ))}
-      </div>
 
       <div className="flex items-center gap-3">
         <Button variant="outline" asChild>
@@ -63,18 +31,6 @@ export default async function Home({ params }: Readonly<Props>) {
           </LocalizedLink>
         </Button>
       </div>
-
-      <Button variant="outline" size="lg" asChild>
-        <a
-          href={GITHUB_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="gap-2"
-        >
-          <Github />
-          {dict.home.githubButton}
-        </a>
-      </Button>
     </section>
   );
 }
