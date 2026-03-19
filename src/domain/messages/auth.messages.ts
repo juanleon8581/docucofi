@@ -11,6 +11,7 @@ export const AuthMessages = {
     "Password is required for Supabase email sign up.",
   SUPABASE_USER_DATA_MISSING: "User data is missing in the database response",
   ACTION_LOGIN_FAILED: "Error logging in",
+  ACTION_LOGOUT_FAILED: "Error logging out",
   ACTION_REGISTER_FAILED: "Registration failed",
   ACTION_RESET_PASS_FAILED: "Failed to request password reset",
 } as const;

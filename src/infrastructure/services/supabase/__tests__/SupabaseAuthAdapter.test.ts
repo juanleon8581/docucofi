@@ -156,12 +156,34 @@ describe("SupabaseAuthAdapter", () => {
       await expect(adapter.signOut()).rejects.toThrow(AuthenticationError);
     });
 
-    it("should call Supabase signOut and succeed", async () => {
+    it("should call Supabase signOut with local scope by default", async () => {
       mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
 
       await adapter.signOut();
 
-      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledOnce();
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "local",
+      });
+    });
+
+    it("should call Supabase signOut with global scope", async () => {
+      mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
+
+      await adapter.signOut("global");
+
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "global",
+      });
+    });
+
+    it("should call Supabase signOut with others scope", async () => {
+      mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
+
+      await adapter.signOut("others");
+
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "others",
+      });
     });
   });
 

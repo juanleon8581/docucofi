@@ -11,6 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/presentation/components/ui/dropdown-menu";
+import { useLogout } from "@/presentation/hooks/useLogout";
 
 interface Props {
   email: string;
@@ -30,6 +31,8 @@ function getInitials(fullName?: string, email?: string): string {
 }
 
 export function UserAvatar({ email, fullName, avatarUrl }: Props) {
+  const { logout, isPending } = useLogout();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -47,7 +50,12 @@ export function UserAvatar({ email, fullName, avatarUrl }: Props) {
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" data-testid="user-avatar-menu">
-        <DropdownMenuItem data-testid="user-avatar-sign-out">
+        <DropdownMenuItem
+          variant="destructive"
+          disabled={isPending}
+          onClick={() => logout()}
+          data-testid="user-avatar-sign-out"
+        >
           Sign out
         </DropdownMenuItem>
       </DropdownMenuContent>

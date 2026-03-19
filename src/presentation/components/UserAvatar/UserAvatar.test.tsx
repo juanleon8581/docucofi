@@ -5,6 +5,11 @@ import { UserAvatar } from "./UserAvatar";
 vi.mock("next/navigation", () => ({
   usePathname: () => "/en",
   useRouter: () => ({ push: vi.fn() }),
+  useParams: () => ({ lang: "en" }),
+}));
+
+vi.mock("@/app/[lang]/(internal)/actions", () => ({
+  logoutAction: vi.fn(),
 }));
 
 describe("UserAvatar", () => {

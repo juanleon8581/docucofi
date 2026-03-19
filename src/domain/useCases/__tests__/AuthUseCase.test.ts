@@ -83,12 +83,20 @@ describe("AuthUseCase", () => {
   });
 
   describe("logout", () => {
-    it("should call IAuthRepository.signOut", async () => {
+    it("should call IAuthRepository.signOut without scope by default", async () => {
       mockAuthRepository.signOut.mockResolvedValue();
 
       await useCase.logout();
 
-      expect(mockAuthRepository.signOut).toHaveBeenCalledOnce();
+      expect(mockAuthRepository.signOut).toHaveBeenCalledWith(undefined);
+    });
+
+    it("should pass scope to IAuthRepository.signOut", async () => {
+      mockAuthRepository.signOut.mockResolvedValue();
+
+      await useCase.logout("global");
+
+      expect(mockAuthRepository.signOut).toHaveBeenCalledWith("global");
     });
   });
 
