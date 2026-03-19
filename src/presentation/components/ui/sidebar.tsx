@@ -163,7 +163,7 @@ function Sidebar({
   side?: "left" | "right";
   variant?: "sidebar" | "floating" | "inset";
   collapsible?: "offcanvas" | "icon" | "none";
-  position?: "fixed" | "static";
+  position?: "fixed" | "absolute";
 }) {
   const { isMobile, state, openMobile, setOpenMobile } = useSidebar();
 
@@ -207,10 +207,11 @@ function Sidebar({
     );
   }
 
-  if (position === "static") {
+  if (position === "absolute") {
     return (
       <div
-        className="group peer hidden text-sidebar-foreground md:block"
+        className="group peer relative hidden text-sidebar-foreground md:block"
+        style={{ width: "var(--sidebar-width-icon)" }}
         data-state={state}
         data-collapsible={state === "collapsed" ? collapsible : ""}
         data-variant={variant}
@@ -220,7 +221,7 @@ function Sidebar({
         <div
           data-slot="sidebar-container"
           className={cn(
-            "hidden w-(--sidebar-width) flex-col transition-[width] duration-200 ease-linear md:flex",
+            "absolute top-0 left-0 z-10 hidden h-full w-(--sidebar-width) flex-col transition-[width] duration-200 ease-linear md:flex",
             "group-data-[collapsible=offcanvas]:w-0 group-data-[collapsible=offcanvas]:overflow-hidden",
             variant === "floating" || variant === "inset"
               ? "p-2 group-data-[collapsible=icon]:w-[calc(var(--sidebar-width-icon)+(--spacing(4))+2px)]"

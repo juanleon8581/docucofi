@@ -58,7 +58,7 @@ export function AppSidebar({
     <Sidebar
       variant="sidebar"
       collapsible="icon"
-      position="static"
+      position="absolute"
       onMouseEnter={() => setOpen(true)}
       onMouseLeave={() => setOpen(false)}
       className="h-full"
