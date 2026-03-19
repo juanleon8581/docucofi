@@ -61,9 +61,8 @@
     "forgotPasswordDescription": "Restablece la contraseña de tu cuenta de CofiAuth."
   },
   "home": {
-    "title": "🔐 CofiCode Auth",
-    "description": "Una plantilla de autenticación lista para producción, construida con Clean Architecture, soporte i18n y un UI kit completo — lista para clonar y lanzar.",
-    "githubButton": "Ver en GitHub",
-    "templateNote": "Este es un proyecto de plantilla, no un proyecto de producción. Funcionalidades como el inicio de sesión o el registro pueden no funcionar."
+    "title": "DocuCofi",
+    "subtitle": "Plantillas de documentos",
+    "description": "Crea documentos legales y administrativos de manera fácil y rápida usando nuestras plantillas."
   }
 }

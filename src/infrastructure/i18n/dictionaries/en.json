@@ -61,9 +61,8 @@
     "forgotPasswordDescription": "Reset your CofiAuth account password."
   },
   "home": {
-    "title": "🔐 CofiCode Auth",
-    "description": "A production-ready authentication template built with Clean Architecture, i18n support, and a complete UI kit — ready to clone and ship.",
-    "githubButton": "View on GitHub",
-    "templateNote": "This is a project template, not a production project. Features such as login or registration may not work."
+    "title": "DocuCofi",
+    "subtitle": "Document Templates",
+    "description": "Create legal and administrative documents easily and quickly using our templates."
   }
 }

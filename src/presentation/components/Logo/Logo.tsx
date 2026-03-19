@@ -1,6 +1,6 @@
 import { cn } from "@/presentation/lib/utils";
-import { CoffeeIcon } from "lucide-react";
 import Link from "next/link";
+import { DocuCofiLogo } from "./docuCofiLogo";
 
 interface Props {
   orientation?: "horizontal" | "vertical";
@@ -23,8 +23,10 @@ export const Logo: React.FC<Props> = ({
           : " flex-col items-center justify-center",
       )}
     >
-      <CoffeeIcon data-testid="logo-svg" className="w-10 h-10" />
-      <span data-testid="logo-text">Coficode Auth</span>
+      <DocuCofiLogo testId="logo-svg" className="w-10 h-10 md:w-15 md:h-15" />
+      <span data-testid="logo-text" className="text-lg md:text-2xl">
+        DocuCofi
+      </span>
     </Link>
   );
 };

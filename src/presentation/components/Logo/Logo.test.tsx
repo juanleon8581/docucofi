@@ -60,14 +60,14 @@ describe("Logo", () => {
     });
 
     it("should the svg have the correct styles", () => {
-      //* this is a third party icon library that adds the styles to the svg
-      const expectedDefaultClassNumber = 2;
       render(<Logo />);
       const svg = screen.getByTestId("logo-svg");
       const classList = svg.classList;
-      expect(classList).toHaveLength(expectedDefaultClassNumber + 2);
+      expect(classList).toHaveLength(4);
       expect(classList).toContain("w-10");
       expect(classList).toContain("h-10");
+      expect(classList).toContain("md:w-15");
+      expect(classList).toContain("md:h-15");
     });
   });
 
@@ -83,13 +83,15 @@ describe("Logo", () => {
       render(<Logo />);
       const text = screen.getByTestId("logo-text");
       const classList = text.classList;
-      expect(classList).toHaveLength(0);
+      expect(classList).toHaveLength(2);
+      expect(classList).toContain("text-lg");
+      expect(classList).toContain("md:text-2xl");
     });
 
     it("should render the correct text", () => {
       render(<Logo />);
       const text = screen.getByTestId("logo-text");
-      expect(text.textContent).toBe("Coficode Auth");
+      expect(text.textContent).toBe("DocuCofi");
     });
   });
 
