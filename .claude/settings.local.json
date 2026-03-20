@@ -7,7 +7,19 @@
       "Bash(pnpm lint:*)",
       "Bash(pnpm build:*)",
       "Bash(pnpm test:coverage)",
-      "Bash(ls:*)"
+      "Bash(ls:*)",
+      "Bash(git:*)",
+      "Bash(grep -r template /Users/jpleon/Documents/dev/personal/docucofi/src --include=*.ts --include=*.tsx --include=*.json)",
+      "Bash(find src/app/[lang] -type f -name \"*.tsx\" -o -name \"*.ts\")",
+      "Bash(git mv:*)",
+      "Bash(rmdir src/app/[lang]/\\\\\\(external\\\\\\))",
+      "Bash(rmdir src/app/[lang]/\\\\\\(internal\\\\\\))",
+      "Bash(find:*)",
+      "Bash(git rm:*)",
+      "Bash(rmdir \"src/app/[lang]/\\(external\\)\")",
+      "Bash(rmdir \"src/app/[lang]/\\(internal\\)\")",
+      "Bash(find src/app/[lang\\\\\\)/ -name \"*\")",
+      "Bash(git add:*)"
     ]
   },
   "enabledMcpjsonServers": [

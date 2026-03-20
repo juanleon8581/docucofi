@@ -64,5 +64,19 @@
     "title": "DocuCofi",
     "subtitle": "Document Templates",
     "description": "Create legal and administrative documents easily and quickly using our templates."
+  },
+  "templates": {
+    "title": "Templates",
+    "subtitle": "Choose a template to get started",
+    "description": "Explore our collection of ready-to-use document templates.",
+    "buttonText": "View template",
+    "placeholder": {
+      "name": "Example Template",
+      "description": "This is an example template to demonstrate the application flow."
+    },
+    "cuenta-de-cobro": {
+      "name": "Invoice",
+      "description": "Invoice template for professionals and freelancers."
+    }
   }
 }

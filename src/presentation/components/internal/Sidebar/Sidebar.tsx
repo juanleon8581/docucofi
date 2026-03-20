@@ -35,24 +35,28 @@ export interface NavGroup {
 interface AppSidebarProps {
   groups?: NavGroup[];
   user: { email: string; fullName?: string; avatarUrl?: string };
+  lang: string;
 }
 
-const defaultGroups: NavGroup[] = [
-  {
-    items: [
-      { icon: LayoutDashboard, label: "Dashboard", href: "#" },
-      { icon: FileText, label: "Documents", href: "#" },
-      { icon: Users, label: "Users", href: "#" },
-      { icon: Settings, label: "Settings", href: "#" },
-    ],
-  },
-];
-
 export function AppSidebar({
-  groups = defaultGroups,
+  groups,
   user,
+  lang,
 }: Readonly<AppSidebarProps>) {
   const { setOpen } = useSidebar();
+
+  const defaultGroups: NavGroup[] = [
+    {
+      items: [
+        { icon: LayoutDashboard, label: "Dashboard", href: `/${lang}/dashboard` },
+        { icon: FileText, label: "Templates", href: `/${lang}/templates` },
+        { icon: Users, label: "Users", href: "#" },
+        { icon: Settings, label: "Settings", href: "#" },
+      ],
+    },
+  ];
+
+  const navGroups = groups ?? defaultGroups;
 
   return (
     <Sidebar
@@ -64,7 +68,7 @@ export function AppSidebar({
       className="h-full"
     >
       <SidebarContent>
-        {groups.map((group, index) => (
+        {navGroups.map((group, index) => (
           <SidebarGroup key={`${group.label}-${index}`}>
             {group.label && (
               <SidebarGroupLabel>{group.label}</SidebarGroupLabel>

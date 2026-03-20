@@ -2,7 +2,7 @@ import { useParams } from "next/navigation";
 import { useTransition } from "react";
 import { type Locale } from "@/infrastructure/i18n/config";
 import { type SignOutScope } from "@/domain/repositories/IAuthRepository";
-import { logoutAction } from "@/app/[lang]/(internal)/actions";
+import { logoutAction } from "@/app/[lang]/actions";
 
 export function useLogout() {
   const { lang } = useParams<{ lang: string }>();
