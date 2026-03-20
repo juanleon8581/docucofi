@@ -18,7 +18,8 @@
       "Bash(git rm:*)",
       "Bash(rmdir \"src/app/[lang]/\\(external\\)\")",
       "Bash(rmdir \"src/app/[lang]/\\(internal\\)\")",
-      "Bash(find src/app/[lang\\\\\\)/ -name \"*\")"
+      "Bash(find src/app/[lang\\\\\\)/ -name \"*\")",
+      "Bash(git add:*)"
     ]
   },
   "enabledMcpjsonServers": [
