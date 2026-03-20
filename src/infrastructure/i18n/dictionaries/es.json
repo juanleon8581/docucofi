@@ -69,9 +69,14 @@
     "title": "Plantillas",
     "subtitle": "Elige una plantilla para comenzar",
     "description": "Explora nuestra colección de plantillas de documentos listas para usar.",
+    "buttonText": "Ver plantilla",
     "placeholder": {
       "name": "Plantilla de Ejemplo",
       "description": "Esta es una plantilla de ejemplo para demostrar el flujo de la aplicación."
+    },
+    "cuenta-de-cobro": {
+      "name": "Cuenta de Cobro",
+      "description": "Plantilla de cuenta de cobro para profesionales independientes."
     }
   }
 }
