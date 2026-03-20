@@ -7,3 +7,10 @@ registerTemplate({
   displayNameKey: "templates.placeholder.name",
   descriptionKey: "templates.placeholder.description",
 });
+
+registerTemplate({
+  slug: "cuenta-de-cobro",
+  category: "other",
+  displayNameKey: "templates.cuentaDeCobro.name",
+  descriptionKey: "templates.cuentaDeCobro.description",
+});
