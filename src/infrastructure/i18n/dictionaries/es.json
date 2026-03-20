@@ -64,5 +64,14 @@
     "title": "DocuCofi",
     "subtitle": "Plantillas de documentos",
     "description": "Crea documentos legales y administrativos de manera fácil y rápida usando nuestras plantillas."
+  },
+  "templates": {
+    "title": "Plantillas",
+    "subtitle": "Elige una plantilla para comenzar",
+    "description": "Explora nuestra colección de plantillas de documentos listas para usar.",
+    "placeholder": {
+      "name": "Plantilla de Ejemplo",
+      "description": "Esta es una plantilla de ejemplo para demostrar el flujo de la aplicación."
+    }
   }
 }

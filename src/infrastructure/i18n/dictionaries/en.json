@@ -64,5 +64,14 @@
     "title": "DocuCofi",
     "subtitle": "Document Templates",
     "description": "Create legal and administrative documents easily and quickly using our templates."
+  },
+  "templates": {
+    "title": "Templates",
+    "subtitle": "Choose a template to get started",
+    "description": "Explore our collection of ready-to-use document templates.",
+    "placeholder": {
+      "name": "Example Template",
+      "description": "This is an example template to demonstrate the application flow."
+    }
   }
 }
