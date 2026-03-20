@@ -5,7 +5,11 @@ import Negotiator from "negotiator";
 import { createServerClient } from "@supabase/ssr";
 import { i18nConfig, type Locale } from "./infrastructure/i18n/config";
 
-const EXTERNAL_PATHS = ["/login", "/register", "/forgot-password"];
+// Public-only paths: redirect authenticated users to dashboard
+const PUBLIC_ONLY_PATHS = ["/login", "/register", "/forgot-password"];
+
+// Auth-only paths: redirect anonymous users to login
+const AUTH_ONLY_PATHS = ["/dashboard"];
 
 function getPreferredLocale(request: NextRequest): Locale {
   const negotiatorHeaders: Record<string, string> = {};
@@ -33,9 +37,14 @@ function stripLocale(pathname: string): string {
   return pathname;
 }
 
-function isExternalPath(pathWithoutLocale: string): boolean {
-  if (pathWithoutLocale === "/") return true;
-  return EXTERNAL_PATHS.some(
+function isPublicOnlyPath(pathWithoutLocale: string): boolean {
+  return PUBLIC_ONLY_PATHS.some(
+    (p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(`${p}/`),
+  );
+}
+
+function isAuthOnlyPath(pathWithoutLocale: string): boolean {
+  return AUTH_ONLY_PATHS.some(
     (p) => pathWithoutLocale === p || pathWithoutLocale.startsWith(`${p}/`),
   );
 }
@@ -78,15 +87,18 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   const pathWithoutLocale = stripLocale(pathname);
-  const external = isExternalPath(pathWithoutLocale);
   const locale = pathname.split("/")[1] as Locale;
+  const publicOnly = isPublicOnlyPath(pathWithoutLocale);
+  const authOnly = isAuthOnlyPath(pathWithoutLocale);
 
-  if (!user && !external) {
+  // Redirect anonymous users from auth-only paths to login
+  if (!user && authOnly) {
     request.nextUrl.pathname = `/${locale}/login`;
     return NextResponse.redirect(request.nextUrl);
   }
 
-  if (user && external && pathWithoutLocale !== "/") {
+  // Redirect authenticated users from public-only paths (except home) to dashboard
+  if (user && publicOnly && pathWithoutLocale !== "/") {
     request.nextUrl.pathname = `/${locale}/dashboard`;
     return NextResponse.redirect(request.nextUrl);
   }
