@@ -1,7 +1,6 @@
 import { Locale } from "@/infrastructure/i18n/config";
 import { getDictionary } from "@/infrastructure/i18n/dictionaries";
-import { LocalizedLink } from "@/presentation/components/LocalizedLink/LocalizedLink";
-import { Button } from "@/presentation/components/ui/button";
+import { TemplateCard } from "@/presentation/components/TemplateCard/TemplateCard";
 import { getAllTemplates } from "@/infrastructure/templates/registry";
 import "@/presentation/components/templates"; // Import to trigger template registration
 
@@ -24,30 +23,21 @@ export default async function TemplatesPage({ params }: Readonly<Props>) {
         <p className="text-muted-foreground">No templates available yet.</p>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {templates.map((template) => (
-            <article
-              key={template.slug}
-              className="border rounded-lg p-6 hover:shadow-md transition-shadow"
-            >
-              <h2 className="text-xl font-semibold mb-2">
-                {dict.templates[template.slug as keyof typeof dict.templates]
-                  ? // @ts-expect-error - Dynamic access to template keys
-                    dict.templates[template.slug].name
-                  : template.slug}
-              </h2>
-              <p className="text-sm text-muted-foreground mb-4">
-                {dict.templates[template.slug as keyof typeof dict.templates]
-                  ? // @ts-expect-error - Dynamic access to template keys
-                    dict.templates[template.slug].description
-                  : "No description"}
-              </p>
-              <Button variant="outline" asChild className="w-full">
-                <LocalizedLink href={`/templates/${template.slug}`} locale={lang}>
-                  View Template
-                </LocalizedLink>
-              </Button>
-            </article>
-          ))}
+          {templates.map((template) => {
+            const templateDict = dict.templates[
+              template.slug as keyof typeof dict.templates
+            ] as Record<string, string>;
+
+            const templateCardInfo = {
+              title: templateDict.name || template.slug,
+              description: templateDict.description || "No description",
+              buttonText: dict.templates.buttonText || "View Template",
+              href: `/templates/${template.slug}`,
+              locale: lang,
+            };
+
+            return <TemplateCard key={template.slug} {...templateCardInfo} />;
+          })}
         </div>
       )}
     </div>
