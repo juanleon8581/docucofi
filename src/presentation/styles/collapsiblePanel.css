@@ -1,0 +1,18 @@
+@reference './globals.css';
+
+.cp-container,
+.cp-container * {
+  @apply transition-all duration-500 ease-in-out;
+}
+
+.cp-trigger-rotate[data-state="open"] {
+  @apply rotate-180;
+}
+
+.cp-content[data-state="open"] {
+  @apply animate-collapsible-down duration-300 ease-out;
+}
+
+.cp-content[data-state="closed"] {
+  @apply animate-collapsible-up opacity-0 duration-300 ease-out;
+}

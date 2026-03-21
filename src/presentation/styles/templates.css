@@ -1,0 +1,5 @@
+@reference './globals.css';
+
+.template-container {
+  @apply flex flex-col gap-4;
+}
