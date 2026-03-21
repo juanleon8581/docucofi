@@ -14,7 +14,6 @@ import { createClient } from "@/infrastructure/services/supabase/server";
 
 import "@/presentation/styles/globals.css";
 import "@/presentation/styles/globals.texts.css";
-import { errorToast } from "@/presentation/components/Toaster/controller/toast.controller";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -60,12 +59,12 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
+        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
       >
         {authResponse ? (
           <div className="flex flex-1 flex-col">
             <InternalHeader user={authResponse.user} lang={lang} />
-            <SidebarProvider defaultOpen={false} className="flex-1 min-h-0!">
+            <SidebarProvider defaultOpen={false} className="min-h-0! flex-1">
               <AppSidebar user={authResponse.user} lang={lang} />
               <main className="flex-1 overflow-auto">{children}</main>
             </SidebarProvider>
@@ -73,7 +72,7 @@ export default async function RootLayout({
         ) : (
           <>
             <HeaderNavBar lang={lang} />
-            <main className="flex-1 flex items-center justify-center">
+            <main className="flex flex-1 items-center justify-center">
               {children}
             </main>
           </>

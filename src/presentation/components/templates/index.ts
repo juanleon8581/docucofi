@@ -1,4 +1,6 @@
 import { registerTemplate } from "@/infrastructure/templates/registry";
+import { TemplatePlaceholder } from "./TemplatePlaceholder";
+import { TemplateCuentaDeCobro } from "./TemplateCuentaDeCobro/TemplateCuentaDeCobro";
 
 // Register all templates (metadata only)
 registerTemplate({
@@ -6,6 +8,7 @@ registerTemplate({
   category: "other",
   displayNameKey: "templates.placeholder.name",
   descriptionKey: "templates.placeholder.description",
+  component: TemplatePlaceholder,
 });
 
 registerTemplate({
@@ -13,4 +16,5 @@ registerTemplate({
   category: "other",
   displayNameKey: "templates.cuentaDeCobro.name",
   descriptionKey: "templates.cuentaDeCobro.description",
+  component: TemplateCuentaDeCobro,
 });

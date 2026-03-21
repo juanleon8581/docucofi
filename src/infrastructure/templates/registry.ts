@@ -5,6 +5,7 @@ export interface ITemplateMetadata {
   category: TemplateCategory;
   displayNameKey: string;
   descriptionKey: string;
+  component: React.ComponentType;
 }
 
 // Registry of all available template metadata
