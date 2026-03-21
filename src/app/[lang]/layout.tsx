@@ -59,16 +59,16 @@ export default async function RootLayout({
   return (
     <html lang={lang}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} flex h-screen flex-col antialiased`}
       >
         {authResponse ? (
-          <div className="flex flex-1 flex-col">
+          <>
             <InternalHeader user={authResponse.user} lang={lang} />
             <SidebarProvider defaultOpen={false} className="min-h-0! flex-1">
               <AppSidebar user={authResponse.user} lang={lang} />
               <main className="flex-1 overflow-auto">{children}</main>
             </SidebarProvider>
-          </div>
+          </>
         ) : (
           <>
             <HeaderNavBar lang={lang} />
