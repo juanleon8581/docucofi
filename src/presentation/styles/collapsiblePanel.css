@@ -5,10 +5,53 @@
   @apply transition-all duration-500 ease-in-out;
 }
 
-.cp-trigger-rotate[data-state="open"] {
+.cp-trigger-rotate > svg {
+  @apply md:rotate-90;
+}
+
+.cp-content {
+  @apply md:overflow-hidden;
+}
+
+/* === Mobile (default): vertical collapse === */
+.cp-trigger-rotate[data-state="open"] > svg {
   @apply rotate-180;
+  @apply md:-rotate-90;
 }
 
 .cp-content[data-state="open"] {
   @apply animate-collapsible-down duration-300 ease-out;
+}
+
+/* === Desktop (md+): horizontal collapse right-to-left === */
+
+@media (min-width: 768px) {
+  .cp-content[data-state="open"] {
+    animation: collapsible-left 300ms ease-out forwards;
+  }
+  .cp-content[data-state="closed"] {
+    animation: collapsible-left-reverse 300ms ease-out forwards;
+  }
+}
+
+@keyframes collapsible-left {
+  from {
+    width: 0;
+    opacity: 0;
+  }
+  to {
+    width: var(--radix-collapsible-content-width);
+    opacity: 1;
+  }
+}
+
+@keyframes collapsible-left-reverse {
+  from {
+    width: var(--radix-collapsible-content-width);
+    opacity: 1;
+  }
+  to {
+    width: 0;
+    opacity: 0;
+  }
 }

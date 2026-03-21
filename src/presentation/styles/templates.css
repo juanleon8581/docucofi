@@ -2,4 +2,5 @@
 
 .template-container {
   @apply flex flex-col gap-4;
+  @apply md:flex-row-reverse;
 }

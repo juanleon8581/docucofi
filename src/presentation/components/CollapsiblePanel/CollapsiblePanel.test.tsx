@@ -22,23 +22,34 @@ describe("CollapsiblePanel.test", () => {
     });
 
     it("should render with the correct styles", () => {
+      const expectedClassList = [
+        "cp-container",
+        "mx-auto",
+        "flex",
+        "min-h-10",
+        "w-11/12",
+        "flex-col",
+        "gap-2",
+        "rounded-b-3xl",
+        "bg-primary",
+        "p-2",
+        "text-primary-foreground",
+        "shadow-lg",
+        "shadow-primary/50",
+        "md:mx-0",
+        "md:h-full",
+        "md:w-auto",
+        "md:min-w-10",
+        "md:flex-row-reverse",
+        "md:rounded-l-3xl!",
+        "md:rounded-b-none",
+      ];
       const container = screen.getByTestId("cp-container");
       const classList = container.classList;
-      expect(classList.length).toBe(14);
-      expect(classList).toContain("flex");
-      expect(classList).toContain("flex-col");
-      expect(classList).toContain("gap-2");
-      expect(classList).toContain("w-11/12");
-      expect(classList).toContain("md:w-4/5");
-      expect(classList).toContain("mx-auto");
-      expect(classList).toContain("text-primary-foreground");
-      expect(classList).toContain("bg-primary");
-      expect(classList).toContain("p-2");
-      expect(classList).toContain("rounded-b-3xl");
-      expect(classList).toContain("cp-container");
-      expect(classList).toContain("min-h-10");
-      expect(classList).toContain("shadow-lg");
-      expect(classList).toContain("shadow-primary/50");
+      expect(classList.length).toBe(expectedClassList.length);
+      expectedClassList.forEach((t) => {
+        expect(classList).toContain(t);
+      });
     });
   });
 
@@ -72,16 +83,24 @@ describe("CollapsiblePanel.test", () => {
     });
 
     it("should render with the correct styles", () => {
+      const expectedClassList = [
+        "cp-content",
+        "flex",
+        "flex-col",
+        "items-center",
+        "justify-center",
+        "gap-2",
+        "overflow-hidden",
+        "pb-6",
+        "md:pb-0",
+        "md:pl-4",
+      ];
       const content = screen.getByTestId("cp-content");
       const classList = content.classList;
-      expect(classList.length).toBe(7);
-      expect(classList).toContain("flex");
-      expect(classList).toContain("flex-col");
-      expect(classList).toContain("gap-2");
-      expect(classList).toContain("justify-center");
-      expect(classList).toContain("items-center");
-      expect(classList).toContain("pb-6");
-      expect(classList).toContain("cp-content");
+      expect(classList.length).toBe(expectedClassList.length);
+      expectedClassList.forEach((t) => {
+        expect(classList).toContain(t);
+      });
     });
 
     it("should render the children", async () => {
