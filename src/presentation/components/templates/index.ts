@@ -1,6 +1,7 @@
 import { registerTemplate } from "@/infrastructure/templates/registry";
 import { TemplatePlaceholder } from "./TemplatePlaceholder";
 import { TemplateCuentaDeCobro } from "./TemplateCuentaDeCobro/TemplateCuentaDeCobro";
+import { cuentaDeCobroFields } from "./TemplateCuentaDeCobro/cuentaDeCobroFields";
 
 // Register all templates (metadata only)
 registerTemplate({
@@ -17,4 +18,5 @@ registerTemplate({
   displayNameKey: "templates.cuentaDeCobro.name",
   descriptionKey: "templates.cuentaDeCobro.description",
   component: TemplateCuentaDeCobro,
+  fields: cuentaDeCobroFields,
 });
