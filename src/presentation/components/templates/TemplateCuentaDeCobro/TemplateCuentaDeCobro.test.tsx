@@ -19,11 +19,10 @@ describe("TemplateCuentaDeCobro.test", () => {
       const expectedClassList = [
         "template-container",
         "h-full",
-        "items-center",
         "justify-between",
         "pb-4",
-        "md:p-4",
-        "md:pr-0",
+        "landscape:p-4",
+        "landscape:pr-0",
       ];
       const container = screen.getByTestId("template-cdc-container");
       const classList = container.classList;
@@ -39,7 +38,9 @@ describe("TemplateCuentaDeCobro.test", () => {
       const children = container.children as HTMLCollectionOf<HTMLElement>;
       expect(children.length).toBe(2);
       expect(children[0].dataset.testid).toBe("cp-container");
-      expect(children[1].dataset.testid).toBe("previewer-container");
+      expect(
+        children[1].querySelector('[data-testid="previewer-container"]'),
+      ).toBeTruthy();
     });
   });
 });

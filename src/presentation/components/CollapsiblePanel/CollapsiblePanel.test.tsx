@@ -36,13 +36,13 @@ describe("CollapsiblePanel.test", () => {
         "text-primary-foreground",
         "shadow-lg",
         "shadow-primary/50",
-        "md:mx-0",
-        "md:h-full",
-        "md:w-auto",
-        "md:min-w-10",
-        "md:flex-row-reverse",
-        "md:rounded-l-3xl!",
-        "md:rounded-b-none",
+        "landscape:mx-0",
+        "landscape:h-full",
+        "landscape:w-auto",
+        "landscape:min-w-10",
+        "landscape:flex-row-reverse",
+        "landscape:rounded-l-3xl!",
+        "landscape:rounded-b-none",
       ];
       const container = screen.getByTestId("cp-container");
       const classList = container.classList;
@@ -86,14 +86,15 @@ describe("CollapsiblePanel.test", () => {
       const expectedClassList = [
         "cp-content",
         "flex",
+        "w-full!",
         "flex-col",
         "items-center",
         "justify-center",
         "gap-2",
         "overflow-hidden",
         "pb-6",
-        "md:pb-0",
-        "md:pl-4",
+        "landscape:pb-0",
+        "landscape:pl-4",
       ];
       const content = screen.getByTestId("cp-content");
       const classList = content.classList;

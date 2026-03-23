@@ -5,13 +5,13 @@ export const TemplateCuentaDeCobro = () => {
   return (
     <div
       data-testid="template-cdc-container"
-      className="template-container h-full justify-between pb-4 md:p-4 md:pr-0"
+      className="template-container h-full justify-between pb-4 landscape:p-4 landscape:pr-0"
     >
       <CollapsiblePanel className="">
         <p>Futuro formulario, contenido temporal.</p>
       </CollapsiblePanel>
 
-      <div className="flex w-full justify-center">
+      <div className="flex h-full w-full items-center justify-center">
         <Previewer>
           <div className="m-6">
             <strong className="right-block">
