@@ -1,3 +1,5 @@
+import type { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
+
 export type TemplateCategory = "legal" | "business" | "personal" | "other";
 
 export interface ITemplateMetadata {
@@ -6,6 +8,7 @@ export interface ITemplateMetadata {
   displayNameKey: string;
   descriptionKey: string;
   component: React.ComponentType;
+  fields?: TemplateFieldDefinition[];
 }
 
 // Registry of all available template metadata
