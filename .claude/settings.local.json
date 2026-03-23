@@ -19,7 +19,9 @@
       "Bash(rmdir \"src/app/[lang]/\\(external\\)\")",
       "Bash(rmdir \"src/app/[lang]/\\(internal\\)\")",
       "Bash(find src/app/[lang\\\\\\)/ -name \"*\")",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm exec:*)"
     ]
   },
   "enabledMcpjsonServers": [
