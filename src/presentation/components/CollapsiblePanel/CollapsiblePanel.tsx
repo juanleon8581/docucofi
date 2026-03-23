@@ -19,7 +19,7 @@ export const CollapsiblePanel = ({ children, className }: Props) => {
     <Collapsible
       data-testid="cp-container"
       className={cn(
-        "cp-container mx-auto flex min-h-10 w-11/12 flex-col gap-2 rounded-b-3xl bg-primary p-2 text-primary-foreground shadow-lg shadow-primary/50 landscape:mx-0 landscape:h-full landscape:w-auto landscape:min-w-10 landscape:flex-row-reverse landscape:rounded-l-3xl! landscape:rounded-b-none",
+        "cp-container mx-auto flex min-h-10 w-11/12 flex-col gap-2 rounded-b-3xl bg-accent p-2 text-primary-foreground shadow-lg shadow-primary/50 landscape:mx-0 landscape:h-full landscape:w-auto landscape:min-w-10 landscape:flex-row-reverse landscape:rounded-l-3xl! landscape:rounded-b-none",
         className,
       )}
     >
@@ -31,7 +31,7 @@ export const CollapsiblePanel = ({ children, className }: Props) => {
       </CollapsibleTrigger>
       <CollapsibleContent
         data-testid="cp-content"
-        className="cp-content flex w-full! flex-col items-center justify-center gap-2 overflow-hidden pb-6 landscape:pb-0 landscape:pl-4"
+        className="cp-content mx-auto flex w-3/5 flex-col items-center justify-center gap-2 overflow-hidden pb-6 landscape:pb-0 landscape:pl-4"
       >
         <ScrollArea className="h-full w-full">{children}</ScrollArea>
       </CollapsibleContent>

@@ -14,7 +14,7 @@ export const DynamicForm = ({ fields }: Props) => {
   const setFieldValue = useTemplateStore((state) => state.setFieldValue);
 
   return (
-    <form data-testid="dynamic-form" className="flex flex-col gap-4 p-2">
+    <form data-testid="dynamic-form" className="flex flex-col gap-6 p-4">
       {fields.map((field) => (
         <div key={field.name} className="flex flex-col gap-1">
           <Label htmlFor={field.name}>{field.label}</Label>
