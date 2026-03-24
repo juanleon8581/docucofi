@@ -5,6 +5,7 @@ import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
 import { Input } from "@/presentation/components/ui/input";
 import { Label } from "@/presentation/components/ui/label";
 import { DatePicker } from "@/presentation/components/DatePicker/DatePicker";
+import { FileInput } from "@/presentation/components/FileInput/FileInput";
 
 interface Props {
   fields: TemplateFieldDefinition[];
@@ -19,7 +20,7 @@ export const DynamicForm = ({ fields }: Props) => {
       {fields.map((field) => (
         <div key={field.name} className="flex flex-col gap-1">
           <Label htmlFor={field.name}>{field.label}</Label>
-          {field.type === "date" ? (
+          {field.type === "date" && (
             <DatePicker
               id={field.name}
               data-testid={`field-${field.name}`}
@@ -28,7 +29,16 @@ export const DynamicForm = ({ fields }: Props) => {
               dateMode={field.dateMode ?? "single"}
               placeholder={field.placeholder}
             />
-          ) : (
+          )}
+          {field.type === "file" && (
+            <FileInput
+              id={field.name}
+              data-testid={`field-${field.name}`}
+              value={storeFields[field.name] ?? ""}
+              onChange={(val) => setFieldValue(field.name, val)}
+            />
+          )}
+          {field.type !== "date" && field.type !== "file" && (
             <Input
               id={field.name}
               data-testid={`field-${field.name}`}

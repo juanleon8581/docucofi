@@ -10,6 +10,7 @@ import { DateAdapter } from "@/infrastructure/adapters/DateAdapter";
 import { NumberToWordsAdapter } from "@/infrastructure/adapters/NumberToWordsAdapter";
 import { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
 import { ChevronRight } from "lucide-react";
+import Image from "next/image";
 
 export const TemplateCuentaDeCobro = ({
   fields,
@@ -95,9 +96,19 @@ export const TemplateCuentaDeCobro = ({
               <span className="accent-text">{getFieldValue("bank")}</span>
             </span>
             <span className="left-block mb-16">Atentamente,</span>
-            <strong className="left-block mb-8">
-              ____________________________________
-            </strong>
+            <div className="left-block mb-8">
+              {getFieldValue("signature") ? (
+                <Image
+                  src={getFieldValue("signature")}
+                  alt="Firma"
+                  width={300}
+                  height={300}
+                  className="max-h-16 w-auto max-w-52 object-contain"
+                />
+              ) : (
+                <strong>____________________________________</strong>
+              )}
+            </div>
             <strong className="left-block mb-2">Información tributaria</strong>
             <span className="left-block mb-1">
               No soy responsable de IVA, ni de IMPOCONSUMO y no estoy obligado a

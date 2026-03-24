@@ -53,6 +53,12 @@ export const cuentaDeCobroFields: TemplateFieldDefinition[] = [
     type: "text",
     defaultValue: "_BANCO_",
   },
+  {
+    name: "signature",
+    label: "Firma (imagen)",
+    type: "file",
+    defaultValue: "",
+  },
 ];
 
 export const cuentaDeCobroConceptoFechasFields: TemplateFieldDefinition[] = [
@@ -114,5 +120,11 @@ export const cuentaDeCobroConceptoFechasFields: TemplateFieldDefinition[] = [
     label: "Banco",
     type: "text",
     defaultValue: "_BANCO_",
+  },
+  {
+    name: "signature",
+    label: "Firma (imagen)",
+    type: "file",
+    defaultValue: "",
   },
 ];
