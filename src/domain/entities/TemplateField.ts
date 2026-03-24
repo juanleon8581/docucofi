@@ -7,4 +7,5 @@ export interface TemplateFieldDefinition {
   defaultValue: string;
   options?: string[];
   placeholder?: string;
+  dateMode?: "single" | "multiple";
 }
