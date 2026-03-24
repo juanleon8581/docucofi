@@ -6,6 +6,8 @@ import { Previewer } from "../../Previewer/Previewer";
 import { DynamicForm } from "../../DynamicForm/DynamicForm";
 import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
 import { cuentaDeCobroFields } from "./cuentaDeCobroFields";
+import { DateAdapter } from "@/infrastructure/adapters/DateAdapter";
+import { NumberToWordsAdapter } from "@/infrastructure/adapters/NumberToWordsAdapter";
 
 export const TemplateCuentaDeCobro = () => {
   const resetFields = useTemplateStore((state) => state.resetFields);
@@ -29,7 +31,8 @@ export const TemplateCuentaDeCobro = () => {
         <Previewer>
           <div className="m-6">
             <strong className="right-block">
-              {getFieldValue("ciudad")}, {getFieldValue("fecha")}
+              {getFieldValue("ciudad")},{" "}
+              {DateAdapter.formatDisplayFromString(getFieldValue("fecha"))}
             </strong>
             <span className="center-title mt-16">
               {getFieldValue("empresa")}
@@ -45,11 +48,18 @@ export const TemplateCuentaDeCobro = () => {
               <span className="accent-text">CC</span> {getFieldValue("cc")}
             </span>
             <span className="left-block">
-              <span className="accent-text">LA SUMA DE:</span> ${" "}
-              {getFieldValue("valor")}
+              <span className="accent-text">LA SUMA DE:</span>
+              {new Intl.NumberFormat("es-CO", {
+                style: "currency",
+                currency: "COP",
+                maximumFractionDigits: 0,
+              }).format(Number(getFieldValue("valor")))}
             </span>
             <span className="left-block mb-8 text-sm">
-              {getFieldValue("valorEnLetras")}
+              <strong>
+                {NumberToWordsAdapter.fromString(getFieldValue("valor"))}
+              </strong>{" "}
+              En pesos Colombianos
             </span>
             <strong className="left-block">CONCEPTO:</strong>
             <span className="left-block mb-8">{getFieldValue("concepto")}</span>

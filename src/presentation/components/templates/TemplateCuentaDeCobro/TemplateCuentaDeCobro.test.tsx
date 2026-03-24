@@ -62,7 +62,6 @@ describe("TemplateCuentaDeCobro.test", () => {
       expect(screen.getByTestId("field-nombre")).toBeInTheDocument();
       expect(screen.getByTestId("field-cc")).toBeInTheDocument();
       expect(screen.getByTestId("field-valor")).toBeInTheDocument();
-      expect(screen.getByTestId("field-valorEnLetras")).toBeInTheDocument();
       expect(screen.getByTestId("field-concepto")).toBeInTheDocument();
       expect(screen.getByTestId("field-numeroCuenta")).toBeInTheDocument();
       expect(screen.getByTestId("field-banco")).toBeInTheDocument();
