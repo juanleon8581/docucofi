@@ -1,0 +1,6 @@
+@reference './globals.css';
+
+.template-container {
+  @apply flex flex-col gap-4;
+  @apply landscape:flex-row-reverse;
+}
