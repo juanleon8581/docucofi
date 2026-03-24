@@ -31,7 +31,7 @@ describe("CollapsiblePanel.test", () => {
         "flex-col",
         "gap-2",
         "rounded-b-3xl",
-        "bg-primary",
+        "bg-accent",
         "p-2",
         "text-primary-foreground",
         "shadow-lg",
@@ -85,8 +85,9 @@ describe("CollapsiblePanel.test", () => {
     it("should render with the correct styles", () => {
       const expectedClassList = [
         "cp-content",
+        "mx-auto",
         "flex",
-        "w-full!",
+        "w-3/5",
         "flex-col",
         "items-center",
         "justify-center",
