@@ -10,6 +10,11 @@ const fields: TemplateFieldDefinition[] = [
   { name: "valor", label: "Valor", type: "number", defaultValue: "500" },
 ];
 
+const fieldsWithDate: TemplateFieldDefinition[] = [
+  ...fields,
+  { name: "fecha", label: "Fecha", type: "date", dateMode: "single", defaultValue: "" },
+];
+
 describe("DynamicForm", () => {
   beforeEach(() => {
     useTemplateStore.setState({
@@ -46,5 +51,16 @@ describe("DynamicForm", () => {
     await userEvent.clear(input);
     await userEvent.type(input, "Medellín");
     expect(useTemplateStore.getState().fields["ciudad"]).toBe("Medellín");
+  });
+});
+
+describe("DynamicForm with date field", () => {
+  it("renders a DatePicker for fields with type 'date'", () => {
+    useTemplateStore.setState({
+      fields: { ciudad: "BOGOTÁ", valor: "500", fecha: "" },
+    });
+    render(<DynamicForm fields={fieldsWithDate} />);
+    expect(screen.getByTestId("field-fecha")).toBeInTheDocument();
+    expect(screen.getByLabelText("Fecha")).toBeInTheDocument();
   });
 });
