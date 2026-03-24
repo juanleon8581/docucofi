@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { CollapsiblePanel } from "@/presentation/components/CollapsiblePanel/CollapsiblePanel";
 import { Previewer } from "../../Previewer/Previewer";
 import { DynamicForm } from "../../DynamicForm/DynamicForm";
@@ -9,8 +9,9 @@ import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
 import { DateAdapter } from "@/infrastructure/adapters/DateAdapter";
 import { NumberToWordsAdapter } from "@/infrastructure/adapters/NumberToWordsAdapter";
 import { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Download, Loader2 } from "lucide-react";
 import Image from "next/image";
+import { exportToPdfAction } from "@/app/[lang]/templates/[slug]/actions";
 
 export const TemplateCuentaDeCobro = ({
   fields,
@@ -20,6 +21,35 @@ export const TemplateCuentaDeCobro = ({
   const resetFields = useTemplateStore((state) => state.resetFields);
   const fieldsStore = useTemplateStore((state) => state.fields);
   const getFieldValue = (name: string) => fieldsStore[name] ?? "";
+  const [isExporting, setIsExporting] = useState(false);
+
+  const buildFilename = () => {
+    const name = (fieldsStore["name"] ?? "")
+      .toLowerCase()
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/\s+/g, "_")
+      .replace(/[^a-z0-9_]/g, "");
+    const date = (fieldsStore["date"] ?? "").replace(/-/g, "");
+    return `cc_${name}_${date}.pdf`;
+  };
+
+  const handleDownloadPdf = async () => {
+    setIsExporting(true);
+    try {
+      const base64 = await exportToPdfAction(fieldsStore);
+      const bytes = Uint8Array.from(atob(base64), (c) => c.charCodeAt(0));
+      const blob = new Blob([bytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = buildFilename();
+      a.click();
+      URL.revokeObjectURL(url);
+    } finally {
+      setIsExporting(false);
+    }
+  };
 
   useEffect(() => {
     resetFields(fields);
@@ -34,7 +64,22 @@ export const TemplateCuentaDeCobro = ({
         <DynamicForm fields={fields} />
       </CollapsiblePanel>
 
-      <div className="flex h-full w-full items-center justify-center">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2">
+        <div className="flex w-full max-w-[var(--previewer-width,640px)] justify-end px-2">
+          <button
+            data-testid="btn-download-pdf"
+            onClick={handleDownloadPdf}
+            disabled={isExporting}
+            className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
+          >
+            {isExporting ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Download className="h-4 w-4" />
+            )}
+            {isExporting ? "Generando..." : "Descargar PDF"}
+          </button>
+        </div>
         <Previewer>
           <div className="m-6">
             <strong className="right-block">
@@ -124,6 +169,7 @@ export const TemplateCuentaDeCobro = ({
           </div>
         </Previewer>
       </div>
+
     </div>
   );
 };
