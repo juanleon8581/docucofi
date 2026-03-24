@@ -5,18 +5,24 @@ import { CollapsiblePanel } from "@/presentation/components/CollapsiblePanel/Col
 import { Previewer } from "../../Previewer/Previewer";
 import { DynamicForm } from "../../DynamicForm/DynamicForm";
 import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
-import { cuentaDeCobroFields } from "./cuentaDeCobroFields";
+
 import { DateAdapter } from "@/infrastructure/adapters/DateAdapter";
 import { NumberToWordsAdapter } from "@/infrastructure/adapters/NumberToWordsAdapter";
+import { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
+import { ChevronRight } from "lucide-react";
 
-export const TemplateCuentaDeCobro = () => {
+export const TemplateCuentaDeCobro = ({
+  fields,
+}: {
+  fields: TemplateFieldDefinition[];
+}) => {
   const resetFields = useTemplateStore((state) => state.resetFields);
-  const fields = useTemplateStore((state) => state.fields);
-  const getFieldValue = (name: string) => fields[name] ?? "";
+  const fieldsStore = useTemplateStore((state) => state.fields);
+  const getFieldValue = (name: string) => fieldsStore[name] ?? "";
 
   useEffect(() => {
-    resetFields(cuentaDeCobroFields);
-  }, [resetFields]);
+    resetFields(fields);
+  }, [resetFields, fields]);
 
   return (
     <div
@@ -24,25 +30,25 @@ export const TemplateCuentaDeCobro = () => {
       className="template-container h-full justify-between pb-4 landscape:px-4 landscape:pr-0"
     >
       <CollapsiblePanel className="">
-        <DynamicForm fields={cuentaDeCobroFields} />
+        <DynamicForm fields={fields} />
       </CollapsiblePanel>
 
       <div className="flex h-full w-full items-center justify-center">
         <Previewer>
           <div className="m-6">
             <strong className="right-block">
-              {getFieldValue("ciudad")},{" "}
-              {DateAdapter.formatDisplayFromString(getFieldValue("fecha"))}
+              {getFieldValue("city")},{" "}
+              {DateAdapter.formatDisplayFromString(getFieldValue("date"))}
             </strong>
             <span className="center-title mt-16">
-              {getFieldValue("empresa")}
+              {getFieldValue("company")}
             </span>
             <span className="center-subtitle mb-16">
               NIT: {getFieldValue("nit")}
             </span>
             <strong className="left-block">DEBE A:</strong>
             <span className="left-block accent-text">
-              {getFieldValue("nombre")}
+              {getFieldValue("name")}
             </span>
             <span className="left-block mb-8">
               <span className="accent-text">CC</span> {getFieldValue("cc")}
@@ -53,25 +59,40 @@ export const TemplateCuentaDeCobro = () => {
                 style: "currency",
                 currency: "COP",
                 maximumFractionDigits: 0,
-              }).format(Number(getFieldValue("valor")))}
+              }).format(Number(getFieldValue("amount")))}
             </span>
             <span className="left-block mb-8 text-sm">
               <strong>
-                {NumberToWordsAdapter.fromString(getFieldValue("valor"))}
+                {NumberToWordsAdapter.fromString(getFieldValue("amount"))}
               </strong>{" "}
               En pesos Colombianos
             </span>
             <strong className="left-block">CONCEPTO:</strong>
-            <span className="left-block mb-8">{getFieldValue("concepto")}</span>
+            <span className="left-block">{getFieldValue("concept")}</span>
+
+            <div className="my-8 flex flex-row flex-wrap items-center justify-start">
+              {(getFieldValue("dates")?.split(",") || []).map((day) => {
+                return (
+                  <p
+                    key={day.toString()}
+                    className="flex w-1/3 flex-row pl-4 font-medium"
+                  >
+                    <ChevronRight className="scale-75" />
+                    <span>{DateAdapter.formatDisplayFromString(day)}</span>
+                  </p>
+                );
+              })}
+            </div>
             <span className="left-block">Por favor consignar en:</span>
             <span className="left-block">
               Cuenta de <span className="accent-text">ahorros</span> No.{" "}
               <span className="accent-text">
-                {getFieldValue("numeroCuenta")}
+                {getFieldValue("accountNumber")}
               </span>
             </span>
-            <span className="left-block accent-text mb-8">
-              {getFieldValue("banco")}
+            <span className="left-block mb-8">
+              Banco:{" "}
+              <span className="accent-text">{getFieldValue("bank")}</span>
             </span>
             <span className="left-block mb-16">Atentamente,</span>
             <strong className="left-block mb-8">

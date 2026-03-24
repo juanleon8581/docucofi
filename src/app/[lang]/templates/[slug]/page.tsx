@@ -28,7 +28,7 @@ export default async function TemplatePage({ params }: Readonly<Props>) {
 
   // Render the appropriate template component
   if (TemplateComponent) {
-    return <TemplateComponent />;
+    return <TemplateComponent fields={template.fields} />;
   }
 
   return (

@@ -7,8 +7,8 @@ export interface ITemplateMetadata {
   category: TemplateCategory;
   displayNameKey: string;
   descriptionKey: string;
-  component: React.ComponentType;
-  fields?: TemplateFieldDefinition[];
+  component: React.ComponentType<{ fields: TemplateFieldDefinition[] }>;
+  fields: TemplateFieldDefinition[];
 }
 
 // Registry of all available template metadata

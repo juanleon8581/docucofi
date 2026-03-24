@@ -8,4 +8,5 @@ export interface TemplateFieldDefinition {
   options?: string[];
   placeholder?: string;
   dateMode?: "single" | "multiple";
+  disabledField?: boolean;
 }

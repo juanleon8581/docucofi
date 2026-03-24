@@ -2,6 +2,7 @@ import { act, cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { TemplateCuentaDeCobro } from "./TemplateCuentaDeCobro";
+import { cuentaDeCobroFields } from "./cuentaDeCobroFields";
 import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
 
 describe("TemplateCuentaDeCobro.test", () => {
@@ -9,7 +10,7 @@ describe("TemplateCuentaDeCobro.test", () => {
     vi.clearAllMocks();
     useTemplateStore.setState({ fields: {} });
     cleanup();
-    render(<TemplateCuentaDeCobro />);
+    render(<TemplateCuentaDeCobro fields={cuentaDeCobroFields} />);
   });
 
   describe("container", () => {
@@ -55,16 +56,16 @@ describe("TemplateCuentaDeCobro.test", () => {
 
     it("should render all field inputs after opening panel", async () => {
       await userEvent.click(screen.getByTestId("cp-trigger"));
-      expect(screen.getByTestId("field-ciudad")).toBeInTheDocument();
-      expect(screen.getByTestId("field-fecha")).toBeInTheDocument();
-      expect(screen.getByTestId("field-empresa")).toBeInTheDocument();
+      expect(screen.getByTestId("field-city")).toBeInTheDocument();
+      expect(screen.getByTestId("field-date")).toBeInTheDocument();
+      expect(screen.getByTestId("field-company")).toBeInTheDocument();
       expect(screen.getByTestId("field-nit")).toBeInTheDocument();
-      expect(screen.getByTestId("field-nombre")).toBeInTheDocument();
+      expect(screen.getByTestId("field-name")).toBeInTheDocument();
       expect(screen.getByTestId("field-cc")).toBeInTheDocument();
-      expect(screen.getByTestId("field-valor")).toBeInTheDocument();
-      expect(screen.getByTestId("field-concepto")).toBeInTheDocument();
-      expect(screen.getByTestId("field-numeroCuenta")).toBeInTheDocument();
-      expect(screen.getByTestId("field-banco")).toBeInTheDocument();
+      expect(screen.getByTestId("field-amount")).toBeInTheDocument();
+      expect(screen.getByTestId("field-concept")).toBeInTheDocument();
+      expect(screen.getByTestId("field-accountNumber")).toBeInTheDocument();
+      expect(screen.getByTestId("field-bank")).toBeInTheDocument();
     });
   });
 
@@ -73,17 +74,17 @@ describe("TemplateCuentaDeCobro.test", () => {
       expect(screen.getByTestId("previewer-container")).toBeInTheDocument();
       expect(
         screen.getByTestId("previewer-container").textContent,
-      ).toContain("INSERTE CIUDAD");
+      ).toContain("_CIUDAD_");
       expect(
         screen.getByTestId("previewer-container").textContent,
-      ).toContain("INSERTE EMPRESA S.A.S");
+      ).toContain("_INSERTE EMPRESA S.A.S_");
     });
 
     it("should reflect store values in the preview when store is updated", async () => {
       await act(async () => {
-        useTemplateStore.getState().setFieldValue("ciudad", "Medellín");
-        useTemplateStore.getState().setFieldValue("empresa", "Mi Empresa SAS");
-        useTemplateStore.getState().setFieldValue("nombre", "Juan Pérez");
+        useTemplateStore.getState().setFieldValue("city", "Medellín");
+        useTemplateStore.getState().setFieldValue("company", "Mi Empresa SAS");
+        useTemplateStore.getState().setFieldValue("name", "Juan Pérez");
       });
 
       const preview = screen.getByTestId("previewer-container");
