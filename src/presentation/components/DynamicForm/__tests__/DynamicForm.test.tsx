@@ -64,3 +64,20 @@ describe("DynamicForm with date field", () => {
     expect(screen.getByLabelText("Fecha")).toBeInTheDocument();
   });
 });
+
+describe("DynamicForm with file field", () => {
+  it("renders a FileInput for fields with type 'file'", () => {
+    const fieldsWithFile: TemplateFieldDefinition[] = [
+      ...fields,
+      { name: "signature", label: "Firma (imagen)", type: "file", defaultValue: "" },
+    ];
+    useTemplateStore.setState({
+      fields: { ciudad: "BOGOTÁ", valor: "500", signature: "" },
+    });
+    render(<DynamicForm fields={fieldsWithFile} />);
+    const input = screen.getByTestId("field-signature");
+    expect(input).toBeInTheDocument();
+    expect(input).toHaveAttribute("type", "file");
+    expect(screen.getByLabelText("Firma (imagen)")).toBeInTheDocument();
+  });
+});

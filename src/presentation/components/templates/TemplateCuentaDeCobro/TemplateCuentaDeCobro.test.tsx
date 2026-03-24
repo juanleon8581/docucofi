@@ -66,6 +66,7 @@ describe("TemplateCuentaDeCobro.test", () => {
       expect(screen.getByTestId("field-concept")).toBeInTheDocument();
       expect(screen.getByTestId("field-accountNumber")).toBeInTheDocument();
       expect(screen.getByTestId("field-bank")).toBeInTheDocument();
+      expect(screen.getByTestId("field-signature")).toBeInTheDocument();
     });
   });
 
