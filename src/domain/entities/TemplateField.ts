@@ -1,4 +1,4 @@
-export type FieldType = "text" | "number" | "date" | "select" | "textarea";
+export type FieldType = "text" | "number" | "date" | "select" | "textarea" | "file";
 
 export interface TemplateFieldDefinition {
   name: string;
