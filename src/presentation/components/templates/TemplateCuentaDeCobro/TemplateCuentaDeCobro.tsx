@@ -34,7 +34,7 @@ export const TemplateCuentaDeCobro = ({
   console.log(fields);
 
   const buildFilename = () => {
-    const name = (fieldsStore["name"] ?? "")
+    const name = (fieldsStore["fullName"] ?? "")
       .toLowerCase()
       .normalize("NFD")
       .replaceAll(/[\u0300-\u036f]/g, "")

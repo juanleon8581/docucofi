@@ -40,9 +40,9 @@ export function buildCuentaDeCobroHtml(fields: Record<string, string>): string {
   const city = fields["city"] ?? "";
   const date = fields["date"] ?? "";
   const company = fields["company"] ?? "";
-  const nit = fields["nit"] ?? "";
-  const name = fields["name"] ?? "";
-  const cc = fields["cc"] ?? "";
+  const nit = fields["companyNit"] ?? "";
+  const name = fields["fullName"] ?? "";
+  const cc = fields["dni"] ?? "";
   const amount = fields["amount"] ?? "0";
   const concept = fields["concept"] ?? "";
   const dates = fields["dates"] ?? "";
