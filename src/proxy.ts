@@ -9,7 +9,7 @@ import { i18nConfig, type Locale } from "./infrastructure/i18n/config";
 const PUBLIC_ONLY_PATHS = ["/login", "/register", "/forgot-password", "/"];
 
 // Auth-only paths: redirect anonymous users to login
-const AUTH_ONLY_PATHS = ["/dashboard"];
+const AUTH_ONLY_PATHS = ["/dashboard", "/settings"];
 
 function getPreferredLocale(request: NextRequest): Locale {
   const negotiatorHeaders: Record<string, string> = {};
