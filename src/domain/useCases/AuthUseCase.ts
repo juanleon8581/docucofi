@@ -1,7 +1,8 @@
-import { AuthRepository } from "../repositories/IAuthRepository";
+import { AuthRepository, SignOutScope } from "../repositories/IAuthRepository";
 import { ValidationError } from "../errors/DomainError";
 import { LoginDTO } from "../dtos/auth/login/Login.dto";
 import { RegisterDTO } from "../dtos/auth/register/Register.dto";
+import { UpdateProfileDTO } from "../dtos/profile/UpdateProfile.dto";
 import { IAuthResponse } from "../interfaces/IAuthResponse";
 import { ValidationMessages } from "../messages/validation.messages";
 
@@ -22,11 +23,16 @@ export class AuthUseCase {
     return this.authRepository.signUp(dto);
   }
 
-  async logout(): Promise<void> {
-    return this.authRepository.signOut();
+  async logout(scope?: SignOutScope): Promise<void> {
+    return this.authRepository.signOut(scope);
   }
 
   async getSessionUser(): Promise<IAuthResponse | null> {
     return this.authRepository.getCurrentUser();
+  }
+
+  async updateProfile(dto: UpdateProfileDTO): Promise<IAuthResponse> {
+    if (!dto.fullName) throw new ValidationError(ValidationMessages.REQUIRED_FIELD("Full name"));
+    return this.authRepository.updateProfile(dto);
   }
 }

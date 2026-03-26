@@ -10,3 +10,17 @@ const dictionaries = {
 export const getDictionary = async (locale: Locale) => dictionaries[locale]();
 
 export type Dictionary = Awaited<ReturnType<typeof getDictionary>>;
+
+type TemplateTranslations = { name: string; description: string };
+
+export function getTemplateTranslations(
+  dict: Dictionary,
+  slug: string
+): TemplateTranslations | undefined {
+  const templates = dict.templates as Record<string, unknown>;
+  const entry = templates[slug];
+  if (entry && typeof entry === "object" && "name" in entry) {
+    return entry as TemplateTranslations;
+  }
+  return undefined;
+}

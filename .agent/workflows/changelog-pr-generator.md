@@ -88,6 +88,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Include relevant ticket/issue numbers when available
 - Be concise but descriptive
 - Use emojis to enhance readability
+- **Cumulative Update**: If the CHANGELOG file already exists for the target version, you MUST read its content and append/merge the new changes. DO NOT overwrite existing entries, as other features may share the same release version.
 
 ### Step 4: Create Pull Request
 
@@ -178,6 +179,7 @@ gh pr create --base [target] --head [current] --title "[Title]" --body "[Descrip
 Before completing, verify:
 
 - [ ] CHANGELOG follows keepachangelog.com format
+- [ ] CHANGELOG is updated cumulatively (existing entries for the same version are preserved)
 - [ ] All commits are accounted for and categorized
 - [ ] PR description is comprehensive and well-formatted
 - [ ] Emojis are used appropriately throughout

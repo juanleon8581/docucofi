@@ -4,6 +4,7 @@ import { SupabaseClient } from "@supabase/supabase-js";
 import { AuthenticationError } from "../../../../domain/errors/DomainError";
 import { LoginDTO } from "@/domain/dtos/auth/login/Login.dto";
 import { RegisterDTO } from "@/domain/dtos/auth/register/Register.dto";
+import { UpdateProfileDTO } from "@/domain/dtos/profile/UpdateProfile.dto";
 
 describe("SupabaseAuthAdapter", () => {
   let mockSupabaseClient: {
@@ -12,6 +13,8 @@ describe("SupabaseAuthAdapter", () => {
       signUp: import("vitest").Mock;
       signOut: import("vitest").Mock;
       getUser: import("vitest").Mock;
+      resetPasswordForEmail: import("vitest").Mock;
+      updateUser: import("vitest").Mock;
     };
   };
   let adapter: SupabaseAuthAdapter;
@@ -30,6 +33,8 @@ describe("SupabaseAuthAdapter", () => {
         signUp: vi.fn(),
         signOut: vi.fn(),
         getUser: vi.fn(),
+        resetPasswordForEmail: vi.fn(),
+        updateUser: vi.fn(),
       },
     };
 
@@ -154,12 +159,56 @@ describe("SupabaseAuthAdapter", () => {
       await expect(adapter.signOut()).rejects.toThrow(AuthenticationError);
     });
 
-    it("should call Supabase signOut and succeed", async () => {
+    it("should call Supabase signOut with local scope by default", async () => {
       mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
 
       await adapter.signOut();
 
-      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledOnce();
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "local",
+      });
+    });
+
+    it("should call Supabase signOut with global scope", async () => {
+      mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
+
+      await adapter.signOut("global");
+
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "global",
+      });
+    });
+
+    it("should call Supabase signOut with others scope", async () => {
+      mockSupabaseClient.auth.signOut.mockResolvedValue({ error: null });
+
+      await adapter.signOut("others");
+
+      expect(mockSupabaseClient.auth.signOut).toHaveBeenCalledWith({
+        scope: "others",
+      });
+    });
+  });
+
+  describe("resetPassword", () => {
+    it("should throw AuthenticationError if Supabase resetPassword returns an error", async () => {
+      mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
+        error: { message: "Email not found" },
+      });
+
+      await expect(
+        adapter.resetPassword("test@example.com"),
+      ).rejects.toThrow(AuthenticationError);
+    });
+
+    it("should resolve without error on successful password reset", async () => {
+      mockSupabaseClient.auth.resetPasswordForEmail.mockResolvedValue({
+        error: null,
+      });
+
+      await expect(
+        adapter.resetPassword("test@example.com"),
+      ).resolves.toBeUndefined();
     });
   });
 
@@ -175,6 +224,17 @@ describe("SupabaseAuthAdapter", () => {
       }).rejects.toThrow(AuthenticationError);
     });
 
+    it("should return null when user is not authenticated and there is no error", async () => {
+      mockSupabaseClient.auth.getUser.mockResolvedValue({
+        data: { user: null },
+        error: null,
+      });
+
+      const result = await adapter.getCurrentUser();
+
+      expect(result).toBeNull();
+    });
+
     it("should return mapped AuthResponseDTO if user is authenticated", async () => {
       mockSupabaseClient.auth.getUser.mockResolvedValue({
         data: { user: mockSupabaseUser },
@@ -185,6 +245,47 @@ describe("SupabaseAuthAdapter", () => {
 
       expect(mockSupabaseClient.auth.getUser).toHaveBeenCalledOnce();
       expect(result?.user.id).toBe("mock-uuid");
+    });
+  });
+
+  describe("updateProfile", () => {
+    it("should throw AuthenticationError if Supabase returns an error", async () => {
+      const [, dto] = UpdateProfileDTO.create({ fullName: "John Doe" });
+      mockSupabaseClient.auth.updateUser.mockResolvedValue({
+        data: { user: null },
+        error: { message: "Update failed" },
+      });
+
+      await expect(adapter.updateProfile(dto!)).rejects.toThrow(AuthenticationError);
+    });
+
+    it("should return mapped AuthResponseDTO on successful update", async () => {
+      const [, dto] = UpdateProfileDTO.create({
+        fullName: "John Doe",
+        city: "Bogotá",
+        company: "Acme",
+        companyNit: "900.123.456-7",
+        phone: "+57 300 000 0000",
+        dni: "123456789",
+      });
+      mockSupabaseClient.auth.updateUser.mockResolvedValue({
+        data: { user: { ...mockSupabaseUser, user_metadata: { full_name: "John Doe" } } },
+        error: null,
+      });
+
+      const result = await adapter.updateProfile(dto!);
+
+      expect(mockSupabaseClient.auth.updateUser).toHaveBeenCalledWith({
+        data: {
+          full_name: "John Doe",
+          city: "Bogotá",
+          company: "Acme",
+          company_nit: "900.123.456-7",
+          phone: "+57 300 000 0000",
+          dni: "123456789",
+        },
+      });
+      expect(result.user.id).toBe("mock-uuid");
     });
   });
 });

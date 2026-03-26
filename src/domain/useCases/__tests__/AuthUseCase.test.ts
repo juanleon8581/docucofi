@@ -5,6 +5,7 @@ import { AuthRepository } from "@/domain/repositories/IAuthRepository";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 import { LoginDTO } from "@/domain/dtos/auth/login/Login.dto";
 import { RegisterDTO } from "@/domain/dtos/auth/register/Register.dto";
+import { UpdateProfileDTO } from "@/domain/dtos/profile/UpdateProfile.dto";
 
 describe("AuthUseCase", () => {
   let mockAuthRepository: import("vitest").Mocked<AuthRepository>;
@@ -26,6 +27,7 @@ describe("AuthUseCase", () => {
       signOut: vi.fn(),
       resetPassword: vi.fn(),
       getCurrentUser: vi.fn(),
+      updateProfile: vi.fn(),
     };
 
     // Inyectamos el mock al caso de uso
@@ -83,12 +85,20 @@ describe("AuthUseCase", () => {
   });
 
   describe("logout", () => {
-    it("should call IAuthRepository.signOut", async () => {
+    it("should call IAuthRepository.signOut without scope by default", async () => {
       mockAuthRepository.signOut.mockResolvedValue();
 
       await useCase.logout();
 
-      expect(mockAuthRepository.signOut).toHaveBeenCalledOnce();
+      expect(mockAuthRepository.signOut).toHaveBeenCalledWith(undefined);
+    });
+
+    it("should pass scope to IAuthRepository.signOut", async () => {
+      mockAuthRepository.signOut.mockResolvedValue();
+
+      await useCase.logout("global");
+
+      expect(mockAuthRepository.signOut).toHaveBeenCalledWith("global");
     });
   });
 
@@ -109,6 +119,26 @@ describe("AuthUseCase", () => {
 
       expect(mockAuthRepository.getCurrentUser).toHaveBeenCalledOnce();
       expect(result).toBeNull();
+    });
+  });
+
+  describe("updateProfile", () => {
+    it("should throw ValidationError if fullName is empty", async () => {
+      const invalidDto = { fullName: "" } as unknown as UpdateProfileDTO;
+
+      await expect(useCase.updateProfile(invalidDto)).rejects.toThrow(ValidationError);
+      await expect(useCase.updateProfile(invalidDto)).rejects.toThrow("Full name is required");
+      expect(mockAuthRepository.updateProfile).not.toHaveBeenCalled();
+    });
+
+    it("should call IAuthRepository.updateProfile and return updated user", async () => {
+      const [, validDto] = UpdateProfileDTO.create({ fullName: "John Doe", city: "Bogotá" });
+      mockAuthRepository.updateProfile.mockResolvedValue(mockResponse);
+
+      const result = await useCase.updateProfile(validDto!);
+
+      expect(mockAuthRepository.updateProfile).toHaveBeenCalledWith(validDto);
+      expect(result).toEqual(mockResponse);
     });
   });
 });

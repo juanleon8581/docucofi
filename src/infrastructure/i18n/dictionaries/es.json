@@ -50,7 +50,8 @@
     "passwordRequired": "La contraseña es requerida",
     "fullNameRequired": "El nombre completo es requerido",
     "acceptTermsRequired": "Debes aceptar los términos y condiciones",
-    "passwordsMismatch": "Las contraseñas no coinciden"
+    "passwordsMismatch": "Las contraseñas no coinciden",
+    "phoneInvalid": "Número de teléfono inválido"
   },
   "metadata": {
     "loginTitle": "Iniciar Sesión | CofiAuth",
@@ -58,12 +59,51 @@
     "registerTitle": "Registrarse | CofiAuth",
     "registerDescription": "Crea tu cuenta de CofiAuth para acceder al panel.",
     "forgotPasswordTitle": "Recuperar Contraseña | CofiAuth",
-    "forgotPasswordDescription": "Restablece la contraseña de tu cuenta de CofiAuth."
+    "forgotPasswordDescription": "Restablece la contraseña de tu cuenta de CofiAuth.",
+    "settingsTitle": "Configuración | DocuCofi",
+    "settingsDescription": "Administra tu perfil y preferencias."
   },
   "home": {
-    "title": "🔐 CofiCode Auth",
-    "description": "Una plantilla de autenticación lista para producción, construida con Clean Architecture, soporte i18n y un UI kit completo — lista para clonar y lanzar.",
-    "githubButton": "Ver en GitHub",
-    "templateNote": "Este es un proyecto de plantilla, no un proyecto de producción. Funcionalidades como el inicio de sesión o el registro pueden no funcionar."
+    "title": "DocuCofi",
+    "subtitle": "Plantillas de documentos",
+    "description": "Crea documentos legales y administrativos de manera fácil y rápida usando nuestras plantillas."
+  },
+  "settings": {
+    "title": "Configuración",
+    "subtitle": "Administra tu información personal",
+    "fullNameLabel": "Nombre completo",
+    "fullNamePlaceholder": "Ingresa tu nombre completo",
+    "cityLabel": "Ciudad",
+    "cityPlaceholder": "Ingresa tu ciudad",
+    "companyLabel": "Empresa",
+    "companyPlaceholder": "Ingresa el nombre de tu empresa",
+    "companyNitLabel": "NIT de la empresa",
+    "companyNitPlaceholder": "900.123.456-7",
+    "phoneLabel": "Teléfono",
+    "phonePlaceholder": "+57 300 123 4567",
+    "dniLabel": "Número de documento (DNI)",
+    "dniPlaceholder": "Ingresa tu número de documento",
+    "submitButton": "Guardar cambios",
+    "successTitle": "Perfil actualizado",
+    "successMessage": "Tu información ha sido guardada.",
+    "errorTitle": "Error al actualizar perfil"
+  },
+  "templates": {
+    "title": "Plantillas",
+    "subtitle": "Elige una plantilla para comenzar",
+    "description": "Explora nuestra colección de plantillas de documentos listas para usar.",
+    "buttonText": "Ver plantilla",
+    "placeholder": {
+      "name": "Plantilla de Ejemplo",
+      "description": "Esta es una plantilla de ejemplo para demostrar el flujo de la aplicación."
+    },
+    "cuenta-de-cobro": {
+      "name": "Cuenta de Cobro",
+      "description": "Plantilla de cuenta de cobro para profesionales independientes."
+    },
+    "cuenta-de-cobro-concepto-fechas": {
+      "name": "Cuenta de Cobro con fechas",
+      "description": "Plantilla de cuenta de cobro para profesionales independientes con fechas."
+    }
   }
 }

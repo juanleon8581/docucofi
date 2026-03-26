@@ -51,6 +51,7 @@ const _typeRef: ValidationTranslations = {
   fullNameRequired: "",
   acceptTermsRequired: "",
   passwordsMismatch: "",
+  phoneInvalid: "",
 };
 
 export type LoginFormValues = InferValidationType<

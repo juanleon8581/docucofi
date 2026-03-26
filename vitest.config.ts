@@ -17,6 +17,11 @@ export default defineConfig({
         "src/test/vitest.setup.ts",
         "src/infrastructure/services/supabase/client.ts",
         "src/infrastructure/services/supabase/server.ts",
+        "src/infrastructure/i18n/dictionaries/index.ts",
+        "src/domain/interfaces/**",
+        "src/domain/repositories/**",
+        "src/domain/entities/TemplateField.ts",
+        "src/proxy.ts",
         "src/presentation/**",
       ],
       thresholds: {
