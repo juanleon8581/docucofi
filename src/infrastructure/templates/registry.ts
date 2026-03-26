@@ -1,4 +1,5 @@
 import type { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
+import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 
 export type TemplateCategory = "legal" | "business" | "personal" | "other";
 
@@ -7,7 +8,10 @@ export interface ITemplateMetadata {
   category: TemplateCategory;
   displayNameKey: string;
   descriptionKey: string;
-  component: React.ComponentType<{ fields: TemplateFieldDefinition[] }>;
+  component: React.ComponentType<{
+    fields: TemplateFieldDefinition[];
+    userInfo: IAuthResponse | null;
+  }>;
   fields: TemplateFieldDefinition[];
 }
 

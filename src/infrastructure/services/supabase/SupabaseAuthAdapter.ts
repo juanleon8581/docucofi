@@ -5,6 +5,7 @@ import { AuthRepository, SignOutScope } from "@/domain/repositories/IAuthReposit
 import { LoginDTO } from "@/domain/dtos/auth/login/Login.dto";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 import { RegisterDTO } from "@/domain/dtos/auth/register/Register.dto";
+import { UpdateProfileDTO } from "@/domain/dtos/profile/UpdateProfile.dto";
 import { AuthMessages } from "@/domain/messages/auth.messages";
 
 export class SupabaseAuthAdapter implements AuthRepository {
@@ -97,5 +98,18 @@ export class SupabaseAuthAdapter implements AuthRepository {
     }
 
     return SupabaseMapper.toDomainResponse(user);
+  }
+
+  async updateProfile(dto: UpdateProfileDTO): Promise<IAuthResponse> {
+    const { data, error } = await this.client.auth.updateUser({
+      data: SupabaseMapper.toSupabaseMetadata(dto),
+    });
+
+    if (error) {
+      const errorDetails = SupabaseAuthAdapter.mapError(error);
+      throw new AuthenticationError(errorDetails.message, errorDetails);
+    }
+
+    return SupabaseMapper.toDomainResponse(data.user);
   }
 }

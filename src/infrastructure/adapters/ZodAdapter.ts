@@ -35,6 +35,10 @@ export class ValidationAdapter {
   static boolean() {
     return z.boolean();
   }
+
+  static optionalString() {
+    return z.string().optional().or(z.literal(""));
+  }
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
