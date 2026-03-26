@@ -4,6 +4,11 @@ export interface IAuthResponse {
     email: string;
     fullName?: string;
     avatarUrl?: string;
+    city?: string;
+    company?: string;
+    companyNit?: string;
+    phone?: string;
+    dni?: string;
     createdAt?: Date;
     updatedAt?: Date;
   };

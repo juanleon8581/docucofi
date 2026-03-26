@@ -14,4 +14,5 @@ export const AuthMessages = {
   ACTION_LOGOUT_FAILED: "Error logging out",
   ACTION_REGISTER_FAILED: "Registration failed",
   ACTION_RESET_PASS_FAILED: "Failed to request password reset",
+  ACTION_UPDATE_PROFILE_FAILED: "Failed to update profile",
 } as const;
