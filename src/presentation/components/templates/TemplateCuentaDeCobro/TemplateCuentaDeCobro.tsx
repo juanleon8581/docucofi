@@ -117,17 +117,18 @@ export const TemplateCuentaDeCobro = ({
             <span className="left-block">{getFieldValue("concept")}</span>
 
             <div className="my-8 flex flex-row flex-wrap items-center justify-start">
-              {(getFieldValue("dates")?.split(",") || []).map((day) => {
-                return (
-                  <p
-                    key={day.toString()}
-                    className="flex w-1/3 flex-row pl-4 font-medium"
-                  >
-                    <ChevronRight className="scale-75" />
-                    <span>{DateAdapter.formatDisplayFromString(day)}</span>
-                  </p>
-                );
-              })}
+              {getFieldValue("dates") &&
+                (getFieldValue("dates")?.split(",") || []).map((day) => {
+                  return (
+                    <p
+                      key={day.toString()}
+                      className="flex w-1/3 flex-row pl-4 font-medium"
+                    >
+                      <ChevronRight className="scale-75" />
+                      <span>{DateAdapter.formatDisplayFromString(day)}</span>
+                    </p>
+                  );
+                })}
             </div>
             <span className="left-block">Por favor consignar en:</span>
             <span className="left-block">
@@ -169,7 +170,6 @@ export const TemplateCuentaDeCobro = ({
           </div>
         </Previewer>
       </div>
-
     </div>
   );
 };
