@@ -95,6 +95,12 @@ describe("buildCuentaDeCobroHtml", () => {
     expect(html).not.toContain("›");
   });
 
+  it("omits date list when dates field contains only commas", () => {
+    const fieldsWithEmptyDates = { ...baseFields, dates: ",,," };
+    const html = buildCuentaDeCobroHtml(fieldsWithEmptyDates);
+    expect(html).not.toContain("›");
+  });
+
   it("handles missing fields gracefully with empty strings", () => {
     const html = buildCuentaDeCobroHtml({});
     expect(html).toContain("<!DOCTYPE html>");
