@@ -6,7 +6,7 @@ import { createServerClient } from "@supabase/ssr";
 import { i18nConfig, type Locale } from "./infrastructure/i18n/config";
 
 // Public-only paths: redirect authenticated users to dashboard
-const PUBLIC_ONLY_PATHS = ["/login", "/register", "/forgot-password"];
+const PUBLIC_ONLY_PATHS = ["/login", "/register", "/forgot-password", "/"];
 
 // Auth-only paths: redirect anonymous users to login
 const AUTH_ONLY_PATHS = ["/dashboard"];
@@ -98,8 +98,8 @@ export async function proxy(request: NextRequest) {
   }
 
   // Redirect authenticated users from public-only paths (except home) to dashboard
-  if (user && publicOnly && pathWithoutLocale !== "/") {
-    request.nextUrl.pathname = `/${locale}/dashboard`;
+  if (user && publicOnly) {
+    request.nextUrl.pathname = `/${locale}/templates`;
     return NextResponse.redirect(request.nextUrl);
   }
 
