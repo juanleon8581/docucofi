@@ -10,7 +10,7 @@ describe("TemplateCuentaDeCobro.test", () => {
     vi.clearAllMocks();
     useTemplateStore.setState({ fields: {} });
     cleanup();
-    render(<TemplateCuentaDeCobro fields={cuentaDeCobroFields} />);
+    render(<TemplateCuentaDeCobro fields={cuentaDeCobroFields} userInfo={null} />);
   });
 
   describe("container", () => {
@@ -60,7 +60,7 @@ describe("TemplateCuentaDeCobro.test", () => {
       expect(screen.getByTestId("field-date")).toBeInTheDocument();
       expect(screen.getByTestId("field-company")).toBeInTheDocument();
       expect(screen.getByTestId("field-nit")).toBeInTheDocument();
-      expect(screen.getByTestId("field-name")).toBeInTheDocument();
+      expect(screen.getByTestId("field-fullName")).toBeInTheDocument();
       expect(screen.getByTestId("field-cc")).toBeInTheDocument();
       expect(screen.getByTestId("field-amount")).toBeInTheDocument();
       expect(screen.getByTestId("field-concept")).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe("TemplateCuentaDeCobro.test", () => {
       await act(async () => {
         useTemplateStore.getState().setFieldValue("city", "Medellín");
         useTemplateStore.getState().setFieldValue("company", "Mi Empresa SAS");
-        useTemplateStore.getState().setFieldValue("name", "Juan Pérez");
+        useTemplateStore.getState().setFieldValue("fullName", "Juan Pérez");
       });
 
       const preview = screen.getByTestId("previewer-container");
