@@ -12,10 +12,10 @@ export default async function Home({ params }: Readonly<Props>) {
   const dict = await getDictionary(lang);
 
   return (
-    <section className="flex flex-col gap-6 items-center mx-auto w-4/5">
+    <section className="mx-auto flex h-full w-4/5 flex-col items-center justify-center gap-6">
       <h1 className="md:text-5xl!">{dict.home.title}</h1>
       <h3>{dict.home.subtitle}</h3>
-      <p className="max-w-xl text-lg text-muted-foreground text-center">
+      <p className="max-w-xl text-center text-lg text-muted-foreground">
         {dict.home.description}
       </p>
 
