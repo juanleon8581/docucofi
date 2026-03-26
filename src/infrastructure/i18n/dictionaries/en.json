@@ -50,7 +50,8 @@
     "passwordRequired": "Password is required",
     "fullNameRequired": "Full name is required",
     "acceptTermsRequired": "You must accept the terms and conditions",
-    "passwordsMismatch": "Passwords do not match"
+    "passwordsMismatch": "Passwords do not match",
+    "phoneInvalid": "Invalid phone number"
   },
   "metadata": {
     "loginTitle": "Login | CofiAuth",
@@ -58,12 +59,34 @@
     "registerTitle": "Register | CofiAuth",
     "registerDescription": "Create your CofiAuth account to access the panel.",
     "forgotPasswordTitle": "Reset Password | CofiAuth",
-    "forgotPasswordDescription": "Reset your CofiAuth account password."
+    "forgotPasswordDescription": "Reset your CofiAuth account password.",
+    "settingsTitle": "Settings | DocuCofi",
+    "settingsDescription": "Manage your profile and preferences."
   },
   "home": {
     "title": "DocuCofi",
     "subtitle": "Document Templates",
     "description": "Create legal and administrative documents easily and quickly using our templates."
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Manage your personal information",
+    "fullNameLabel": "Full name",
+    "fullNamePlaceholder": "Enter your full name",
+    "cityLabel": "City",
+    "cityPlaceholder": "Enter your city",
+    "companyLabel": "Company",
+    "companyPlaceholder": "Enter your company name",
+    "companyNitLabel": "Company NIT",
+    "companyNitPlaceholder": "900.123.456-7",
+    "phoneLabel": "Phone",
+    "phonePlaceholder": "+57 300 123 4567",
+    "dniLabel": "DNI / Document number",
+    "dniPlaceholder": "Enter your document number",
+    "submitButton": "Save changes",
+    "successTitle": "Profile updated",
+    "successMessage": "Your information has been saved.",
+    "errorTitle": "Error updating profile"
   },
   "templates": {
     "title": "Templates",
@@ -77,6 +100,10 @@
     "cuenta-de-cobro": {
       "name": "Invoice",
       "description": "Invoice template for professionals and freelancers."
+    },
+    "cuenta-de-cobro-concepto-fechas": {
+      "name": "Invoice with dates",
+      "description": "Invoice template for professionals and freelancers with dates."
     }
   }
 }

@@ -12,25 +12,35 @@ import { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
 import { ChevronRight, Download, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { exportToPdfAction } from "@/app/[lang]/templates/[slug]/actions";
+import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
+
+interface Props {
+  fields: TemplateFieldDefinition[];
+  userInfo: IAuthResponse | null;
+}
 
 export const TemplateCuentaDeCobro = ({
   fields,
-}: {
-  fields: TemplateFieldDefinition[];
-}) => {
+  userInfo,
+}: Readonly<Props>) => {
   const resetFields = useTemplateStore((state) => state.resetFields);
   const fieldsStore = useTemplateStore((state) => state.fields);
   const getFieldValue = (name: string) => fieldsStore[name] ?? "";
   const [isExporting, setIsExporting] = useState(false);
 
+  const user = userInfo?.user;
+
+  console.log(user);
+  console.log(fields);
+
   const buildFilename = () => {
-    const name = (fieldsStore["name"] ?? "")
+    const name = (fieldsStore["fullName"] ?? "")
       .toLowerCase()
       .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s+/g, "_")
-      .replace(/[^a-z0-9_]/g, "");
-    const date = (fieldsStore["date"] ?? "").replace(/-/g, "");
+      .replaceAll(/[\u0300-\u036f]/g, "")
+      .replaceAll(/\s+/g, "_")
+      .replaceAll(/[^a-z0-9_]/g, "");
+    const date = (fieldsStore["date"] ?? "").replaceAll("-", "");
     return `cc_${name}_${date}.pdf`;
   };
 
@@ -52,8 +62,17 @@ export const TemplateCuentaDeCobro = ({
   };
 
   useEffect(() => {
-    resetFields(fields);
-  }, [resetFields, fields]);
+    if (!user) return resetFields(fields);
+
+    const fieldsWithUserData = [...fields];
+    fieldsWithUserData.forEach((field, index) => {
+      const fieldUserData = user[field.name as keyof typeof user];
+      if (fieldUserData) {
+        fieldsWithUserData[index].defaultValue = fieldUserData.toString();
+      }
+    });
+    resetFields(fieldsWithUserData);
+  }, [resetFields, fields, user]);
 
   return (
     <div
@@ -65,7 +84,7 @@ export const TemplateCuentaDeCobro = ({
       </CollapsiblePanel>
 
       <div className="flex h-full w-full flex-col items-center justify-center gap-2">
-        <div className="flex w-full max-w-[var(--previewer-width,640px)] justify-end px-2">
+        <div className="flex w-full max-w-(--previewer-width,640px) justify-end px-2">
           <button
             data-testid="btn-download-pdf"
             onClick={handleDownloadPdf}
@@ -90,14 +109,14 @@ export const TemplateCuentaDeCobro = ({
               {getFieldValue("company")}
             </span>
             <span className="center-subtitle mb-16">
-              NIT: {getFieldValue("nit")}
+              NIT: {getFieldValue("companyNit")}
             </span>
             <strong className="left-block">DEBE A:</strong>
             <span className="left-block accent-text">
-              {getFieldValue("name")}
+              {getFieldValue("fullName")}
             </span>
             <span className="left-block mb-8">
-              <span className="accent-text">CC</span> {getFieldValue("cc")}
+              <span className="accent-text">CC</span> {getFieldValue("dni")}
             </span>
             <span className="left-block">
               <span className="accent-text">LA SUMA DE:</span>
@@ -117,17 +136,18 @@ export const TemplateCuentaDeCobro = ({
             <span className="left-block">{getFieldValue("concept")}</span>
 
             <div className="my-8 flex flex-row flex-wrap items-center justify-start">
-              {(getFieldValue("dates")?.split(",") || []).map((day) => {
-                return (
-                  <p
-                    key={day.toString()}
-                    className="flex w-1/3 flex-row pl-4 font-medium"
-                  >
-                    <ChevronRight className="scale-75" />
-                    <span>{DateAdapter.formatDisplayFromString(day)}</span>
-                  </p>
-                );
-              })}
+              {getFieldValue("dates") &&
+                (getFieldValue("dates")?.split(",") || []).map((day) => {
+                  return (
+                    <p
+                      key={day.toString()}
+                      className="flex w-1/3 flex-row pl-4 font-medium"
+                    >
+                      <ChevronRight className="scale-75" />
+                      <span>{DateAdapter.formatDisplayFromString(day)}</span>
+                    </p>
+                  );
+                })}
             </div>
             <span className="left-block">Por favor consignar en:</span>
             <span className="left-block">
@@ -169,7 +189,6 @@ export const TemplateCuentaDeCobro = ({
           </div>
         </Previewer>
       </div>
-
     </div>
   );
 };

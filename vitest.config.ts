@@ -20,6 +20,7 @@ export default defineConfig({
         "src/infrastructure/i18n/dictionaries/index.ts",
         "src/domain/interfaces/**",
         "src/domain/repositories/**",
+        "src/domain/entities/TemplateField.ts",
         "src/proxy.ts",
         "src/presentation/**",
       ],

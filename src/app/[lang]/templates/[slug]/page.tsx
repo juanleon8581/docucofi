@@ -7,6 +7,7 @@ import {
 import { getTemplate } from "@/infrastructure/templates/registry";
 import "@/presentation/components/templates"; // Import to trigger template registration
 import "@/presentation/styles/templates.css";
+import { getUserInfo } from "./actions";
 
 interface Props {
   params: Promise<{ lang: Locale; slug: string }>;
@@ -16,6 +17,7 @@ export default async function TemplatePage({ params }: Readonly<Props>) {
   const { lang, slug } = await params;
   const dict = await getDictionary(lang);
   const template = getTemplate(slug);
+  const userInfo = await getUserInfo();
 
   if (!template) {
     notFound();
@@ -28,7 +30,7 @@ export default async function TemplatePage({ params }: Readonly<Props>) {
 
   // Render the appropriate template component
   if (TemplateComponent) {
-    return <TemplateComponent fields={template.fields} />;
+    return <TemplateComponent fields={template.fields} userInfo={userInfo} />;
   }
 
   return (

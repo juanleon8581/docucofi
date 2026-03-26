@@ -28,7 +28,7 @@ export function DatePicker({
   placeholder = "Selecciona una fecha",
   id,
   "data-testid": dataTestId,
-}: DatePickerProps) {
+}: Readonly<DatePickerProps>) {
   const [open, setOpen] = React.useState(false);
 
   const triggerText = React.useMemo(() => {
@@ -41,9 +41,10 @@ export function DatePicker({
     return date ? DateAdapter.formatDisplay(date) : placeholder;
   }, [value, dateMode, placeholder]);
 
-  const hasValue = dateMode === "multiple"
-    ? DateAdapter.fromISOStringMultiple(value).length > 0
-    : DateAdapter.fromISOString(value) !== null;
+  const hasValue =
+    dateMode === "multiple"
+      ? DateAdapter.fromISOStringMultiple(value).length > 0
+      : DateAdapter.fromISOString(value) !== null;
 
   if (dateMode === "multiple") {
     const selectedDates = DateAdapter.fromISOStringMultiple(value);
@@ -56,8 +57,8 @@ export function DatePicker({
             data-testid={dataTestId}
             variant="outline"
             className={cn(
-              "w-full justify-start text-left font-normal",
-              !hasValue && "text-muted-foreground"
+              "w-full justify-start text-left font-normal text-accent",
+              !hasValue && "text-muted-foreground",
             )}
           >
             <CalendarIcon className="mr-2 size-4" />
@@ -87,8 +88,8 @@ export function DatePicker({
           data-testid={dataTestId}
           variant="outline"
           className={cn(
-            "w-full justify-start text-left font-normal",
-            !hasValue && "text-muted-foreground"
+            "w-full justify-start text-left font-normal text-accent",
+            !hasValue && "text-muted-foreground",
           )}
         >
           <CalendarIcon className="mr-2 size-4" />

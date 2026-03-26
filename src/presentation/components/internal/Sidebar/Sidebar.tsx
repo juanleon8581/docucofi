@@ -51,7 +51,7 @@ export function AppSidebar({
         { icon: LayoutDashboard, label: "Dashboard", href: `/${lang}/dashboard` },
         { icon: FileText, label: "Templates", href: `/${lang}/templates` },
         { icon: Users, label: "Users", href: "#" },
-        { icon: Settings, label: "Settings", href: "#" },
+        { icon: Settings, label: "Settings", href: `/${lang}/settings` },
       ],
     },
   ];
