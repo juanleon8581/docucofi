@@ -77,6 +77,10 @@
     "cuenta-de-cobro": {
       "name": "Cuenta de Cobro",
       "description": "Plantilla de cuenta de cobro para profesionales independientes."
+    },
+    "cuenta-de-cobro-concepto-fechas": {
+      "name": "Cuenta de Cobro con fechas",
+      "description": "Plantilla de cuenta de cobro para profesionales independientes con fechas."
     }
   }
 }

@@ -77,6 +77,10 @@
     "cuenta-de-cobro": {
       "name": "Invoice",
       "description": "Invoice template for professionals and freelancers."
+    },
+    "cuenta-de-cobro-concepto-fechas": {
+      "name": "Invoice with dates",
+      "description": "Invoice template for professionals and freelancers with dates."
     }
   }
 }
