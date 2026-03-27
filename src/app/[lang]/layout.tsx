@@ -53,7 +53,7 @@ export default async function RootLayout({
     const adapter = new SupabaseAuthAdapter(supabase);
     authResponse = await adapter.getCurrentUser();
   } catch (error) {
-    console.log(error);
+    if (!error) return;
   }
 
   return (
@@ -72,9 +72,12 @@ export default async function RootLayout({
         ) : (
           <>
             <HeaderNavBar lang={lang} />
-            <main className="flex flex-1 items-center justify-center">
-              {children}
-            </main>
+            <SidebarProvider
+              defaultOpen={false}
+              className="min-h-0! w-full! flex-1"
+            >
+              <main className="flex-1 overflow-auto">{children}</main>
+            </SidebarProvider>
           </>
         )}
         <Toaster />
