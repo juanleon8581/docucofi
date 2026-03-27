@@ -13,6 +13,8 @@ interface Props {
   params: Promise<{ lang: Locale; slug: string }>;
 }
 
+export const dynamic = "force-dynamic";
+
 export default async function TemplatePage({ params }: Readonly<Props>) {
   const { lang, slug } = await params;
   const dict = await getDictionary(lang);
@@ -60,9 +62,4 @@ export async function generateMetadata({ params }: Readonly<Props>) {
     title: `${templateName} | DocuCofi`,
     description: `Use the ${templateName} template to create your document.`,
   };
-}
-
-export async function generateStaticParams() {
-  // Return static params for all registered templates
-  return [];
 }
