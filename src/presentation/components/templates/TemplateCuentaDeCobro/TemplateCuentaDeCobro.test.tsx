@@ -10,7 +10,9 @@ describe("TemplateCuentaDeCobro.test", () => {
     vi.clearAllMocks();
     useTemplateStore.setState({ fields: {} });
     cleanup();
-    render(<TemplateCuentaDeCobro fields={cuentaDeCobroFields} userInfo={null} />);
+    render(
+      <TemplateCuentaDeCobro fields={cuentaDeCobroFields} userInfo={null} />,
+    );
   });
 
   describe("container", () => {
@@ -59,9 +61,9 @@ describe("TemplateCuentaDeCobro.test", () => {
       expect(screen.getByTestId("field-city")).toBeInTheDocument();
       expect(screen.getByTestId("field-date")).toBeInTheDocument();
       expect(screen.getByTestId("field-company")).toBeInTheDocument();
-      expect(screen.getByTestId("field-nit")).toBeInTheDocument();
+      expect(screen.getByTestId("field-companyNit")).toBeInTheDocument();
       expect(screen.getByTestId("field-fullName")).toBeInTheDocument();
-      expect(screen.getByTestId("field-cc")).toBeInTheDocument();
+      expect(screen.getByTestId("field-dni")).toBeInTheDocument();
       expect(screen.getByTestId("field-amount")).toBeInTheDocument();
       expect(screen.getByTestId("field-concept")).toBeInTheDocument();
       expect(screen.getByTestId("field-accountNumber")).toBeInTheDocument();
@@ -73,12 +75,12 @@ describe("TemplateCuentaDeCobro.test", () => {
   describe("preview", () => {
     it("should show default field values in the preview", () => {
       expect(screen.getByTestId("previewer-container")).toBeInTheDocument();
-      expect(
-        screen.getByTestId("previewer-container").textContent,
-      ).toContain("_CIUDAD_");
-      expect(
-        screen.getByTestId("previewer-container").textContent,
-      ).toContain("_INSERTE EMPRESA S.A.S_");
+      expect(screen.getByTestId("previewer-container").textContent).toContain(
+        "_CIUDAD_",
+      );
+      expect(screen.getByTestId("previewer-container").textContent).toContain(
+        "_INSERTE EMPRESA S.A.S_",
+      );
     });
 
     it("should reflect store values in the preview when store is updated", async () => {

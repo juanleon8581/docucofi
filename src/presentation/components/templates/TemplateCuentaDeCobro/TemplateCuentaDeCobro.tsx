@@ -83,7 +83,7 @@ export const TemplateCuentaDeCobro = ({
         <DynamicForm fields={fields} />
       </CollapsiblePanel>
 
-      <div className="flex h-full w-full flex-col items-center justify-center gap-2">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2 landscape:h-11/12 landscape:pt-10">
         <div className="flex w-full max-w-(--previewer-width,640px) justify-end px-2">
           <button
             data-testid="btn-download-pdf"
