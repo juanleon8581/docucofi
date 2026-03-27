@@ -30,9 +30,6 @@ export const TemplateCuentaDeCobro = ({
 
   const user = userInfo?.user;
 
-  console.log(user);
-  console.log(fields);
-
   const buildFilename = () => {
     const name = (fieldsStore["fullName"] ?? "")
       .toLowerCase()

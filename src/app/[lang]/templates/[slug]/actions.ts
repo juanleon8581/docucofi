@@ -16,6 +16,11 @@ export async function exportToPdfAction(
 export async function getUserInfo() {
   const supabase = await createClient();
   const authAdapter = new SupabaseAuthAdapter(supabase);
-  const session = await authAdapter.getCurrentUser();
-  return session;
+  try {
+    const session = await authAdapter.getCurrentUser();
+    return session;
+  } catch (error) {
+    if (error) return null;
+    return null;
+  }
 }
