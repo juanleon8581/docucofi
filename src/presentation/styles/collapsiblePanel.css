@@ -5,6 +5,10 @@
   @apply transition-all duration-500 ease-in-out;
 }
 
+.cp-container[data-state="open"] {
+  @apply min-h-2/5 landscape:w-2/5;
+}
+
 .cp-trigger-rotate > svg {
   @apply landscape:rotate-90;
 }

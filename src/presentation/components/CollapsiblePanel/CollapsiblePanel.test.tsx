@@ -43,6 +43,7 @@ describe("CollapsiblePanel.test", () => {
         "landscape:flex-row-reverse",
         "landscape:rounded-l-3xl!",
         "landscape:rounded-b-none",
+        "cp-container",
       ];
       const container = screen.getByTestId("cp-container");
       const classList = container.classList;
@@ -85,15 +86,16 @@ describe("CollapsiblePanel.test", () => {
     it("should render with the correct styles", () => {
       const expectedClassList = [
         "cp-content",
-        "mx-auto",
         "flex",
-        "w-3/5",
+        "w-full",
         "flex-col",
         "items-center",
         "justify-center",
         "gap-2",
         "overflow-hidden",
+        "p-0",
         "pb-6",
+        "landscape:flex-1",
         "landscape:pb-0",
         "landscape:pl-4",
       ];
