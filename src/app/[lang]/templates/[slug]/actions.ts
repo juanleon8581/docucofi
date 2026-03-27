@@ -21,5 +21,6 @@ export async function getUserInfo() {
     return session;
   } catch (error) {
     if (error) return null;
+    return null;
   }
 }
