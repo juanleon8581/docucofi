@@ -23,7 +23,8 @@
     "negotiator": "^1.0.0",
     "next": "16.1.6",
     "next-themes": "^0.4.6",
-    "puppeteer": "^24.40.0",
+    "@sparticuz/chromium": "^143.0.4",
+    "puppeteer-core": "^24.40.0",
     "radix-ui": "^1.4.3",
     "react": "19.2.3",
     "react-day-picker": "^9.14.0",
@@ -34,11 +35,6 @@
     "to-words": "^5.3.0",
     "zod": "^4.3.6",
     "zustand": "^5.0.12"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "puppeteer"
-    ]
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
