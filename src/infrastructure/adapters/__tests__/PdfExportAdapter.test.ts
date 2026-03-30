@@ -23,7 +23,7 @@ vi.mock("puppeteer-core", () => ({
   launch: mockLaunch,
 }));
 
-vi.mock("@sparticuz/chromium", () => ({
+vi.mock("@sparticuz/chromium-min", () => ({
   default: {
     executablePath: mockChromiumExecPath,
     args: mockChromiumArgs,
@@ -50,6 +50,7 @@ describe("PdfExportAdapter", () => {
     delete process.env.VERCEL;
     delete process.env.AWS_LAMBDA_FUNCTION_NAME;
     delete process.env.CHROME_EXECUTABLE_PATH;
+    delete process.env.CHROMIUM_BINARY_URL;
   });
 
   describe("in serverless environment (VERCEL=1)", () => {
@@ -57,13 +58,24 @@ describe("PdfExportAdapter", () => {
       process.env.VERCEL = "1";
     });
 
-    it("launches browser with chromium executablePath and chromium.args", async () => {
+    it("resolves executablePath using the default binary URL", async () => {
       await PdfExportAdapter.fromHtml("<html></html>");
+      expect(mockChromiumExecPath).toHaveBeenCalledWith(
+        "https://github.com/Sparticuz/chromium/releases/download/v143.0.0/chromium-v143.0.0-pack.tar",
+      );
       expect(mockLaunch).toHaveBeenCalledWith({
         headless: true,
         args: mockChromiumArgs,
         executablePath: "/tmp/chromium",
       });
+    });
+
+    it("uses CHROMIUM_BINARY_URL env var when set", async () => {
+      process.env.CHROMIUM_BINARY_URL = "https://custom.host/chromium.tar";
+      await PdfExportAdapter.fromHtml("<html></html>");
+      expect(mockChromiumExecPath).toHaveBeenCalledWith(
+        "https://custom.host/chromium.tar",
+      );
     });
 
     it("calls page.setContent with the provided HTML and domcontentloaded", async () => {

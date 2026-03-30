@@ -24,9 +24,12 @@ export class PdfExportAdapter {
     args: string[];
   }> {
     if (process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME) {
-      const chromium = (await import("@sparticuz/chromium")).default;
+      const chromium = (await import("@sparticuz/chromium-min")).default;
+      const binaryUrl =
+        process.env.CHROMIUM_BINARY_URL ??
+        "https://github.com/Sparticuz/chromium/releases/download/v143.0.0/chromium-v143.0.0-pack.tar";
       return {
-        executablePath: await chromium.executablePath(),
+        executablePath: await chromium.executablePath(binaryUrl),
         args: chromium.args,
       };
     }
