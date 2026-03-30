@@ -15,18 +15,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 48,
     paddingVertical: 48,
     fontFamily: "Helvetica",
-    fontSize: 14,
+    fontSize: 12,
     color: "#111111",
     backgroundColor: "#ffffff",
   },
   rightBold: {
     textAlign: "right",
     fontFamily: "Helvetica-Bold",
-    marginBottom: 64,
+    marginBottom: 48,
   },
   centerTitle: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 14,
     fontFamily: "Helvetica-Bold",
     textTransform: "uppercase",
     marginBottom: 4,
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   centerSubtitle: {
     textAlign: "center",
     color: "#444444",
-    marginBottom: 64,
+    marginBottom: 48,
   },
   labelBold: {
     fontFamily: "Helvetica-Bold",
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   footerText: {
-    fontSize: 13,
+    fontSize: 10,
     marginBottom: 8,
   },
 });
@@ -86,7 +86,7 @@ interface Props {
   fields: Record<string, string>;
 }
 
-export function CuentaDeCobroPdfDocument({ fields }: Props) {
+export function CuentaDeCobroPdfDocument({ fields }: Readonly<Props>) {
   const city = fields["city"] ?? "";
   const date = fields["date"] ?? "";
   const company = fields["company"] ?? "";
@@ -157,6 +157,7 @@ export function CuentaDeCobroPdfDocument({ fields }: Props) {
 
         <View style={{ marginBottom: 24 }}>
           {signature ? (
+            // eslint-disable-next-line jsx-a11y/alt-text
             <Image
               src={signature}
               style={{ maxHeight: 64, maxWidth: 208, objectFit: "contain" }}
@@ -173,7 +174,7 @@ export function CuentaDeCobroPdfDocument({ fields }: Props) {
           No soy responsable de IVA, ni de IMPOCONSUMO y no estoy obligado a
           facturar.
         </Text>
-        <Text style={{ fontSize: 13 }}>
+        <Text style={{ fontSize: 10 }}>
           De acuerdo con lo establecido en el parágrafo 2 del artículo 383 del
           estatuto tributario, declaro que para la prestación del servicio no he
           contratado o vinculado dos (2) personas o más trabajadores asociados a

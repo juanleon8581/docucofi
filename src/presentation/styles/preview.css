@@ -9,11 +9,11 @@
 }
 
 .center-title {
-  @apply block w-full text-center text-xl font-bold;
+  @apply block w-full text-center text-lg font-bold;
 }
 
 .center-subtitle {
-  @apply block w-full text-center text-lg font-semibold;
+  @apply block w-full text-center;
 }
 
 .accent-text {
