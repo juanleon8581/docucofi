@@ -97,7 +97,7 @@ export const TemplateCuentaDeCobro = ({
           </button>
         </div>
         <Previewer>
-          <div className="m-6">
+          <div className="m-6 text-sm">
             <strong className="right-block">
               {getFieldValue("city")},{" "}
               {DateAdapter.formatDisplayFromString(getFieldValue("date"))}

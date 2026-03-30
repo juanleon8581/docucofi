@@ -1,6 +1,5 @@
 "use server";
 
-import { buildCuentaDeCobroHtml } from "@/infrastructure/templates/cuentaDeCobroHtmlTemplate";
 import { PdfExportAdapter } from "@/infrastructure/adapters/PdfExportAdapter";
 import { createClient } from "@/infrastructure/services/supabase/server";
 import { SupabaseAuthAdapter } from "@/infrastructure/services/supabase/SupabaseAuthAdapter";
@@ -8,8 +7,7 @@ import { SupabaseAuthAdapter } from "@/infrastructure/services/supabase/Supabase
 export async function exportToPdfAction(
   fields: Record<string, string>,
 ): Promise<string> {
-  const html = buildCuentaDeCobroHtml(fields);
-  const buffer = await PdfExportAdapter.fromHtml(html);
+  const buffer = await PdfExportAdapter.fromFields(fields);
   return buffer.toString("base64");
 }
 
