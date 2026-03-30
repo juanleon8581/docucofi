@@ -149,11 +149,11 @@ export function CuentaDeCobroPdfDocument({ fields }: Readonly<Props>) {
           Cuenta de <Text style={styles.accentText}>ahorros</Text> No.{" "}
           <Text style={styles.accentText}>{accountNumber}</Text>
         </Text>
-        <Text style={{ marginBottom: 40 }}>
+        <Text style={{ marginBottom: 24 }}>
           Banco: <Text style={styles.accentText}>{bank}</Text>
         </Text>
 
-        <Text style={{ marginBottom: 48 }}>Atentamente,</Text>
+        <Text style={{ marginBottom: 24 }}>Atentamente,</Text>
 
         <View style={{ marginBottom: 24 }}>
           {signature ? (
