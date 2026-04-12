@@ -1,11 +1,6 @@
 "use client";
 
-import {
-  FileText,
-  Users,
-  Settings,
-  type LucideIcon,
-} from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,6 +13,7 @@ import {
   useSidebar,
 } from "@/presentation/components/ui/sidebar";
 import { UserAvatar } from "../../UserAvatar/UserAvatar";
+import { getInternalNavItems } from "../navigation";
 
 export interface NavItem {
   icon: LucideIcon;
@@ -45,13 +41,7 @@ export function AppSidebar({
   const { setOpen } = useSidebar();
 
   const defaultGroups: NavGroup[] = [
-    {
-      items: [
-        { icon: FileText, label: "Templates", href: `/${lang}/templates` },
-        { icon: Users, label: "Users", href: "#" },
-        { icon: Settings, label: "Settings", href: `/${lang}/settings` },
-      ],
-    },
+    { items: getInternalNavItems(lang) },
   ];
 
   const navGroups = groups ?? defaultGroups;

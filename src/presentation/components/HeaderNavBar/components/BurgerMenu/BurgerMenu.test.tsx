@@ -1,6 +1,6 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { NavLink } from "../DesktopNavBar/DesktopNavBar";
+import type { NavLink } from "@/presentation/types/navigation";
 import { BurgerMenu } from "./BurgerMenu";
 
 vi.mock("next/navigation", () => ({
@@ -9,8 +9,8 @@ vi.mock("next/navigation", () => ({
 }));
 
 const MOCK_LINKS: NavLink[] = [
-  { href: "/register", label: "Register" },
-  { href: "/login", label: "Login" },
+  { href: "/en/register", label: "Register" },
+  { href: "/en/login", label: "Login" },
 ];
 
 describe("BurgerMenu.test", () => {
@@ -20,7 +20,7 @@ describe("BurgerMenu.test", () => {
 
   describe("container", () => {
     it("should render the container", () => {
-      render(<BurgerMenu lang="en" links={MOCK_LINKS} />);
+      render(<BurgerMenu links={MOCK_LINKS} />);
 
       expect(
         screen.getByTestId("burger-menu-container"),
@@ -28,7 +28,7 @@ describe("BurgerMenu.test", () => {
     });
 
     it("should render the container with correct styles", () => {
-      render(<BurgerMenu lang="en" links={MOCK_LINKS} />);
+      render(<BurgerMenu links={MOCK_LINKS} />);
 
       const container = screen.getByTestId("burger-menu-container");
 
@@ -38,7 +38,7 @@ describe("BurgerMenu.test", () => {
 
   describe("trigger button", () => {
     it("should render the burger trigger button", () => {
-      render(<BurgerMenu lang="en" links={MOCK_LINKS} />);
+      render(<BurgerMenu links={MOCK_LINKS} />);
 
       expect(
         screen.getByTestId("burger-menu-trigger"),
@@ -46,7 +46,7 @@ describe("BurgerMenu.test", () => {
     });
 
     it("should render the trigger with an accessible label", () => {
-      render(<BurgerMenu lang="en" links={MOCK_LINKS} />);
+      render(<BurgerMenu links={MOCK_LINKS} />);
 
       expect(
         screen.getByRole("button", { name: /open menu/i }),

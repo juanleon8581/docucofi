@@ -1,14 +1,12 @@
-import { Locale } from "@/infrastructure/i18n/config";
-import { LocalizedLink } from "../../../LocalizedLink/LocalizedLink";
+import Link from "next/link";
+import type { NavLink } from "@/presentation/types/navigation";
 import { Button } from "../../../ui/button";
-import { NavLink } from "../../HeaderNavBar";
 
 interface Props {
-  lang: Locale;
   links: NavLink[];
 }
 
-export const DesktopNavBar = ({ lang, links }: Props) => {
+export const DesktopNavBar = ({ links }: Props) => {
   return (
     <div
       data-testid="desktop-navbar-container"
@@ -16,9 +14,7 @@ export const DesktopNavBar = ({ lang, links }: Props) => {
     >
       {links.map(({ href, label }) => (
         <Button key={href} variant={"link"} className="p-1">
-          <LocalizedLink href={href} locale={lang}>
-            {label}
-          </LocalizedLink>
+          <Link href={href}>{label}</Link>
         </Button>
       ))}
     </div>

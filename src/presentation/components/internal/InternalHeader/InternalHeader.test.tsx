@@ -68,6 +68,14 @@ describe("InternalHeader", () => {
       ).toBeInTheDocument();
     });
 
+    it("should render the BurgerMenu for mobile navigation", () => {
+      render(<InternalHeader user={defaultUser} lang="en" />);
+
+      expect(
+        screen.getByTestId("burger-menu-container"),
+      ).toBeInTheDocument();
+    });
+
     it("should render the LanguageSwitcher", () => {
       render(<InternalHeader user={defaultUser} lang="en" />);
 
