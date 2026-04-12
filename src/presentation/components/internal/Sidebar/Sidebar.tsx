@@ -1,7 +1,6 @@
 "use client";
 
 import {
-  LayoutDashboard,
   FileText,
   Users,
   Settings,
@@ -48,7 +47,6 @@ export function AppSidebar({
   const defaultGroups: NavGroup[] = [
     {
       items: [
-        { icon: LayoutDashboard, label: "Dashboard", href: `/${lang}/dashboard` },
         { icon: FileText, label: "Templates", href: `/${lang}/templates` },
         { icon: Users, label: "Users", href: "#" },
         { icon: Settings, label: "Settings", href: `/${lang}/settings` },
