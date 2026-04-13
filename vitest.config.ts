@@ -22,6 +22,8 @@ export default defineConfig({
         "src/domain/interfaces/**",
         "src/domain/repositories/**",
         "src/domain/entities/TemplateField.ts",
+        "src/domain/entities/Template.ts",
+        "src/domain/entities/UserTemplateData.ts",
         "src/proxy.ts",
         "src/presentation/**",
       ],
