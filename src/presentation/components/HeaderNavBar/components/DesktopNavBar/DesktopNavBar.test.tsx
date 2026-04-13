@@ -1,6 +1,7 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { DesktopNavBar, NavLink } from "./DesktopNavBar";
+import type { NavLink } from "@/presentation/types/navigation";
+import { DesktopNavBar } from "./DesktopNavBar";
 
 vi.mock("next/navigation", () => ({
   usePathname: () => "/en",
@@ -8,8 +9,8 @@ vi.mock("next/navigation", () => ({
 }));
 
 const MOCK_LINKS: NavLink[] = [
-  { href: "/register", label: "Register" },
-  { href: "/login", label: "Login" },
+  { href: "/en/register", label: "Register" },
+  { href: "/en/login", label: "Login" },
 ];
 
 describe("DesktopNavBar.test", () => {
@@ -19,7 +20,7 @@ describe("DesktopNavBar.test", () => {
 
   describe("container", () => {
     it("should render the container", () => {
-      render(<DesktopNavBar lang="en" links={MOCK_LINKS} />);
+      render(<DesktopNavBar links={MOCK_LINKS} />);
 
       expect(
         screen.getByTestId("desktop-navbar-container"),
@@ -27,7 +28,7 @@ describe("DesktopNavBar.test", () => {
     });
 
     it("should render the container with correct styles", () => {
-      render(<DesktopNavBar lang="en" links={MOCK_LINKS} />);
+      render(<DesktopNavBar links={MOCK_LINKS} />);
 
       const container = screen.getByTestId("desktop-navbar-container");
 
@@ -37,7 +38,7 @@ describe("DesktopNavBar.test", () => {
     });
 
     it("should render one button per link", () => {
-      render(<DesktopNavBar lang="en" links={MOCK_LINKS} />);
+      render(<DesktopNavBar links={MOCK_LINKS} />);
 
       const container = screen.getByTestId("desktop-navbar-container");
 
@@ -47,7 +48,7 @@ describe("DesktopNavBar.test", () => {
 
   describe("nav links", () => {
     it("should render the Register link with correct href", () => {
-      render(<DesktopNavBar lang="en" links={MOCK_LINKS} />);
+      render(<DesktopNavBar links={MOCK_LINKS} />);
 
       expect(screen.getByRole("link", { name: /register/i })).toHaveAttribute(
         "href",
@@ -56,7 +57,7 @@ describe("DesktopNavBar.test", () => {
     });
 
     it("should render the Login link with correct href", () => {
-      render(<DesktopNavBar lang="en" links={MOCK_LINKS} />);
+      render(<DesktopNavBar links={MOCK_LINKS} />);
 
       expect(screen.getByRole("link", { name: /login/i })).toHaveAttribute(
         "href",

@@ -1,4 +1,5 @@
-import { Locale } from "@/infrastructure/i18n/config";
+import type { Locale } from "@/infrastructure/i18n/config";
+import type { NavLink } from "@/presentation/types/navigation";
 import { BurgerMenu } from "./components/BurgerMenu/BurgerMenu";
 import { DesktopNavBar } from "./components/DesktopNavBar/DesktopNavBar";
 import { LanguageSwitcher } from "../LanguageSwitcher/LanguageSwitcher";
@@ -8,17 +9,12 @@ interface Props {
   lang: Locale;
 }
 
-export interface NavLink {
-  href: string;
-  label: string;
-}
-
-const NAV_LINKS: NavLink[] = [
-  { href: "/register", label: "Register" },
-  { href: "/login", label: "Login" },
-];
-
 export const HeaderNavBar = ({ lang }: Props) => {
+  const NAV_LINKS: NavLink[] = [
+    { href: `/${lang}/register`, label: "Register" },
+    { href: `/${lang}/login`, label: "Login" },
+  ];
+
   return (
     <div
       data-testid="header-navbar-container"
@@ -30,8 +26,8 @@ export const HeaderNavBar = ({ lang }: Props) => {
         className="flex items-center gap-2 md:gap-4"
       >
         <LanguageSwitcher currentLocale={lang} />
-        <DesktopNavBar lang={lang} links={NAV_LINKS} />
-        <BurgerMenu lang={lang} links={NAV_LINKS} />
+        <DesktopNavBar links={NAV_LINKS} />
+        <BurgerMenu links={NAV_LINKS} />
       </div>
     </div>
   );

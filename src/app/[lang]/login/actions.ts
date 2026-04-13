@@ -26,5 +26,5 @@ export async function loginAction(
     return { error: AuthMessages.ACTION_LOGIN_FAILED };
   }
 
-  redirect(`/${locale}/dashboard`);
+  redirect(`/${locale}/templates`);
 }

@@ -1,7 +1,8 @@
-import { Locale } from "@/infrastructure/i18n/config";
+"use client";
+
+import Link from "next/link";
 import { Menu } from "lucide-react";
-import { NavLink } from "../../HeaderNavBar";
-import { LocalizedLink } from "../../../LocalizedLink/LocalizedLink";
+import type { NavLink } from "@/presentation/types/navigation";
 import { Button } from "../../../ui/button";
 import {
   DropdownMenu,
@@ -11,11 +12,10 @@ import {
 } from "../../../ui/dropdown-menu";
 
 interface Props {
-  lang: Locale;
   links: NavLink[];
 }
 
-export const BurgerMenu = ({ lang, links }: Props) => {
+export const BurgerMenu = ({ links }: Props) => {
   return (
     <div data-testid="burger-menu-container" className="flex md:hidden">
       <DropdownMenu>
@@ -32,9 +32,7 @@ export const BurgerMenu = ({ lang, links }: Props) => {
         <DropdownMenuContent align="end" data-testid="burger-menu-content">
           {links.map(({ href, label }) => (
             <DropdownMenuItem key={href} asChild>
-              <LocalizedLink href={href} locale={lang}>
-                {label}
-              </LocalizedLink>
+              <Link href={href}>{label}</Link>
             </DropdownMenuItem>
           ))}
         </DropdownMenuContent>

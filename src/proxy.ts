@@ -5,11 +5,11 @@ import Negotiator from "negotiator";
 import { createServerClient } from "@supabase/ssr";
 import { i18nConfig, type Locale } from "./infrastructure/i18n/config";
 
-// Public-only paths: redirect authenticated users to dashboard
+// Public-only paths: redirect authenticated users to templates
 const PUBLIC_ONLY_PATHS = ["/login", "/register", "/forgot-password", "/"];
 
 // Auth-only paths: redirect anonymous users to login
-const AUTH_ONLY_PATHS = ["/dashboard", "/settings"];
+const AUTH_ONLY_PATHS = ["/settings"];
 
 function getPreferredLocale(request: NextRequest): Locale {
   const negotiatorHeaders: Record<string, string> = {};
@@ -97,7 +97,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(request.nextUrl);
   }
 
-  // Redirect authenticated users from public-only paths (except home) to dashboard
+  // Redirect authenticated users from public-only paths to templates
   if (user && publicOnly) {
     request.nextUrl.pathname = `/${locale}/templates`;
     return NextResponse.redirect(request.nextUrl);
