@@ -26,8 +26,15 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "CofiAuth",
-  description: "Authentication module",
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  ),
+  title: {
+    default: "DocuCofi",
+    template: "%s | DocuCofi",
+  },
+  description:
+    "Gestiona tus documentos y plantillas de forma sencilla con DocuCofi.",
 };
 
 export async function generateStaticParams() {

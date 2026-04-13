@@ -59,7 +59,7 @@ export async function generateMetadata({ params }: Readonly<Props>) {
   const templateName = getTemplateTranslations(dict, slug)?.name ?? slug;
 
   return {
-    title: `${templateName} | DocuCofi`,
+    title: templateName,
     description: `Use the ${templateName} template to create your document.`,
   };
 }
