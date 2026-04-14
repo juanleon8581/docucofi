@@ -3,6 +3,7 @@
     "email": "Email",
     "password": "Password",
     "submit": "Submit",
+    "updateField": "update",
     "placeholders": {
       "email": "name@example.com",
       "password": "********"

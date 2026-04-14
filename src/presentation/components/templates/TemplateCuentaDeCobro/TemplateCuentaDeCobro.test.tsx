@@ -5,6 +5,10 @@ import { TemplateCuentaDeCobro } from "./TemplateCuentaDeCobro";
 import { cuentaDeCobroFields } from "./cuentaDeCobroFields";
 import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
 
+vi.mock("next/navigation", () => ({
+  useParams: () => ({ lang: "es" }),
+}));
+
 describe("TemplateCuentaDeCobro.test", () => {
   beforeEach(() => {
     vi.clearAllMocks();
