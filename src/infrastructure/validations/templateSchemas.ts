@@ -3,8 +3,8 @@ import { TemplateFieldData } from "@/domain/entities/Template";
 
 export function generateTemplateSchema(
   fields: TemplateFieldData[],
-): z.ZodObject<z.ZodRawShape> {
-  const shape: z.ZodRawShape = {};
+): z.ZodObject<Record<string, z.ZodTypeAny>> {
+  const shape: Record<string, z.ZodTypeAny> = {};
 
   for (const field of fields) {
     if (field.isDisabled || field.isAuto) {

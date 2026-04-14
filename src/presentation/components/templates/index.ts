@@ -6,6 +6,7 @@ import type { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 export type TemplateComponentProps = {
   fields: TemplateFieldDefinition[];
   userInfo: IAuthResponse | null;
+  templateId: string;
 };
 
 export const templateComponents: Record<

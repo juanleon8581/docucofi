@@ -9,27 +9,34 @@ import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
 import { DateAdapter } from "@/infrastructure/adapters/DateAdapter";
 import { NumberToWordsAdapter } from "@/infrastructure/adapters/NumberToWordsAdapter";
 import { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
-import { ChevronRight, Download, Loader2 } from "lucide-react";
+import { ChevronRight, Download, Loader2, Save, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { exportToPdfAction } from "@/app/[lang]/templates/[slug]/actions";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 import { errorToast } from "@/presentation/components/Toaster/controller/toast.controller";
+import { useUserTemplateData } from "./hooks/useUserTemplateData";
 
 interface Props {
   fields: TemplateFieldDefinition[];
   userInfo: IAuthResponse | null;
+  templateId: string;
 }
 
 export const TemplateCuentaDeCobro = ({
   fields,
   userInfo,
+  templateId,
 }: Readonly<Props>) => {
   const resetFields = useTemplateStore((state) => state.resetFields);
   const fieldsStore = useTemplateStore((state) => state.fields);
   const getFieldValue = (name: string) => fieldsStore[name] ?? "";
   const [isExporting, setIsExporting] = useState(false);
+  const [showSaveInput, setShowSaveInput] = useState(false);
+  const [saveName, setSaveName] = useState("");
 
   const user = userInfo?.user;
+  const { savedForms, isSaving, deletingId, save, remove } =
+    useUserTemplateData(user?.id, templateId);
 
   const buildFilename = () => {
     const name = (fieldsStore["fullName"] ?? "")
@@ -63,6 +70,22 @@ export const TemplateCuentaDeCobro = ({
     }
   };
 
+  const handleSave = async () => {
+    const trimmed = saveName.trim();
+    if (!trimmed) return;
+    await save(trimmed, fieldsStore);
+    setSaveName("");
+    setShowSaveInput(false);
+  };
+
+  const handleLoad = (data: Record<string, string>) => {
+    const updatedFields = fields.map((field) => ({
+      ...field,
+      defaultValue: data[field.name] ?? field.defaultValue,
+    }));
+    resetFields(updatedFields);
+  };
+
   useEffect(() => {
     if (!user) return resetFields(fields);
 
@@ -86,21 +109,114 @@ export const TemplateCuentaDeCobro = ({
       </CollapsiblePanel>
 
       <div className="flex h-full w-full flex-col items-center justify-center gap-2 landscape:h-11/12 landscape:pt-10">
-        <div className="flex w-full max-w-(--previewer-width,640px) justify-end px-2">
-          <button
-            data-testid="btn-download-pdf"
-            onClick={handleDownloadPdf}
-            disabled={isExporting}
-            className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
-          >
-            {isExporting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
+        <div className="flex w-full max-w-(--previewer-width,640px) flex-col gap-2 px-2">
+          <div className="flex justify-end gap-2">
+            {user && (
+              <button
+                data-testid="btn-save-form"
+                onClick={() => setShowSaveInput((v) => !v)}
+                className="flex items-center gap-2 rounded-md border border-border bg-background px-4 py-2 text-sm font-medium shadow-sm transition-opacity hover:opacity-80"
+              >
+                <Save className="h-4 w-4" />
+                Guardar
+              </button>
             )}
-            {isExporting ? "Generando..." : "Descargar PDF"}
-          </button>
+            <button
+              data-testid="btn-download-pdf"
+              onClick={handleDownloadPdf}
+              disabled={isExporting}
+              className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
+            >
+              {isExporting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
+              {isExporting ? "Generando..." : "Descargar PDF"}
+            </button>
+          </div>
+
+          {showSaveInput && (
+            <div
+              data-testid="save-form-panel"
+              className="flex gap-2 rounded-md border border-border bg-background p-3"
+            >
+              <input
+                data-testid="save-form-input"
+                type="text"
+                value={saveName}
+                onChange={(e) => setSaveName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSave()}
+                placeholder="Nombre del formulario"
+                className="flex-1 rounded-md border border-border bg-transparent px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary"
+              />
+              <button
+                data-testid="btn-save-form-confirm"
+                onClick={handleSave}
+                disabled={isSaving || !saveName.trim()}
+                className="flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+              >
+                {isSaving ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  "Guardar"
+                )}
+              </button>
+              <button
+                data-testid="btn-save-form-cancel"
+                onClick={() => {
+                  setShowSaveInput(false);
+                  setSaveName("");
+                }}
+                className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground"
+              >
+                Cancelar
+              </button>
+            </div>
+          )}
+
+          {user && savedForms.length > 0 && (
+            <div
+              data-testid="saved-forms-list"
+              className="rounded-md border border-border bg-background"
+            >
+              <p className="border-b border-border px-3 py-2 text-xs font-medium text-muted-foreground">
+                Formularios guardados
+              </p>
+              {savedForms.map((form) => (
+                <div
+                  key={form.id}
+                  data-testid={`saved-form-item-${form.id}`}
+                  className="flex items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-muted/40"
+                >
+                  <span className="flex-1 truncate">{form.name}</span>
+                  <div className="flex gap-1">
+                    <button
+                      data-testid={`btn-load-form-${form.id}`}
+                      onClick={() => handleLoad(form.data)}
+                      className="rounded px-2 py-1 text-xs text-primary hover:underline"
+                    >
+                      Cargar
+                    </button>
+                    <button
+                      data-testid={`btn-delete-form-${form.id}`}
+                      onClick={() => remove(form.id)}
+                      disabled={deletingId === form.id}
+                      className="rounded p-1 text-muted-foreground hover:text-destructive disabled:opacity-50"
+                    >
+                      {deletingId === form.id ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-3.5 w-3.5" />
+                      )}
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
+
         <Previewer>
           <div className="m-6 text-sm">
             <strong className="right-block">

@@ -33,7 +33,13 @@ export default async function TemplatePage({ params }: Readonly<Props>) {
 
   if (TemplateComponent) {
     const fields = mapTemplateFields(template.fields);
-    return <TemplateComponent fields={fields} userInfo={userInfo} />;
+    return (
+      <TemplateComponent
+        fields={fields}
+        userInfo={userInfo}
+        templateId={template.id}
+      />
+    );
   }
 
   return (
