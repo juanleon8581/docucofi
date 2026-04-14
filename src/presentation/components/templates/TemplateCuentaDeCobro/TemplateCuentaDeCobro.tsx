@@ -13,6 +13,7 @@ import { ChevronRight, Download, Loader2 } from "lucide-react";
 import Image from "next/image";
 import { exportToPdfAction } from "@/app/[lang]/templates/[slug]/actions";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
+import { errorToast } from "@/presentation/components/Toaster/controller/toast.controller";
 
 interface Props {
   fields: TemplateFieldDefinition[];
@@ -53,6 +54,10 @@ export const TemplateCuentaDeCobro = ({
       a.download = buildFilename();
       a.click();
       URL.revokeObjectURL(url);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error al generar el PDF.";
+      errorToast(message);
     } finally {
       setIsExporting(false);
     }

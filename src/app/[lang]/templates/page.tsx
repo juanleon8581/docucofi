@@ -4,8 +4,7 @@ import {
   getTemplateTranslations,
 } from "@/infrastructure/i18n/dictionaries";
 import { TemplateCard } from "@/presentation/components/TemplateCard/TemplateCard";
-import { getAllTemplates } from "@/infrastructure/templates/registry";
-import "@/presentation/components/templates"; // Import to trigger template registration
+import { getAllTemplatesAction } from "./actions";
 
 interface Props {
   params: Promise<{ lang: Locale }>;
@@ -14,7 +13,7 @@ interface Props {
 export default async function TemplatesPage({ params }: Readonly<Props>) {
   const { lang } = await params;
   const dict = await getDictionary(lang);
-  const templates = getAllTemplates();
+  const templates = await getAllTemplatesAction();
 
   return (
     <div className="mx-auto max-w-4xl p-8">
