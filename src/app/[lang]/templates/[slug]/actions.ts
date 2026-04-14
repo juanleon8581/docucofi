@@ -8,6 +8,7 @@ import { PrismaTemplateAdapter } from "@/infrastructure/repositories/PrismaTempl
 import { UserTemplateDataUseCase } from "@/domain/useCases/UserTemplateDataUseCase";
 import { PrismaUserTemplateDataAdapter } from "@/infrastructure/repositories/PrismaUserTemplateDataAdapter";
 import { CreateUserTemplateDataDTO } from "@/domain/dtos/userTemplateData/CreateUserTemplateData.dto";
+import { UpdateUserTemplateDataDTO } from "@/domain/dtos/userTemplateData/UpdateUserTemplateData.dto";
 import { prisma } from "@/infrastructure/services/prisma/client";
 import { Template } from "@/domain/entities/Template";
 
@@ -94,6 +95,30 @@ export async function saveUserTemplateDataAction(
     console.error("[saveUserTemplateDataAction]", error);
     throw new Error(
       error instanceof Error ? error.message : "Error al guardar el formulario.",
+    );
+  }
+}
+
+export async function updateUserTemplateDataAction(
+  id: string,
+  data: Record<string, string>,
+): Promise<SavedFormItem> {
+  try {
+    const useCase = new UserTemplateDataUseCase(
+      new PrismaUserTemplateDataAdapter(prisma),
+    );
+    const [validationError, dto] = UpdateUserTemplateDataDTO.create({ data });
+    if (validationError || !dto) {
+      throw new Error(validationError ?? "Datos inválidos.");
+    }
+    const updated = await useCase.update(id, dto);
+    return { id: updated.id, name: updated.name, data: updated.data };
+  } catch (error) {
+    console.error("[updateUserTemplateDataAction]", error);
+    throw new Error(
+      error instanceof Error
+        ? error.message
+        : "Error al actualizar el formulario.",
     );
   }
 }

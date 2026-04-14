@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from "react";
 import {
   getUserTemplateDataListAction,
   saveUserTemplateDataAction,
+  updateUserTemplateDataAction,
   deleteUserTemplateDataAction,
   type SavedFormItem,
 } from "@/app/[lang]/templates/[slug]/actions";
@@ -16,6 +17,7 @@ export function useUserTemplateData(
 ) {
   const [savedForms, setSavedForms] = useState<SavedFormItem[]>([]);
   const [isSaving, setIsSaving] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   const refresh = useCallback(async () => {
@@ -48,6 +50,21 @@ export function useUserTemplateData(
     }
   };
 
+  const update = async (id: string, data: Record<string, string>) => {
+    setIsUpdating(true);
+    try {
+      const updated = await updateUserTemplateDataAction(id, data);
+      setSavedForms((prev) => prev.map((f) => (f.id === id ? updated : f)));
+      successToast("Datos actualizados");
+    } catch (error) {
+      errorToast(
+        error instanceof Error ? error.message : "Error al actualizar.",
+      );
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const remove = async (id: string) => {
     setDeletingId(id);
     try {
@@ -63,5 +80,5 @@ export function useUserTemplateData(
     }
   };
 
-  return { savedForms, isSaving, deletingId, save, remove };
+  return { savedForms, isSaving, isUpdating, deletingId, save, update, remove };
 }

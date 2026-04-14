@@ -33,10 +33,35 @@ export const TemplateCuentaDeCobro = ({
   const [isExporting, setIsExporting] = useState(false);
   const [showSaveInput, setShowSaveInput] = useState(false);
   const [saveName, setSaveName] = useState("");
+  const [loadedFormId, setLoadedFormId] = useState<string | null>(null);
+  const [selectedSaveFields, setSelectedSaveFields] = useState<Set<string>>(
+    new Set(),
+  );
 
   const user = userInfo?.user;
-  const { savedForms, isSaving, deletingId, save, remove } =
+  const { savedForms, isSaving, isUpdating, deletingId, save, update, remove } =
     useUserTemplateData(user?.id, templateId);
+
+  const toggleSaveField = (name: string) => {
+    setSelectedSaveFields((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  };
+
+  const handleUpdate = async () => {
+    if (!loadedFormId || selectedSaveFields.size === 0) return;
+    const existingData =
+      savedForms.find((f) => f.id === loadedFormId)?.data ?? {};
+    const newFields: Record<string, string> = {};
+    for (const name of selectedSaveFields) {
+      newFields[name] = fieldsStore[name] ?? "";
+    }
+    await update(loadedFormId, { ...existingData, ...newFields });
+    setSelectedSaveFields(new Set());
+  };
 
   const buildFilename = () => {
     const name = (fieldsStore["fullName"] ?? "")
@@ -78,12 +103,14 @@ export const TemplateCuentaDeCobro = ({
     setShowSaveInput(false);
   };
 
-  const handleLoad = (data: Record<string, string>) => {
+  const handleLoad = (formId: string, data: Record<string, string>) => {
     const updatedFields = fields.map((field) => ({
       ...field,
       defaultValue: data[field.name] ?? field.defaultValue,
     }));
     resetFields(updatedFields);
+    setLoadedFormId(formId);
+    setSelectedSaveFields(new Set());
   };
 
   useEffect(() => {
@@ -105,7 +132,11 @@ export const TemplateCuentaDeCobro = ({
       className="template-container h-full justify-between pb-4 landscape:px-4 landscape:pr-0"
     >
       <CollapsiblePanel className="">
-        <DynamicForm fields={fields} />
+        <DynamicForm
+          fields={fields}
+          selectedSaveFields={loadedFormId ? selectedSaveFields : undefined}
+          onToggleSaveField={loadedFormId ? toggleSaveField : undefined}
+        />
       </CollapsiblePanel>
 
       <div className="flex h-full w-full flex-col items-center justify-center gap-2 landscape:h-11/12 landscape:pt-10">
@@ -193,14 +224,20 @@ export const TemplateCuentaDeCobro = ({
                   <div className="flex gap-1">
                     <button
                       data-testid={`btn-load-form-${form.id}`}
-                      onClick={() => handleLoad(form.data)}
+                      onClick={() => handleLoad(form.id, form.data)}
                       className="rounded px-2 py-1 text-xs text-primary hover:underline"
                     >
                       Cargar
                     </button>
                     <button
                       data-testid={`btn-delete-form-${form.id}`}
-                      onClick={() => remove(form.id)}
+                      onClick={() => {
+                        if (loadedFormId === form.id) {
+                          setLoadedFormId(null);
+                          setSelectedSaveFields(new Set());
+                        }
+                        remove(form.id);
+                      }}
                       disabled={deletingId === form.id}
                       className="rounded p-1 text-muted-foreground hover:text-destructive disabled:opacity-50"
                     >
@@ -213,6 +250,41 @@ export const TemplateCuentaDeCobro = ({
                   </div>
                 </div>
               ))}
+            </div>
+          )}
+
+          {user && loadedFormId && (
+            <div
+              data-testid="update-form-panel"
+              className="flex items-center justify-between gap-2 rounded-md border border-border bg-background px-3 py-2"
+            >
+              <span className="text-xs text-muted-foreground">
+                Marca los campos a actualizar en el formulario
+              </span>
+              <div className="flex gap-2">
+                <button
+                  data-testid="btn-cancel-update"
+                  onClick={() => {
+                    setLoadedFormId(null);
+                    setSelectedSaveFields(new Set());
+                  }}
+                  className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground"
+                >
+                  Cancelar
+                </button>
+                <button
+                  data-testid="btn-confirm-update"
+                  onClick={handleUpdate}
+                  disabled={isUpdating || selectedSaveFields.size === 0}
+                  className="flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
+                >
+                  {isUpdating ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    "Actualizar"
+                  )}
+                </button>
+              </div>
             </div>
           )}
         </div>
