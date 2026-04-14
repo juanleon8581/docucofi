@@ -15,6 +15,8 @@ import { exportToPdfAction } from "@/app/[lang]/templates/[slug]/actions";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 import { errorToast } from "@/presentation/components/Toaster/controller/toast.controller";
 import { useUserTemplateData } from "./hooks/useUserTemplateData";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
 
 interface Props {
   fields: TemplateFieldDefinition[];
@@ -98,7 +100,9 @@ export const TemplateCuentaDeCobro = ({
   const handleSave = async () => {
     const trimmed = saveName.trim();
     if (!trimmed) return;
-    const autoFieldNames = new Set(fields.filter((f) => f.isAuto).map((f) => f.name));
+    const autoFieldNames = new Set(
+      fields.filter((f) => f.isAuto).map((f) => f.name),
+    );
     const dataToSave = Object.fromEntries(
       Object.entries(fieldsStore).filter(([name]) => !autoFieldNames.has(name)),
     );
@@ -143,24 +147,23 @@ export const TemplateCuentaDeCobro = ({
         />
       </CollapsiblePanel>
 
-      <div className="flex h-full w-full flex-col items-center justify-center gap-2 landscape:h-11/12 landscape:pt-10">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2 landscape:h-11/12 landscape:pt-44">
         <div className="flex w-full max-w-(--previewer-width,640px) flex-col gap-2 px-2">
           <div className="flex justify-end gap-2">
             {user && (
-              <button
+              <Button
+                variant="outline"
                 data-testid="btn-save-form"
                 onClick={() => setShowSaveInput((v) => !v)}
-                className="flex items-center gap-2 rounded-md border border-border bg-background px-4 py-2 text-sm font-medium shadow-sm transition-opacity hover:opacity-80"
               >
                 <Save className="h-4 w-4" />
                 Guardar
-              </button>
+              </Button>
             )}
-            <button
+            <Button
               data-testid="btn-download-pdf"
               onClick={handleDownloadPdf}
               disabled={isExporting}
-              className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
             >
               {isExporting ? (
                 <Loader2 className="h-4 w-4 animate-spin" />
@@ -168,7 +171,7 @@ export const TemplateCuentaDeCobro = ({
                 <Download className="h-4 w-4" />
               )}
               {isExporting ? "Generando..." : "Descargar PDF"}
-            </button>
+            </Button>
           </div>
 
           {showSaveInput && (
@@ -176,37 +179,35 @@ export const TemplateCuentaDeCobro = ({
               data-testid="save-form-panel"
               className="flex gap-2 rounded-md border border-border bg-background p-3"
             >
-              <input
+              <Input
                 data-testid="save-form-input"
                 type="text"
                 value={saveName}
                 onChange={(e) => setSaveName(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSave()}
                 placeholder="Nombre del formulario"
-                className="flex-1 rounded-md border border-border bg-transparent px-3 py-1.5 text-sm outline-none focus:ring-1 focus:ring-primary"
               />
-              <button
+              <Button
                 data-testid="btn-save-form-confirm"
                 onClick={handleSave}
                 disabled={isSaving || !saveName.trim()}
-                className="flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
               >
                 {isSaving ? (
                   <Loader2 className="h-3.5 w-3.5 animate-spin" />
                 ) : (
                   "Guardar"
                 )}
-              </button>
-              <button
+              </Button>
+              <Button
+                variant="ghost"
                 data-testid="btn-save-form-cancel"
                 onClick={() => {
                   setShowSaveInput(false);
                   setSaveName("");
                 }}
-                className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground"
               >
                 Cancelar
-              </button>
+              </Button>
             </div>
           )}
 
@@ -226,14 +227,15 @@ export const TemplateCuentaDeCobro = ({
                 >
                   <span className="flex-1 truncate">{form.name}</span>
                   <div className="flex gap-1">
-                    <button
+                    <Button
+                      variant="link"
                       data-testid={`btn-load-form-${form.id}`}
                       onClick={() => handleLoad(form.id, form.data)}
-                      className="rounded px-2 py-1 text-xs text-primary hover:underline"
                     >
                       Cargar
-                    </button>
-                    <button
+                    </Button>
+                    <Button
+                      variant="ghost"
                       data-testid={`btn-delete-form-${form.id}`}
                       onClick={() => {
                         if (loadedFormId === form.id) {
@@ -243,14 +245,13 @@ export const TemplateCuentaDeCobro = ({
                         remove(form.id);
                       }}
                       disabled={deletingId === form.id}
-                      className="rounded p-1 text-muted-foreground hover:text-destructive disabled:opacity-50"
                     >
                       {deletingId === form.id ? (
                         <Loader2 className="h-3.5 w-3.5 animate-spin" />
                       ) : (
                         <Trash2 className="h-3.5 w-3.5" />
                       )}
-                    </button>
+                    </Button>
                   </div>
                 </div>
               ))}
@@ -266,28 +267,27 @@ export const TemplateCuentaDeCobro = ({
                 Marca los campos a actualizar en el formulario
               </span>
               <div className="flex gap-2">
-                <button
+                <Button
+                  variant="ghost"
                   data-testid="btn-cancel-update"
                   onClick={() => {
                     setLoadedFormId(null);
                     setSelectedSaveFields(new Set());
                   }}
-                  className="px-3 py-1.5 text-sm text-muted-foreground hover:text-foreground"
                 >
                   Cancelar
-                </button>
-                <button
+                </Button>
+                <Button
                   data-testid="btn-confirm-update"
                   onClick={handleUpdate}
                   disabled={isUpdating || selectedSaveFields.size === 0}
-                  className="flex items-center gap-1 rounded-md bg-primary px-3 py-1.5 text-sm font-medium text-primary-foreground disabled:opacity-60"
                 >
                   {isUpdating ? (
                     <Loader2 className="h-3.5 w-3.5 animate-spin" />
                   ) : (
                     "Actualizar"
                   )}
-                </button>
+                </Button>
               </div>
             </div>
           )}
