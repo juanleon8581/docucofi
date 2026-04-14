@@ -1,25 +1,17 @@
-import { registerTemplate } from "@/infrastructure/templates/registry";
+import { ComponentType } from "react";
 import { TemplateCuentaDeCobro } from "./TemplateCuentaDeCobro/TemplateCuentaDeCobro";
-import {
-  cuentaDeCobroFields,
-  cuentaDeCobroConceptoFechasFields,
-} from "./TemplateCuentaDeCobro/cuentaDeCobroFields";
+import type { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
+import type { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
 
-// Register all templates (metadata only)
-registerTemplate({
-  slug: "cuenta-de-cobro",
-  category: "business",
-  displayNameKey: "templates.cuentaDeCobro.name",
-  descriptionKey: "templates.cuentaDeCobro.description",
-  component: TemplateCuentaDeCobro,
-  fields: cuentaDeCobroFields,
-});
+export type TemplateComponentProps = {
+  fields: TemplateFieldDefinition[];
+  userInfo: IAuthResponse | null;
+};
 
-registerTemplate({
-  slug: "cuenta-de-cobro-concepto-fechas",
-  category: "business",
-  displayNameKey: "templates.cuentaDeCobro.name",
-  descriptionKey: "templates.cuentaDeCobro.description",
-  component: TemplateCuentaDeCobro,
-  fields: cuentaDeCobroConceptoFechasFields,
-});
+export const templateComponents: Record<
+  string,
+  ComponentType<TemplateComponentProps>
+> = {
+  "cuenta-de-cobro": TemplateCuentaDeCobro,
+  "cuenta-de-cobro-concepto-fechas": TemplateCuentaDeCobro,
+};
