@@ -1,9 +1,13 @@
 import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { DynamicForm } from "../DynamicForm";
 import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
 import type { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
+
+vi.mock("next/navigation", () => ({
+  useParams: () => ({ lang: "es" }),
+}));
 
 const fields: TemplateFieldDefinition[] = [
   { name: "ciudad", label: "Ciudad", type: "text", defaultValue: "BOGOTÁ" },
@@ -79,5 +83,99 @@ describe("DynamicForm with file field", () => {
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute("type", "file");
     expect(screen.getByLabelText("Firma (imagen)")).toBeInTheDocument();
+  });
+});
+
+describe("DynamicForm with onToggleSaveField (update checkboxes)", () => {
+  beforeEach(() => {
+    cleanup();
+  });
+
+  const normalField: TemplateFieldDefinition = {
+    name: "ciudad",
+    label: "Ciudad",
+    type: "text",
+    defaultValue: "BOGOTÁ",
+  };
+  const disabledField: TemplateFieldDefinition = {
+    name: "doc",
+    label: "Doc",
+    type: "text",
+    defaultValue: "",
+    disabledField: true,
+  };
+  const autoField: TemplateFieldDefinition = {
+    name: "today",
+    label: "Hoy",
+    type: "date",
+    defaultValue: "",
+    isAuto: true,
+    disabledField: true,
+  };
+
+  beforeEach(() => {
+    useTemplateStore.setState({ fields: { ciudad: "BOGOTÁ", doc: "", today: "" } });
+  });
+
+  it("renders checkbox for normal field when onToggleSaveField provided", () => {
+    render(
+      <DynamicForm
+        fields={[normalField]}
+        selectedSaveFields={new Set()}
+        onToggleSaveField={vi.fn()}
+      />,
+    );
+    expect(screen.getByTestId("save-field-checkbox-ciudad")).toBeInTheDocument();
+  });
+
+  it("does not render checkbox for disabledField", () => {
+    render(
+      <DynamicForm
+        fields={[disabledField]}
+        selectedSaveFields={new Set()}
+        onToggleSaveField={vi.fn()}
+      />,
+    );
+    expect(screen.queryByTestId("save-field-checkbox-doc")).not.toBeInTheDocument();
+  });
+
+  it("does not render checkbox for isAuto field", () => {
+    render(
+      <DynamicForm
+        fields={[autoField]}
+        selectedSaveFields={new Set()}
+        onToggleSaveField={vi.fn()}
+      />,
+    );
+    expect(screen.queryByTestId("save-field-checkbox-today")).not.toBeInTheDocument();
+  });
+
+  it("does not render checkboxes when onToggleSaveField is not provided", () => {
+    render(<DynamicForm fields={[normalField]} />);
+    expect(screen.queryByTestId("save-field-checkbox-ciudad")).not.toBeInTheDocument();
+  });
+
+  it("calls onToggleSaveField with field name when checkbox clicked", async () => {
+    const toggle = vi.fn();
+    render(
+      <DynamicForm
+        fields={[normalField]}
+        selectedSaveFields={new Set()}
+        onToggleSaveField={toggle}
+      />,
+    );
+    await userEvent.click(screen.getByTestId("save-field-checkbox-ciudad"));
+    expect(toggle).toHaveBeenCalledWith("ciudad");
+  });
+
+  it("renders checkbox as checked when field is in selectedSaveFields", () => {
+    render(
+      <DynamicForm
+        fields={[normalField]}
+        selectedSaveFields={new Set(["ciudad"])}
+        onToggleSaveField={vi.fn()}
+      />,
+    );
+    expect(screen.getByTestId("save-field-checkbox-ciudad")).toBeChecked();
   });
 });

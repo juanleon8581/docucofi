@@ -34,6 +34,7 @@ pnpm vitest run src/domain/useCases/__tests__/AuthUseCase.test.ts
 | Toasts | Sonner |
 | PDF | @react-pdf/renderer |
 | Auth/DB | Supabase (`@supabase/ssr`) |
+| ORM | Prisma (`@prisma/client`) |
 | Package manager | pnpm |
 | Path alias | `@` → `src/` |
 
@@ -88,9 +89,23 @@ components/
 ```env
 NEXT_PUBLIC_SUPABASE_URL="https://<project>.supabase.co"
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY="<publishable-key>"
+
+# Prisma — Supabase PostgreSQL
+DATABASE_URL="postgresql://postgres.[ref]:[pass]@pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1"
+DIRECT_URL="postgresql://postgres.[ref]:[pass]@db.supabase.co:5432/postgres"
 ```
 
 Copy from `.env.example`.
+
+### Prisma commands
+
+```bash
+pnpm prisma generate                        # Regenerate client after schema changes
+pnpm prisma migrate dev --name <name>       # New migration in dev
+pnpm prisma db push                         # Push schema without migration (dev only)
+pnpm prisma db pull                         # Introspect existing DB schema
+pnpm prisma studio                          # Visual DB UI
+```
 
 ## Testing
 

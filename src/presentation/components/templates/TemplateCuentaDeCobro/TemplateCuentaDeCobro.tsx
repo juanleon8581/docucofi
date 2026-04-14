@@ -9,26 +9,61 @@ import { useTemplateStore } from "@/presentation/stores/useTemplateStore";
 import { DateAdapter } from "@/infrastructure/adapters/DateAdapter";
 import { NumberToWordsAdapter } from "@/infrastructure/adapters/NumberToWordsAdapter";
 import { TemplateFieldDefinition } from "@/domain/entities/TemplateField";
-import { ChevronRight, Download, Loader2 } from "lucide-react";
+import { ChevronRight, Download, Loader2, Save, Trash2 } from "lucide-react";
 import Image from "next/image";
 import { exportToPdfAction } from "@/app/[lang]/templates/[slug]/actions";
 import { IAuthResponse } from "@/domain/interfaces/IAuthResponse";
+import { errorToast } from "@/presentation/components/Toaster/controller/toast.controller";
+import { useUserTemplateData } from "./hooks/useUserTemplateData";
+import { Button } from "../../ui/button";
+import { Input } from "../../ui/input";
 
 interface Props {
   fields: TemplateFieldDefinition[];
   userInfo: IAuthResponse | null;
+  templateId: string;
 }
 
 export const TemplateCuentaDeCobro = ({
   fields,
   userInfo,
+  templateId,
 }: Readonly<Props>) => {
   const resetFields = useTemplateStore((state) => state.resetFields);
   const fieldsStore = useTemplateStore((state) => state.fields);
   const getFieldValue = (name: string) => fieldsStore[name] ?? "";
   const [isExporting, setIsExporting] = useState(false);
+  const [showSaveInput, setShowSaveInput] = useState(false);
+  const [saveName, setSaveName] = useState("");
+  const [loadedFormId, setLoadedFormId] = useState<string | null>(null);
+  const [selectedSaveFields, setSelectedSaveFields] = useState<Set<string>>(
+    new Set(),
+  );
 
   const user = userInfo?.user;
+  const { savedForms, isSaving, isUpdating, deletingId, save, update, remove } =
+    useUserTemplateData(user?.id, templateId);
+
+  const toggleSaveField = (name: string) => {
+    setSelectedSaveFields((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  };
+
+  const handleUpdate = async () => {
+    if (!loadedFormId || selectedSaveFields.size === 0) return;
+    const existingData =
+      savedForms.find((f) => f.id === loadedFormId)?.data ?? {};
+    const newFields: Record<string, string> = {};
+    for (const name of selectedSaveFields) {
+      newFields[name] = fieldsStore[name] ?? "";
+    }
+    await update(loadedFormId, { ...existingData, ...newFields });
+    setSelectedSaveFields(new Set());
+  };
 
   const buildFilename = () => {
     const name = (fieldsStore["fullName"] ?? "")
@@ -53,9 +88,37 @@ export const TemplateCuentaDeCobro = ({
       a.download = buildFilename();
       a.click();
       URL.revokeObjectURL(url);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "Error al generar el PDF.";
+      errorToast(message);
     } finally {
       setIsExporting(false);
     }
+  };
+
+  const handleSave = async () => {
+    const trimmed = saveName.trim();
+    if (!trimmed) return;
+    const autoFieldNames = new Set(
+      fields.filter((f) => f.isAuto).map((f) => f.name),
+    );
+    const dataToSave = Object.fromEntries(
+      Object.entries(fieldsStore).filter(([name]) => !autoFieldNames.has(name)),
+    );
+    await save(trimmed, dataToSave);
+    setSaveName("");
+    setShowSaveInput(false);
+  };
+
+  const handleLoad = (formId: string, data: Record<string, string>) => {
+    const updatedFields = fields.map((field) => ({
+      ...field,
+      defaultValue: data[field.name] ?? field.defaultValue,
+    }));
+    resetFields(updatedFields);
+    setLoadedFormId(formId);
+    setSelectedSaveFields(new Set());
   };
 
   useEffect(() => {
@@ -77,25 +140,159 @@ export const TemplateCuentaDeCobro = ({
       className="template-container h-full justify-between pb-4 landscape:px-4 landscape:pr-0"
     >
       <CollapsiblePanel className="">
-        <DynamicForm fields={fields} />
+        <DynamicForm
+          fields={fields}
+          selectedSaveFields={loadedFormId ? selectedSaveFields : undefined}
+          onToggleSaveField={loadedFormId ? toggleSaveField : undefined}
+        />
       </CollapsiblePanel>
 
-      <div className="flex h-full w-full flex-col items-center justify-center gap-2 landscape:h-11/12 landscape:pt-10">
-        <div className="flex w-full max-w-(--previewer-width,640px) justify-end px-2">
-          <button
-            data-testid="btn-download-pdf"
-            onClick={handleDownloadPdf}
-            disabled={isExporting}
-            className="flex items-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-sm transition-opacity hover:opacity-90 disabled:opacity-60"
-          >
-            {isExporting ? (
-              <Loader2 className="h-4 w-4 animate-spin" />
-            ) : (
-              <Download className="h-4 w-4" />
+      <div className="flex h-full w-full flex-col items-center justify-center gap-2 landscape:h-11/12 landscape:pt-44">
+        <div className="flex w-full max-w-(--previewer-width,640px) flex-col gap-2 px-2">
+          <div className="flex justify-end gap-2">
+            {user && (
+              <Button
+                variant="outline"
+                data-testid="btn-save-form"
+                onClick={() => setShowSaveInput((v) => !v)}
+              >
+                <Save className="h-4 w-4" />
+                Guardar
+              </Button>
             )}
-            {isExporting ? "Generando..." : "Descargar PDF"}
-          </button>
+            <Button
+              data-testid="btn-download-pdf"
+              onClick={handleDownloadPdf}
+              disabled={isExporting}
+            >
+              {isExporting ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <Download className="h-4 w-4" />
+              )}
+              {isExporting ? "Generando..." : "Descargar PDF"}
+            </Button>
+          </div>
+
+          {showSaveInput && (
+            <div
+              data-testid="save-form-panel"
+              className="flex gap-2 rounded-md border border-border bg-background p-3"
+            >
+              <Input
+                data-testid="save-form-input"
+                type="text"
+                value={saveName}
+                onChange={(e) => setSaveName(e.target.value)}
+                onKeyDown={(e) => e.key === "Enter" && handleSave()}
+                placeholder="Nombre del formulario"
+              />
+              <Button
+                data-testid="btn-save-form-confirm"
+                onClick={handleSave}
+                disabled={isSaving || !saveName.trim()}
+              >
+                {isSaving ? (
+                  <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                ) : (
+                  "Guardar"
+                )}
+              </Button>
+              <Button
+                variant="ghost"
+                data-testid="btn-save-form-cancel"
+                onClick={() => {
+                  setShowSaveInput(false);
+                  setSaveName("");
+                }}
+              >
+                Cancelar
+              </Button>
+            </div>
+          )}
+
+          {user && savedForms.length > 0 && (
+            <div
+              data-testid="saved-forms-list"
+              className="rounded-md border border-border bg-background"
+            >
+              <p className="border-b border-border px-3 py-2 text-xs font-medium text-muted-foreground">
+                Formularios guardados
+              </p>
+              {savedForms.map((form) => (
+                <div
+                  key={form.id}
+                  data-testid={`saved-form-item-${form.id}`}
+                  className="flex items-center justify-between gap-2 px-3 py-2 text-sm hover:bg-muted/40"
+                >
+                  <span className="flex-1 truncate">{form.name}</span>
+                  <div className="flex gap-1">
+                    <Button
+                      variant="link"
+                      data-testid={`btn-load-form-${form.id}`}
+                      onClick={() => handleLoad(form.id, form.data)}
+                    >
+                      Cargar
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      data-testid={`btn-delete-form-${form.id}`}
+                      onClick={() => {
+                        if (loadedFormId === form.id) {
+                          setLoadedFormId(null);
+                          setSelectedSaveFields(new Set());
+                        }
+                        remove(form.id);
+                      }}
+                      disabled={deletingId === form.id}
+                    >
+                      {deletingId === form.id ? (
+                        <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                      ) : (
+                        <Trash2 className="h-3.5 w-3.5" />
+                      )}
+                    </Button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {user && loadedFormId && (
+            <div
+              data-testid="update-form-panel"
+              className="flex items-center justify-between gap-2 rounded-md border border-border bg-background px-3 py-2"
+            >
+              <span className="text-xs text-muted-foreground">
+                Marca los campos a actualizar en el formulario
+              </span>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  data-testid="btn-cancel-update"
+                  onClick={() => {
+                    setLoadedFormId(null);
+                    setSelectedSaveFields(new Set());
+                  }}
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  data-testid="btn-confirm-update"
+                  onClick={handleUpdate}
+                  disabled={isUpdating || selectedSaveFields.size === 0}
+                >
+                  {isUpdating ? (
+                    <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                  ) : (
+                    "Actualizar"
+                  )}
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
+
         <Previewer>
           <div className="m-6 text-sm">
             <strong className="right-block">
