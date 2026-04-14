@@ -36,7 +36,7 @@ export const DynamicForm = ({
         <div key={field.name} className="flex flex-col gap-1">
           <div className="flex items-center justify-between">
             <Label htmlFor={field.name}>{field.label}</Label>
-            {onToggleSaveField && !field.disabledField && (
+            {onToggleSaveField && !field.disabledField && !field.isAuto && (
               <Label className="flex cursor-pointer items-center gap-1 text-xs">
                 <Input
                   type="checkbox"

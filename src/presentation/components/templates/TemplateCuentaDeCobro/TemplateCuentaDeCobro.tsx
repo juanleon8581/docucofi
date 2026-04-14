@@ -98,7 +98,11 @@ export const TemplateCuentaDeCobro = ({
   const handleSave = async () => {
     const trimmed = saveName.trim();
     if (!trimmed) return;
-    await save(trimmed, fieldsStore);
+    const autoFieldNames = new Set(fields.filter((f) => f.isAuto).map((f) => f.name));
+    const dataToSave = Object.fromEntries(
+      Object.entries(fieldsStore).filter(([name]) => !autoFieldNames.has(name)),
+    );
+    await save(trimmed, dataToSave);
     setSaveName("");
     setShowSaveInput(false);
   };

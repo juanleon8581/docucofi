@@ -1,4 +1,10 @@
-export type FieldType = "text" | "number" | "date" | "select" | "textarea" | "file";
+export type FieldType =
+  | "text"
+  | "number"
+  | "date"
+  | "select"
+  | "textarea"
+  | "file";
 
 export interface TemplateFieldDefinition {
   name: string;
@@ -9,4 +15,5 @@ export interface TemplateFieldDefinition {
   placeholder?: string;
   dateMode?: "single" | "multiple";
   disabledField?: boolean;
+  isAuto?: boolean;
 }

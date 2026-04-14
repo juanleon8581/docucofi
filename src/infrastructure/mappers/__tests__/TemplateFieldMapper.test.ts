@@ -90,6 +90,16 @@ describe("mapTemplateFields", () => {
     expect(result.disabledField).toBeUndefined();
   });
 
+  it("should set isAuto when isAuto is true", () => {
+    const [result] = mapTemplateFields([{ ...baseField, isAuto: true }]);
+    expect(result.isAuto).toBe(true);
+  });
+
+  it("should not set isAuto when isAuto is false", () => {
+    const [result] = mapTemplateFields([{ ...baseField, isAuto: false }]);
+    expect(result.isAuto).toBeUndefined();
+  });
+
   it("should map multiple fields correctly", () => {
     const fields: TemplateFieldData[] = [
       baseField,
