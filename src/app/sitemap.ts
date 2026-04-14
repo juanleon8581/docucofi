@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { i18nConfig } from "@/infrastructure/i18n/config";
-import { getAllTemplates } from "@/infrastructure/templates/registry";
-import "@/presentation/components/templates";
+import { PrismaTemplateAdapter } from "@/infrastructure/repositories/PrismaTemplateAdapter";
+import { prisma } from "@/infrastructure/services/prisma/client";
 
 const PUBLIC_PATHS = ["/", "/login", "/register", "/forgot-password", "/templates"];
 
@@ -17,7 +17,7 @@ function buildAlternates(
   );
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl =
     process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
@@ -36,7 +36,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       })),
   );
 
-  const templates = getAllTemplates();
+  const templates = await new PrismaTemplateAdapter(prisma).getAll();
   const templateEntries: MetadataRoute.Sitemap = i18nConfig.locales.flatMap(
     (locale) =>
       templates.map((template) => ({
